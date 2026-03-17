@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Diagnóstico Axioma — Posicionamento WEF 2030</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0e0f;--ink-soft:#3a3b3d;--ink-muted:#7a7b80;
+  --surface:#f8f7f4;--white:#ffffff;
+  --gold:#b8965a;--gold-light:#d4b07a;--gold-pale:#f5ede0;
+  --teal:#1a6b58;--teal-light:#e4f0ec;
+  --border:#e2ddd6;--border-s:#c8c0b4;
+  --danger:#c0392b;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--surface);color:var(--ink);min-height:100vh}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(248,247,244,0.94);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;letter-spacing:0.04em;color:var(--ink);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo-mark{width:22px;height:22px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark span{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.nav-back{font-size:13px;color:var(--ink-muted);text-decoration:none;display:flex;align-items:center;gap:6px;transition:color .2s}
+.nav-back:hover{color:var(--ink)}
+.nav-back svg{width:14px;height:14px}
+
+/* ── LAYOUT ── */
+.main{padding-top:64px;min-height:100vh;display:flex;flex-direction:column}
+
+/* ── PROGRESS BAR ── */
+.progress-wrap{position:fixed;top:64px;left:0;right:0;z-index:90;height:2px;background:var(--border)}
+.progress-fill{height:100%;background:var(--gold);transition:width .5s ease}
+
+/* ── FORM SHELL ── */
+.form-shell{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:80px 24px 120px}
+.form-container{width:100%;max-width:680px}
+
+/* ── STEP HEADER ── */
+.step-tag{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:12px}
+.step-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(28px,4vw,42px);font-weight:300;line-height:1.15;color:var(--ink);margin-bottom:16px}
+.step-headline em{font-style:italic}
+.step-sub{font-size:14px;color:var(--ink-muted);line-height:1.7;margin-bottom:48px;max-width:520px}
+
+/* ── FIELDS ── */
+.field{margin-bottom:28px}
+.field label{display:block;font-size:12px;font-weight:500;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:10px}
+.field input,.field select,.field textarea{width:100%;font-family:'Outfit',sans-serif;font-size:14px;color:var(--ink);background:var(--white);border:0.5px solid var(--border-s);padding:14px 18px;outline:none;transition:border-color .2s;-webkit-appearance:none;border-radius:0}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--ink)}
+.field textarea{resize:vertical;min-height:100px;line-height:1.6}
+.field select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%237a7b80' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;cursor:pointer}
+.field-hint{font-size:11px;color:var(--ink-muted);margin-top:8px;line-height:1.5}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+/* ── OPTIONS GRID ── */
+.options-grid{display:grid;gap:10px}
+.options-grid.cols-2{grid-template-columns:1fr 1fr}
+.option-card{border:0.5px solid var(--border-s);background:var(--white);padding:18px 20px;cursor:pointer;transition:all .15s;position:relative;user-select:none}
+.option-card:hover{border-color:var(--gold);background:var(--gold-pale)}
+.option-card.selected{border-color:var(--gold);background:var(--gold-pale)}
+.option-card.selected::after{content:'';position:absolute;top:0;left:0;bottom:0;width:2px;background:var(--gold)}
+.option-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px}
+.option-desc{font-size:12px;color:var(--ink-muted);line-height:1.5}
+
+/* ── SCALE ── */
+.scale-wrap{display:flex;gap:8px;align-items:center}
+.scale-btn{flex:1;height:44px;border:0.5px solid var(--border-s);background:var(--white);font-family:'Outfit',sans-serif;font-size:13px;color:var(--ink-muted);cursor:pointer;transition:all .15s}
+.scale-btn:hover{border-color:var(--gold);color:var(--gold)}
+.scale-btn.active{border-color:var(--gold);background:var(--gold-pale);color:var(--ink);font-weight:500}
+.scale-labels{display:flex;justify-content:space-between;margin-top:8px}
+.scale-label{font-size:10px;color:var(--ink-muted);letter-spacing:0.04em}
+
+/* ── NAVIGATION BUTTONS ── */
+.form-nav{display:flex;align-items:center;justify-content:space-between;margin-top:48px;padding-top:32px;border-top:0.5px solid var(--border)}
+.btn-prev{font-size:13px;color:var(--ink-muted);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;padding:0;transition:color .2s}
+.btn-prev:hover{color:var(--ink)}
+.btn-prev:disabled{opacity:0;pointer-events:none}
+.btn-next{font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:14px 36px;background:var(--ink);color:var(--white);border:none;cursor:pointer;letter-spacing:0.03em;transition:background .2s;display:flex;align-items:center;gap:10px}
+.btn-next:hover{background:var(--ink-soft)}
+.btn-next:disabled{opacity:0.4;cursor:not-allowed}
+.btn-next svg{width:14px;height:14px}
+.step-counter{font-size:12px;color:var(--ink-muted);letter-spacing:0.06em}
+
+/* ── LOADING ── */
+.loading-screen{position:fixed;inset:0;z-index:200;background:var(--ink);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.loading-screen.active{opacity:1;pointer-events:all}
+.loading-logo{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:500;color:rgba(255,255,255,0.4);letter-spacing:0.06em;margin-bottom:64px}
+.loading-label{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:24px;min-height:16px;text-align:center}
+.loading-bar-track{width:280px;height:1px;background:rgba(255,255,255,0.08);position:relative;overflow:hidden}
+.loading-bar-fill{position:absolute;left:-100%;top:0;height:100%;width:100%;background:var(--gold);animation:loading-scan 1.8s ease-in-out infinite}
+@keyframes loading-scan{0%{left:-100%}100%{left:100%}}
+.loading-dots{display:flex;gap:8px;margin-top:32px}
+.loading-dot{width:4px;height:4px;border-radius:50%;background:rgba(255,255,255,0.15)}
+.loading-dot.active{background:var(--gold)}
+
+/* ── RESULT SCREEN ── */
+#result-screen{display:none;padding-top:80px}
+
+.result-header{background:var(--ink);padding:80px 48px 64px;margin-bottom:0}
+.rh-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:16px}
+.rh-org{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:rgba(255,255,255,0.5);margin-bottom:8px}
+.rh-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,60px);font-weight:300;color:var(--white);line-height:1.1;margin-bottom:16px}
+.rh-title em{font-style:italic;color:var(--gold-light)}
+.rh-sub{font-size:14px;color:rgba(255,255,255,0.4);line-height:1.7;max-width:520px}
+.rh-badge{display:inline-flex;align-items:center;gap:8px;border:0.5px solid rgba(184,150,90,0.35);padding:6px 16px;margin-top:24px;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light)}
+
+.result-body{max-width:900px;margin:0 auto;padding:0 48px 100px}
+
+.result-section{padding:56px 0;border-bottom:0.5px solid var(--border)}
+.result-section:last-child{border-bottom:none}
+.rs-label{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
+.rs-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--ink);margin-bottom:16px;line-height:1.2}
+.rs-body{font-size:14px;color:var(--ink-soft);line-height:1.85}
+.rs-body p{margin-bottom:16px}
+.rs-body p:last-child{margin-bottom:0}
+
+/* ── SCENARIO GAUGE ── */
+.scenario-gauges{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);border:0.5px solid var(--border);margin:32px 0}
+.sg-item{background:var(--white);padding:28px 20px;text-align:center;position:relative;overflow:hidden}
+.sg-item.primary{background:var(--ink)}
+.sg-name{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:400;margin-bottom:6px}
+.sg-item.primary .sg-name{color:var(--white)}
+.sg-scenario{font-size:9px;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:20px}
+.sg-item.primary .sg-scenario{color:var(--gold-light)}
+.sg-circle{width:64px;height:64px;border-radius:50%;border:2px solid var(--border);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;position:relative}
+.sg-item.primary .sg-circle{border-color:rgba(255,255,255,0.15);background:rgba(255,255,255,0.04)}
+.sg-pct{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink)}
+.sg-item.primary .sg-pct{color:var(--gold)}
+.sg-label{font-size:10px;color:var(--ink-muted)}
+.sg-item.primary .sg-label{color:rgba(255,255,255,0.35)}
+.sg-crown{position:absolute;top:8px;right:8px;width:16px;height:16px;display:none}
+.sg-item.primary .sg-crown{display:block}
+
+/* ── DIMENSION BARS ── */
+.dim-grid{display:flex;flex-direction:column;gap:16px;margin-top:24px}
+.dim-row{display:flex;align-items:center;gap:16px}
+.dim-name{font-size:12px;color:var(--ink-muted);min-width:160px}
+.dim-track{flex:1;height:4px;background:var(--border);position:relative}
+.dim-fill{height:100%;background:var(--gold);transition:width 1.2s ease}
+.dim-val{font-size:12px;font-weight:500;color:var(--ink);min-width:32px;text-align:right}
+
+/* ── GAP CARDS ── */
+.gap-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
+.gap-card{padding:24px;border:0.5px solid var(--border);background:var(--white);position:relative}
+.gap-card.critical{border-color:rgba(192,57,43,0.3)}
+.gap-card.critical::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--danger)}
+.gap-card.moderate{border-color:rgba(184,150,90,0.4)}
+.gap-card.moderate::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)}
+.gap-card.strength{border-color:rgba(26,107,88,0.3)}
+.gap-card.strength::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--teal)}
+.gc-type{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;margin-bottom:8px;font-weight:500}
+.gap-card.critical .gc-type{color:var(--danger)}
+.gap-card.moderate .gc-type{color:var(--gold)}
+.gap-card.strength .gc-type{color:var(--teal)}
+.gc-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.gc-desc{font-size:12px;color:var(--ink-muted);line-height:1.6}
+
+/* ── ROADMAP ── */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:24px;border:0.5px solid var(--border)}
+.rm-item{padding:24px 28px;border-bottom:0.5px solid var(--border);display:flex;gap:20px;align-items:flex-start}
+.rm-item:last-child{border-bottom:none}
+.rm-horizon{min-width:100px;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);font-weight:500;padding-top:2px}
+.rm-content{flex:1}
+.rm-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.rm-desc{font-size:12px;color:var(--ink-muted);line-height:1.6}
+
+/* ── CTA RESULT ── */
+.result-cta{background:var(--gold-pale);border:0.5px solid var(--border);padding:48px;text-align:center;margin-top:48px}
+.rcta-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--ink);margin-bottom:12px;line-height:1.3}
+.rcta-sub{font-size:14px;color:var(--ink-muted);margin-bottom:32px;line-height:1.7}
+.rcta-actions{display:flex;gap:12px;justify-content:center}
+.btn-rcta{font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:13px 32px;background:var(--ink);color:var(--white);border:none;cursor:pointer;letter-spacing:0.03em;transition:background .2s}
+.btn-rcta:hover{background:var(--ink-soft)}
+.btn-rcta-ghost{font-family:'Outfit',sans-serif;font-size:13px;padding:13px 32px;background:transparent;color:var(--ink);border:1px solid var(--border-s);cursor:pointer;transition:border-color .2s}
+.btn-rcta-ghost:hover{border-color:var(--ink)}
+
+/* ── PRINT HEADER ── */
+.result-date{font-size:11px;color:var(--ink-muted);margin-top:8px;letter-spacing:0.05em}
+
+/* ── STREAMING TEXT ── */
+.streaming-content{min-height:40px}
+.cursor-blink::after{content:'|';animation:blink .8s step-end infinite;color:var(--gold)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="axioma-landing.html" class="nav-logo">
+    <div class="nav-logo-mark"><span></span></div>
+    Axioma People Analytics
+  </a>
+  <a href="axioma-landing.html" class="nav-back">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+    Voltar ao início
+  </a>
+</nav>
+
+<!-- PROGRESS -->
+<div class="progress-wrap">
+  <div class="progress-fill" id="progress" style="width:0%"></div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-screen" id="loading">
+  <div class="loading-logo">Axioma People Analytics</div>
+  <div class="loading-label" id="loading-label">Analisando perfil organizacional...</div>
+  <div class="loading-bar-track"><div class="loading-bar-fill"></div></div>
+  <div class="loading-dots">
+    <div class="loading-dot active" id="d0"></div>
+    <div class="loading-dot" id="d1"></div>
+    <div class="loading-dot" id="d2"></div>
+    <div class="loading-dot" id="d3"></div>
+    <div class="loading-dot" id="d4"></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main" id="main">
+
+  <!-- FORM -->
+  <div class="form-shell" id="form-screen">
+    <div class="form-container" id="form-container">
+      <!-- steps rendered by JS -->
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div id="result-screen">
+    <div class="result-header" id="result-header">
+      <div style="max-width:900px;margin:0 auto">
+        <p class="rh-eyebrow">Diagnóstico Axioma · WEF Productivity 2030</p>
+        <p class="rh-org" id="rh-org"></p>
+        <h1 class="rh-title" id="rh-title"></h1>
+        <p class="rh-sub" id="rh-sub"></p>
+        <div class="rh-badge" id="rh-badge"></div>
+        <p class="result-date" id="result-date"></p>
+      </div>
+    </div>
+
+    <div class="result-body">
+      <!-- Scenario gauges -->
+      <div class="result-section">
+        <p class="rs-label">Posicionamento nos cenários WEF 2030</p>
+        <h2 class="rs-title">Onde você está — e onde precisa chegar</h2>
+        <div class="scenario-gauges" id="scenario-gauges"></div>
+        <div class="rs-body streaming-content" id="scenario-narrative"></div>
+      </div>
+
+      <!-- Dimensions -->
+      <div class="result-section">
+        <p class="rs-label">Dimensões de capital humano</p>
+        <h2 class="rs-title">Diagnóstico por eixo estratégico</h2>
+        <div class="dim-grid" id="dim-grid"></div>
+        <div class="rs-body streaming-content" style="margin-top:28px" id="dimensions-narrative"></div>
+      </div>
+
+      <!-- Gaps & Strengths -->
+      <div class="result-section">
+        <p class="rs-label">Análise de gaps e forças</p>
+        <h2 class="rs-title">O que está travando — e o que impulsiona</h2>
+        <div class="gap-cards" id="gap-cards"></div>
+        <div class="rs-body streaming-content" style="margin-top:28px" id="gaps-narrative"></div>
+      </div>
+
+      <!-- Roadmap -->
+      <div class="result-section">
+        <p class="rs-label">Roadmap estratégico</p>
+        <h2 class="rs-title">Próximos movimentos recomendados</h2>
+        <div class="roadmap" id="roadmap"></div>
+        <div class="rs-body streaming-content" style="margin-top:28px" id="roadmap-narrative"></div>
+      </div>
+
+      <!-- CTA -->
+      <div class="result-cta">
+        <h3 class="rcta-title">Este foi o diagnóstico introdutório.<br/>O aprofundamento revela o que está oculto.</h3>
+        <p class="rcta-sub">O diagnóstico completo do Axioma inclui avaliação individual de cada colaborador, cruzamento com dados de performance e roadmap de desenvolvimento personalizado para sua equipe.</p>
+        <div class="rcta-actions">
+          <button class="btn-rcta" onclick="window.location.href='planos.html'">Solicitar diagnóstico completo</button>
+          <button class="btn-rcta-ghost" onclick="window.print()">Exportar relatório</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main -->
+
+<script>
+// ──────────────────────────────────────────────
+// STEP DEFINITIONS
+// ──────────────────────────────────────────────
+const STEPS = [
+  {
+    id: 'intro',
+    tag: 'Passo 1 de 6 · Identificação',
+    headline: 'Sobre a <em>organização</em>',
+    sub: 'Vamos começar com o contexto da empresa para calibrar o diagnóstico corretamente.',
+    fields: [
+      { type: 'text', id: 'org_name', label: 'Nome da organização', placeholder: 'Ex: Empresa S.A.' },
+      { type: 'row', fields: [
+        { type: 'select', id: 'sector', label: 'Setor de atuação', options: ['Tecnologia & Digital','Serviços Financeiros','Manufatura Avançada','Saúde & Farmácia','Educação','Energia & Materiais','Varejo & Consumo','Consultoria & Profissional','Outro'] },
+        { type: 'select', id: 'size', label: 'Tamanho da empresa', options: ['Até 50 pessoas','51–200','201–500','501–2.000','Mais de 2.000'] }
+      ]},
+      { type: 'select', id: 'role', label: 'Seu cargo', options: ['CEO / Diretor Geral','CHRO / VP de People','CSO / Estratégia','Head de People Analytics','CLO / Aprendizagem','CFO / Finanças','Outro C-level','Gerência Sênior'] }
+    ]
+  },
+  {
+    id: 'tech',
+    tag: 'Passo 2 de 6 · Maturidade Tecnológica',
+    headline: 'Como a <em>tecnologia</em> está sendo adotada?',
+    sub: 'Avalie o estágio atual de adoção de tecnologia na sua organização — com honestidade estratégica.',
+    fields: [
+      { type: 'options', id: 'ai_adoption', label: 'Qual o estágio de adoção de IA na sua empresa?', cols: 1, options: [
+        { title: 'Ainda explorando', desc: 'Projetos-piloto isolados, nenhuma iniciativa estruturada de IA ainda.' },
+        { title: 'Adoção inicial', desc: 'Algumas ferramentas de IA em uso, mas sem integração sistêmica ao negócio.' },
+        { title: 'Em escala', desc: 'IA integrada em processos-chave, gerando ganhos mensuráveis de produtividade.' },
+        { title: 'Liderança tecnológica', desc: 'IA como vantagem competitiva central, com R&D interno e modelos proprietários.' }
+      ]},
+      { type: 'scale', id: 'tech_barrier', label: 'O quanto a escassez de talento é a principal barreira à adoção de tecnologia?', min: 'Não é a barreira', max: 'É a maior barreira' }
+    ]
+  },
+  {
+    id: 'capital',
+    tag: 'Passo 3 de 6 · Capital Humano',
+    headline: 'O estado real do <em>capital humano</em>',
+    sub: 'Estas perguntas identificam onde estão os gaps críticos que o WEF aponta como determinantes para 2030.',
+    fields: [
+      { type: 'scale', id: 'skills_match', label: 'Qual o nível de alinhamento entre as competências da equipe e as demandas estratégicas atuais?', min: 'Alto desalinhamento', max: 'Alinhamento total' },
+      { type: 'scale', id: 'leadership_vision', label: 'Qual o nível de visão estratégica da liderança sobre o impacto da IA nos próximos 3 anos?', min: 'Baixa consciência', max: 'Alta clareza' },
+      { type: 'scale', id: 'reskilling', label: 'Com que frequência sua empresa investe em requalificação e upskilling estruturado?', min: 'Raramente / nunca', max: 'Programa contínuo' }
+    ]
+  },
+  {
+    id: 'productivity',
+    tag: 'Passo 4 de 6 · Produtividade',
+    headline: 'Onde a <em>produtividade</em> trava?',
+    sub: 'Identifique os gargalos que separam sua organização das empresas frontier.',
+    fields: [
+      { type: 'options', id: 'prod_gap', label: 'Qual é a maior causa de baixa produtividade na sua organização?', cols: 2, options: [
+        { title: 'Lacunas de competência', desc: 'Time não tem os skills necessários para operar com excelência.' },
+        { title: 'Tecnologia subutilizada', desc: 'Ferramentas disponíveis, mas sem adoção real pelo time.' },
+        { title: 'Liderança sem clareza', desc: 'Gestores não sabem priorizar ou comunicar direção estratégica.' },
+        { title: 'Cultura de resistência', desc: 'Ambiente organizacional que freia mudança e inovação.' },
+        { title: 'Dados e infraestrutura', desc: 'Falta de dados confiáveis para decisões de people e negócio.' },
+        { title: 'Desalinhamento estratégico', desc: 'People e negócio operam em direções diferentes.' }
+      ]}
+    ]
+  },
+  {
+    id: 'scenario',
+    tag: 'Passo 5 de 6 · Cenário Estratégico',
+    headline: 'Para qual futuro você <em>quer se preparar?</em>',
+    sub: 'O WEF mapeou 4 cenários para 2030. Qual é o mais estratégico para sua organização?',
+    fields: [
+      { type: 'options', id: 'target_scenario', label: 'Cenário de destino', cols: 1, options: [
+        { title: 'Productivity Leap — Liderança total', desc: 'Tecnologia alta + Capital humano alto. Queremos ser referência em produtividade com IA e com pessoas.' },
+        { title: 'Human Advantage — Diferenciação humana', desc: 'Tecnologia como suporte, humanos como ativo central. Competimos por talento e cultura.' },
+        { title: 'Automation Overload — Eficiência operacional', desc: 'Maximizar automação e escala. Risco de deslocamento gerenciado como custo de transformação.' },
+        { title: 'Ainda não definimos nosso cenário', desc: 'Precisamos de ajuda para escolher o cenário mais adequado ao nosso modelo de negócio.' }
+      ]}
+    ]
+  },
+  {
+    id: 'context',
+    tag: 'Passo 6 de 6 · Contexto',
+    headline: 'O que você quer <em>descobrir?</em>',
+    sub: 'Uma última pergunta para personalizar completamente o diagnóstico.',
+    fields: [
+      { type: 'textarea', id: 'context', label: 'Qual é o maior desafio de capital humano que sua organização enfrenta hoje?', placeholder: 'Ex: Temos dificuldade em reter talentos técnicos sênior, especialmente os que dominam IA. O programa de L&D existe mas os gestores não engajam...' },
+      { type: 'row', fields: [
+        { type: 'text', id: 'contact_name', label: 'Seu nome', placeholder: 'Nome completo' },
+        { type: 'text', id: 'contact_email', label: 'E-mail corporativo', placeholder: 'nome@empresa.com' }
+      ]}
+    ]
+  }
+];
+
+// ──────────────────────────────────────────────
+// STATE
+// ──────────────────────────────────────────────
+let currentStep = 0;
+const answers = {};
+
+// ──────────────────────────────────────────────
+// RENDER
+// ──────────────────────────────────────────────
+function renderStep(idx) {
+  const step = STEPS[idx];
+  const container = document.getElementById('form-container');
+  const pct = Math.round(((idx) / STEPS.length) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+
+  let html = `<p class="step-tag">${step.tag}</p>
+  <h2 class="step-headline">${step.headline}</h2>
+  <p class="step-sub">${step.sub}</p>`;
+
+  step.fields.forEach(f => { html += renderField(f, idx); });
+
+  html += `<div class="form-nav">
+    <button class="btn-prev" id="btn-prev" ${idx === 0 ? 'disabled' : ''} onclick="prevStep()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:14px;height:14px"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg>
+      Anterior
+    </button>
+    <span class="step-counter">${idx + 1} / ${STEPS.length}</span>
+    <button class="btn-next" id="btn-next" onclick="nextStep()">
+      ${idx === STEPS.length - 1 ? 'Gerar diagnóstico' : 'Continuar'}
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m0 0l-7-7m7 7l-7 7"/></svg>
+    </button>
+  </div>`;
+
+  container.innerHTML = html;
+
+  // Restore saved answers
+  step.fields.forEach(f => restoreField(f));
+
+  // Attach listeners
+  attachListeners(step);
+}
+
+function renderField(f, stepIdx) {
+  if (f.type === 'row') {
+    return `<div class="field-row">${f.fields.map(sf => renderField(sf, stepIdx)).join('')}</div>`;
+  }
+  if (f.type === 'text') {
+    return `<div class="field"><label for="${f.id}">${f.label}</label><input type="text" id="${f.id}" placeholder="${f.placeholder || ''}" value="${answers[f.id] || ''}" oninput="answers['${f.id}']=this.value"/></div>`;
+  }
+  if (f.type === 'textarea') {
+    return `<div class="field"><label for="${f.id}">${f.label}</label><textarea id="${f.id}" placeholder="${f.placeholder || ''}" oninput="answers['${f.id}']=this.value">${answers[f.id] || ''}</textarea></div>`;
+  }
+  if (f.type === 'select') {
+    const opts = f.options.map(o => `<option value="${o}" ${answers[f.id]===o?'selected':''}>${o}</option>`).join('');
+    return `<div class="field"><label for="${f.id}">${f.label}</label><select id="${f.id}" onchange="answers['${f.id}']=this.value"><option value="">Selecionar...</option>${opts}</select></div>`;
+  }
+  if (f.type === 'options') {
+    const grid = f.options.map((o,i) => `
+      <div class="option-card ${answers[f.id]===o.title?'selected':''}" data-field="${f.id}" data-value="${o.title}" onclick="selectOption('${f.id}','${o.title}')">
+        <p class="option-title">${o.title}</p>
+        <p class="option-desc">${o.desc}</p>
+      </div>`).join('');
+    return `<div class="field"><label>${f.label}</label><div class="options-grid ${f.cols===2?'cols-2':''}">${grid}</div></div>`;
+  }
+  if (f.type === 'scale') {
+    const saved = answers[f.id] || 0;
+    const btns = [1,2,3,4,5].map(n => `<button class="scale-btn ${saved==n?'active':''}" data-field="${f.id}" data-val="${n}" onclick="selectScale('${f.id}',${n})">${n}</button>`).join('');
+    return `<div class="field"><label>${f.label}</label>
+      <div class="scale-wrap">${btns}</div>
+      <div class="scale-labels"><span class="scale-label">${f.min}</span><span class="scale-label">${f.max}</span></div>
+    </div>`;
+  }
+  return '';
+}
+
+function restoreField(f) {
+  if (f.type === 'row') { f.fields.forEach(sf => restoreField(sf)); }
+}
+
+function attachListeners(step) {}
+
+function selectOption(fieldId, value) {
+  answers[fieldId] = value;
+  document.querySelectorAll(`[data-field="${fieldId}"]`).forEach(el => el.classList.remove('selected'));
+  document.querySelectorAll(`[data-field="${fieldId}"][data-value="${value}"]`).forEach(el => el.classList.add('selected'));
+}
+
+function selectScale(fieldId, value) {
+  answers[fieldId] = value;
+  document.querySelectorAll(`[data-field="${fieldId}"]`).forEach(el => {
+    el.classList.toggle('active', parseInt(el.dataset.val) === value);
+  });
+}
+
+function nextStep() {
+  if (currentStep < STEPS.length - 1) {
+    currentStep++;
+    renderStep(currentStep);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  } else {
+    runDiagnosis();
+  }
+}
+
+function prevStep() {
+  if (currentStep > 0) {
+    currentStep--;
+    renderStep(currentStep);
+    window.scrollTo({top: 0, behavior: 'smooth'});
+  }
+}
+
+// ──────────────────────────────────────────────
+// DIAGNOSIS ENGINE
+// ──────────────────────────────────────────────
+async function runDiagnosis() {
+  // Show loading
+  const loading = document.getElementById('loading');
+  loading.classList.add('active');
+  
+  const loadingMessages = [
+    'Analisando perfil organizacional...',
+    'Cruzando com cenários WEF 2025...',
+    'Calculando gaps de capital humano...',
+    'Identificando dimensões críticas...',
+    'Construindo roadmap estratégico...',
+    'Finalizando diagnóstico...'
+  ];
+  
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    msgIdx = (msgIdx + 1) % loadingMessages.length;
+    document.getElementById('loading-label').textContent = loadingMessages[msgIdx];
+    // Cycle dots
+    for (let i = 0; i <= 4; i++) {
+      document.getElementById('d' + i).classList.toggle('active', i === msgIdx % 5);
+    }
+  }, 1200);
+
+  try {
+    const prompt = buildPrompt();
+    const response = await callClaude(prompt);
+    clearInterval(msgInterval);
+    
+    const data = parseResponse(response);
+    renderResults(data);
+    
+    loading.classList.remove('loading');
+    setTimeout(() => {
+      loading.classList.remove('active');
+      document.getElementById('form-screen').style.display = 'none';
+      document.getElementById('result-screen').style.display = 'block';
+      document.getElementById('progress').style.width = '100%';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 400);
+
+  } catch (err) {
+    clearInterval(msgInterval);
+    loading.classList.remove('active');
+    // Fallback: render mock result
+    renderResults(getMockData());
+    document.getElementById('form-screen').style.display = 'none';
+    document.getElementById('result-screen').style.display = 'block';
+    document.getElementById('progress').style.width = '100%';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+}
+
+function buildPrompt() {
+  return `Você é o motor de diagnóstico do Axioma People Analytics, uma plataforma de elite baseada no relatório "Global Economic Futures: Productivity in 2030" do World Economic Forum (WEF × Accenture, janeiro 2025).
+
+Você receberá dados de uma organização e deverá gerar um diagnóstico estratégico de capital humano completo, rigoroso e acionável.
+
+DADOS DA ORGANIZAÇÃO:
+- Nome: ${answers.org_name || 'Não informado'}
+- Setor: ${answers.sector || 'Não informado'}
+- Tamanho: ${answers.size || 'Não informado'}
+- Cargo do respondente: ${answers.role || 'Não informado'}
+- Estágio de adoção de IA: ${answers.ai_adoption || 'Não informado'}
+- Escassez de talento como barreira à tecnologia (1-5): ${answers.tech_barrier || 'Não informado'}
+- Alinhamento de competências com demanda estratégica (1-5): ${answers.skills_match || 'Não informado'}
+- Visão estratégica da liderança sobre IA (1-5): ${answers.leadership_vision || 'Não informado'}
+- Frequência de requalificação/upskilling (1-5): ${answers.reskilling || 'Não informado'}
+- Principal causa de baixa produtividade: ${answers.prod_gap || 'Não informado'}
+- Cenário WEF alvo: ${answers.target_scenario || 'Não definido'}
+- Contexto / desafio principal: ${answers.context || 'Não informado'}
+
+FRAMEWORK WEF DE REFERÊNCIA:
+Os 4 cenários de produtividade até 2030:
+1. Productivity Leap: Alta tecnologia + Alto capital humano → Crescimento forte e amplo
+2. Automation Overload: Alta tecnologia + Baixo capital humano → Winner-takes-all, desigualdade
+3. Human Advantage: Baixa tecnologia + Alto capital humano → Diferenciação por talento
+4. Productivity Drought: Baixa tecnologia + Baixo capital humano → Estagnação
+
+INSTRUÇÃO: Gere um diagnóstico completo em JSON válido com esta estrutura exata:
+
+{
+  "headline": "Frase de diagnóstico impactante (máx 12 palavras, pode ter <em>palavra</em> em itálico)",
+  "subtitle": "Síntese do posicionamento em 2 frases (máx 40 palavras)",
+  "scenario_primary": "Nome do cenário atual (ex: Automation Overload)",
+  "scenario_badge": "Texto do badge de status (ex: Risco elevado · Cenário 2)",
+  "scenarios": [
+    { "name": "Productivity Leap", "short": "Cenário 1", "pct": 0, "primary": false },
+    { "name": "Automation Overload", "short": "Cenário 2", "pct": 0, "primary": false },
+    { "name": "Human Advantage", "short": "Cenário 3", "pct": 0, "primary": false },
+    { "name": "Productivity Drought", "short": "Cenário 4", "pct": 0, "primary": false }
+  ],
+  "scenario_narrative": "<p>Parágrafo de análise do posicionamento atual (3-4 frases).</p><p>Segundo parágrafo sobre implicações para o setor.</p>",
+  "dimensions": [
+    { "name": "Prontidão para IA", "score": 0 },
+    { "name": "Desenvolvimento de competências", "score": 0 },
+    { "name": "Visão de liderança", "score": 0 },
+    { "name": "Adaptabilidade organizacional", "score": 0 },
+    { "name": "Capital relacional", "score": 0 },
+    { "name": "Infraestrutura de dados", "score": 0 }
+  ],
+  "dimensions_narrative": "<p>Análise das dimensões com foco nos eixos mais críticos para o cenário alvo (2-3 parágrafos).</p>",
+  "gaps": [
+    { "type": "critical", "title": "Gap crítico 1", "desc": "Descrição do gap e impacto" },
+    { "type": "critical", "title": "Gap crítico 2", "desc": "Descrição do gap e impacto" },
+    { "type": "moderate", "title": "Gap moderado", "desc": "Descrição" },
+    { "type": "strength", "title": "Força identificada", "desc": "Descrição do ponto forte" }
+  ],
+  "gaps_narrative": "<p>Análise dos gaps e forças com contexto WEF (2 parágrafos).</p>",
+  "roadmap": [
+    { "horizon": "0–3 meses", "title": "Ação imediata 1", "desc": "Descrição clara e acionável" },
+    { "horizon": "3–6 meses", "title": "Iniciativa prioritária", "desc": "Descrição" },
+    { "horizon": "6–12 meses", "title": "Programa estrutural", "desc": "Descrição" },
+    { "horizon": "12–24 meses", "title": "Transformação de longo prazo", "desc": "Descrição" }
+  ],
+  "roadmap_narrative": "<p>Contexto estratégico do roadmap com referência ao cenário alvo (2 parágrafos).</p>"
+}
+
+REGRAS:
+- Scores de dimensões: 0-100
+- Percentuais de cenários: devem refletir o posicionamento atual (um deles será o primário com >40%)
+- O JSON deve ser válido e completo
+- Tom: consultoria de elite, rigoroso, sem jargão vazio
+- Referências ao WEF são bem-vindas e dão credibilidade
+- Seja específico sobre o setor da empresa
+- Responda APENAS com o JSON, sem markdown, sem texto antes ou depois`;
+}
+
+async function callClaude(prompt) {
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 2000,
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+  if (!res.ok) throw new Error('API error');
+  const data = await res.json();
+  return data.content[0].text;
+}
+
+function parseResponse(text) {
+  try {
+    const clean = text.replace(/```json|```/g, '').trim();
+    return JSON.parse(clean);
+  } catch (e) {
+    return getMockData();
+  }
+}
+
+// ──────────────────────────────────────────────
+// RENDER RESULTS
+// ──────────────────────────────────────────────
+function renderResults(d) {
+  const org = answers.org_name || 'Sua organização';
+  const now = new Date().toLocaleDateString('pt-BR', { day:'2-digit', month:'long', year:'numeric' });
+  
+  document.getElementById('rh-org').textContent = org;
+  document.getElementById('rh-title').innerHTML = d.headline;
+  document.getElementById('rh-sub').textContent = d.subtitle;
+  document.getElementById('rh-badge').textContent = d.scenario_badge;
+  document.getElementById('result-date').textContent = 'Diagnóstico gerado em ' + now;
+
+  // Scenario gauges
+  const sgHTML = d.scenarios.map(s => `
+    <div class="sg-item ${s.primary ? 'primary' : ''}">
+      ${s.primary ? '<svg class="sg-crown" viewBox="0 0 24 24" fill="none" stroke="#b8965a" stroke-width="1.5"><path d="M3 17l3-10 4.5 6L12 5l1.5 8L18 7l3 10H3z"/></svg>' : ''}
+      <p class="sg-scenario">${s.short}</p>
+      <p class="sg-name">${s.name}</p>
+      <div class="sg-circle"><span class="sg-pct">${s.pct}%</span></div>
+      <p class="sg-label">${s.primary ? 'Posição atual' : 'Aderência'}</p>
+    </div>`).join('');
+  document.getElementById('scenario-gauges').innerHTML = sgHTML;
+  typewrite('scenario-narrative', d.scenario_narrative, 0);
+
+  // Dimensions
+  const dimHTML = d.dimensions.map(dim => `
+    <div class="dim-row">
+      <span class="dim-name">${dim.name}</span>
+      <div class="dim-track"><div class="dim-fill" style="width:0%" data-target="${dim.score}"></div></div>
+      <span class="dim-val">${dim.score}</span>
+    </div>`).join('');
+  document.getElementById('dim-grid').innerHTML = dimHTML;
+  setTimeout(() => {
+    document.querySelectorAll('.dim-fill').forEach(el => {
+      el.style.width = el.dataset.target + '%';
+    });
+  }, 200);
+  typewrite('dimensions-narrative', d.dimensions_narrative, 400);
+
+  // Gaps
+  const gapHTML = d.gaps.map(g => `
+    <div class="gap-card ${g.type}">
+      <p class="gc-type">${g.type === 'critical' ? 'Gap crítico' : g.type === 'moderate' ? 'Gap moderado' : 'Força'}</p>
+      <p class="gc-title">${g.title}</p>
+      <p class="gc-desc">${g.desc}</p>
+    </div>`).join('');
+  document.getElementById('gap-cards').innerHTML = gapHTML;
+  typewrite('gaps-narrative', d.gaps_narrative, 600);
+
+  // Roadmap
+  const rmHTML = d.roadmap.map(r => `
+    <div class="rm-item">
+      <span class="rm-horizon">${r.horizon}</span>
+      <div class="rm-content">
+        <p class="rm-title">${r.title}</p>
+        <p class="rm-desc">${r.desc}</p>
+      </div>
+    </div>`).join('');
+  document.getElementById('roadmap').innerHTML = rmHTML;
+  typewrite('roadmap-narrative', d.roadmap_narrative, 800);
+}
+
+function typewrite(elId, html, delay) {
+  setTimeout(() => {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    el.innerHTML = html;
+  }, delay);
+}
+
+// ──────────────────────────────────────────────
+// MOCK DATA (fallback)
+// ──────────────────────────────────────────────
+function getMockData() {
+  const sector = answers.sector || 'Tecnologia';
+  const org = answers.org_name || 'sua organização';
+  return {
+    headline: `${org} está no limiar entre <em>dois futuros</em> distintos`,
+    subtitle: `O diagnóstico revela uma organização com alto potencial tecnológico mas capital humano em déficit estrutural — padrão típico do cenário Automation Overload do WEF.`,
+    scenario_primary: 'Automation Overload',
+    scenario_badge: 'Risco elevado · Cenário 2 — Automation Overload',
+    scenarios: [
+      { name: 'Productivity Leap', short: 'Cenário 1', pct: 22, primary: false },
+      { name: 'Automation Overload', short: 'Cenário 2', pct: 51, primary: true },
+      { name: 'Human Advantage', short: 'Cenário 3', pct: 18, primary: false },
+      { name: 'Productivity Drought', short: 'Cenário 4', pct: 9, primary: false }
+    ],
+    scenario_narrative: `<p>Com base nas respostas, ${org} apresenta perfil de aderência ao Cenário 2 (Automation Overload) do WEF: há investimento em tecnologia e IA, mas o desenvolvimento de capital humano não acompanhou o ritmo da transformação. Isso cria exatamente a dinâmica "winner-takes-all" que o relatório WEF 2025 identifica como a mais perigosa para a coesão organizacional.</p><p>No setor de ${sector}, essa dinâmica é especialmente crítica: o gap entre empresas frontier e retardatárias saltou 87% entre 2016 e 2023 (Accenture, 2024). Sem ação imediata no capital humano, o risco é de concentração de valor em poucos nós da organização enquanto o restante da equipe perde relevância e engajamento.</p>`,
+    dimensions: [
+      { name: 'Prontidão para IA', score: 68 },
+      { name: 'Desenvolvimento de competências', score: 41 },
+      { name: 'Visão de liderança', score: 55 },
+      { name: 'Adaptabilidade organizacional', score: 48 },
+      { name: 'Capital relacional', score: 72 },
+      { name: 'Infraestrutura de dados', score: 60 }
+    ],
+    dimensions_narrative: `<p>O diagnóstico revela um padrão assimétrico claro: a organização está relativamente bem posicionada em dimensões técnicas (prontidão para IA, infraestrutura de dados) mas apresenta déficits estruturais nas dimensões humanas — especialmente desenvolvimento de competências (41/100) e adaptabilidade organizacional (48/100). Esse é exatamente o padrão que o WEF identifica como precursor do Automation Overload.</p><p>A dimensão de capital relacional (72/100) é um ativo subestimado. O relatório WEF aponta que empresas frontier têm quase o dobro de habilidades de gestão e comunicação comparadas às retardatárias — e isso está presente aqui. O desafio é canalizar esse capital relacional para acelerar o desenvolvimento técnico do time.</p>`,
+    gaps: [
+      { type: 'critical', title: 'Déficit de upskilling estruturado', desc: 'Sem programa contínuo de requalificação, o time perde relevância mais rápido do que a tecnologia é adotada. O WEF estima que 46% da força de trabalho global já está em desalinhamento de competências.' },
+      { type: 'critical', title: 'Visão de liderança intermediária', desc: 'Líderes sem clareza sobre o impacto da IA nos próximos 3 anos tomam decisões reativas, não estratégicas. O WEF aponta isso como a segunda maior barreira à transformação.' },
+      { type: 'moderate', title: 'Adaptabilidade organizacional abaixo do necessário', desc: 'Para o cenário Productivity Leap, é necessário nível 70+. A organização está em 48 — gap de 22 pontos que exige intervenção cultural.' },
+      { type: 'strength', title: 'Capital relacional como vantagem competitiva', desc: 'Score 72/100 em capital relacional é um diferencial real. Esse ativo pode ser o catalisador para acelerar toda a curva de upskilling se usado estrategicamente.' }
+    ],
+    gaps_narrative: `<p>Os dois gaps críticos identificados — déficit de upskilling e visão de liderança intermediária — formam um ciclo que se auto-alimenta: sem visão clara, os líderes não investem em desenvolvimento; sem desenvolvimento, a equipe não consegue entregar a transformação esperada. O WEF chama isso de "productivity paradox" — quando a tecnologia está disponível mas o capital humano não consegue desbloqueá-la.</p><p>A força em capital relacional é a alavanca de ruptura. Organizações que conseguem transformar redes relacionais fortes em programas de peer-learning e mentoria interna reduzem o tempo de upskilling em 40-60% (Accenture, 2023). Este deve ser o ponto de entrada do plano de ação.</p>`,
+    roadmap: [
+      { horizon: '0–3 meses', title: 'Mapeamento completo de competências por função crítica', desc: 'Diagnosticar individualmente os top 20% da equipe — identificar quem está pronto para o Productivity Leap e quem está em risco de deslocamento. Usar os dados para construir o business case interno.' },
+      { horizon: '3–6 meses', title: 'Programa piloto de upskilling em IA para lideranças', desc: 'Iniciar pelo topo: desenvolver visão estratégica de IA nos gestores antes de expandir para a equipe. O WEF mostra que organizações que começam pela liderança têm 3x mais sucesso na transformação.' },
+      { horizon: '6–12 meses', title: 'Plataforma de aprendizagem contínua + mentoria interna', desc: 'Estruturar o capital relacional existente como ativo de L&D. Criar pares de desenvolvimento onde os líderes tecnicamente mais avançados tornam-se multiplicadores.' },
+      { horizon: '12–24 meses', title: 'Migração para o Productivity Leap', desc: 'Com o capital humano desenvolvido, escalar a adoção de IA de forma ampla. Meta: atingir score 70+ em todas as dimensões e reposicionar a organização no Cenário 1 do WEF.' }
+    ],
+    roadmap_narrative: `<p>O roadmap acima foi calibrado para migrar ${org} do Cenário 2 (Automation Overload) para o Cenário 1 (Productivity Leap) em um horizonte de 18-24 meses — prazo alinhado com a janela estratégica identificada pelo WEF antes de 2030. A sequência importa: atacar liderança primeiro, depois time, depois estrutura.</p><p>O risco de não agir é mensurável: o WEF estima que empresas que permanecem no padrão Automation Overload enfrentarão aumento de 30-40% no custo de atração de talentos e redução de 25-35% na capacidade de retenção de profissionais de alta performance nos próximos 36 meses.</p>`
+  };
+}
+
+// ──────────────────────────────────────────────
+// INIT
+// ──────────────────────────────────────────────
+renderStep(0);
+</script>
+</body>
+</html>

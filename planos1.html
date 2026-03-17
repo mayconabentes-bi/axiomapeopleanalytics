@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Planos Axioma — Escolha sua trajetória</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#0d0e0f;--ink-soft:#3a3b3d;--ink-muted:#7a7b80;
+  --surface:#f8f7f4;--white:#ffffff;
+  --gold:#b8965a;--gold-light:#d4b07a;--gold-pale:#f5ede0;--gold-dim:#8a6e3f;
+  --teal:#1a6b58;--teal-light:#e4f0ec;
+  --danger:#c0392b;--danger-pale:#fdf0ee;
+  --border:#e2ddd6;--border-s:#c8c0b4;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--surface);color:var(--ink);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(248,247,244,0.94);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;letter-spacing:0.04em;color:var(--ink);display:flex;align-items:center;gap:8px;text-decoration:none}
+.nav-logo-mark{width:22px;height:22px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark span{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.nav-links{display:flex;gap:32px;align-items:center}
+.nav-links a{font-size:13px;color:var(--ink-muted);text-decoration:none;transition:color .2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{font-size:13px;font-weight:500;padding:9px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;transition:background .2s;text-decoration:none}
+.nav-cta:hover{background:var(--ink-soft)}
+
+/* ── HERO ── */
+.pricing-hero{padding:120px 48px 72px;text-align:center;background:var(--ink);position:relative;overflow:hidden}
+.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:48px 48px}
+.ph-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:1rem;position:relative}
+.ph-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,64px);font-weight:300;line-height:1.1;color:var(--white);margin-bottom:1rem;position:relative}
+.ph-title em{font-style:italic;color:var(--gold-light)}
+.ph-sub{font-size:15px;color:rgba(255,255,255,0.4);max-width:500px;margin:0 auto 2.5rem;line-height:1.8;position:relative}
+
+/* ── TABS ── */
+.tab-switch{display:inline-flex;border:0.5px solid rgba(255,255,255,0.15);position:relative;z-index:1;margin-bottom:0}
+.tab-btn{font-family:'Outfit',sans-serif;font-size:13px;font-weight:400;padding:11px 32px;background:transparent;color:rgba(255,255,255,0.45);border:none;cursor:pointer;letter-spacing:0.03em;transition:all .2s;position:relative}
+.tab-btn.active{background:var(--gold);color:var(--ink);font-weight:500}
+
+/* ── BILLING TOGGLE ── */
+.billing-wrap{display:flex;align-items:center;justify-content:center;gap:12px;margin-top:24px;position:relative;z-index:1}
+.billing-label{font-size:12px;color:rgba(255,255,255,0.35);cursor:pointer;transition:color .2s}
+.billing-label.active{color:rgba(255,255,255,0.7)}
+.toggle-track{position:relative;width:40px;height:22px;background:rgba(255,255,255,0.12);border-radius:11px;cursor:pointer;transition:background .2s;border:0.5px solid rgba(255,255,255,0.15)}
+.toggle-track.annual{background:var(--gold-dim)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:16px;height:16px;background:var(--white);border-radius:50%;transition:transform .2s}
+.toggle-track.annual .toggle-thumb{transform:translateX(18px)}
+.billing-badge{font-size:10px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;background:rgba(26,107,88,0.3);color:#5DCAA5;border:0.5px solid rgba(93,202,165,0.3);padding:3px 10px;border-radius:20px}
+
+/* ── PANELS ── */
+.panel{display:none}
+.panel.active{display:block}
+
+/* ── PLANS SECTION ── */
+.plans-section{padding:0 48px 100px;margin-top:-1px}
+.plans-grid-pf{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:0.5px solid var(--border-s);border-top:none;margin-top:0}
+.plans-grid-pj{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;border:0.5px solid var(--border-s);border-top:none;margin-top:0}
+
+/* ── PLAN CARD ── */
+.plan-card{background:var(--white);border-right:0.5px solid var(--border-s);position:relative;display:flex;flex-direction:column}
+.plan-card:last-child{border-right:none}
+.plan-card.featured{background:var(--ink);border-right-color:rgba(255,255,255,0.08)}
+.plan-card.featured+.plan-card{border-left:none}
+
+.plan-header{padding:36px 32px 28px;border-bottom:0.5px solid var(--border)}
+.plan-card.featured .plan-header{border-bottom-color:rgba(255,255,255,0.08)}
+
+.plan-badge{display:inline-block;font-size:9px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;padding:4px 12px;margin-bottom:16px;border-radius:20px}
+.badge-free{background:#EAF3DE;color:#27500A}
+.badge-popular{background:var(--gold);color:var(--ink)}
+.badge-elite{background:rgba(184,150,90,0.15);color:var(--gold-light);border:0.5px solid rgba(184,150,90,0.3)}
+.badge-enterprise{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.4);border:0.5px solid rgba(255,255,255,0.1)}
+
+.plan-name{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--ink);margin-bottom:6px;line-height:1.1}
+.plan-card.featured .plan-name{color:var(--white)}
+.plan-tagline{font-size:12px;color:var(--ink-muted);line-height:1.6;min-height:36px}
+.plan-card.featured .plan-tagline{color:rgba(255,255,255,0.4)}
+
+.plan-price-wrap{margin-top:24px}
+.plan-price{display:flex;align-items:baseline;gap:4px;margin-bottom:4px}
+.price-currency{font-size:16px;font-weight:400;color:var(--ink-muted);margin-top:4px}
+.plan-card.featured .price-currency{color:rgba(255,255,255,0.35)}
+.price-amount{font-family:'Cormorant Garamond',serif;font-size:48px;font-weight:300;color:var(--ink);line-height:1}
+.plan-card.featured .price-amount{color:var(--white)}
+.price-amount.free-price{font-size:36px;color:var(--teal)}
+.price-amount.custom-price{font-size:28px;font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--gold)}
+.price-period{font-size:12px;color:var(--ink-muted);align-self:flex-end;padding-bottom:6px}
+.plan-card.featured .price-period{color:rgba(255,255,255,0.3)}
+.price-annual-note{font-size:11px;color:var(--teal);letter-spacing:0.04em;min-height:16px}
+.plan-card.featured .price-annual-note{color:#5DCAA5}
+.price-save-badge{display:inline-block;background:rgba(26,107,88,0.1);color:var(--teal);border:0.5px solid rgba(26,107,88,0.2);font-size:10px;padding:2px 8px;border-radius:20px}
+
+/* ── PLAN CTA ── */
+.plan-cta-wrap{padding:24px 32px}
+.btn-plan{width:100%;font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:13px;border:none;cursor:pointer;letter-spacing:0.03em;transition:all .2s;text-align:center;display:block;text-decoration:none}
+.btn-free{background:transparent;color:var(--ink);border:1px solid var(--border-s)}
+.btn-free:hover{background:var(--surface);border-color:var(--ink)}
+.btn-featured{background:var(--gold);color:var(--ink)}
+.btn-featured:hover{background:var(--gold-light)}
+.btn-elite{background:transparent;color:var(--gold-light);border:1px solid rgba(184,150,90,0.4)}
+.btn-elite:hover{background:rgba(184,150,90,0.08)}
+.btn-enterprise{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.7);border:none}
+.btn-enterprise:hover{background:rgba(255,255,255,0.1)}
+.plan-sub-note{font-size:11px;color:var(--ink-muted);text-align:center;margin-top:10px}
+.plan-card.featured .plan-sub-note{color:rgba(255,255,255,0.25)}
+
+/* ── FEATURES ── */
+.plan-features{padding:0 32px 36px;flex:1}
+.features-label{font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:16px;padding-bottom:12px;border-bottom:0.5px solid var(--border)}
+.plan-card.featured .features-label{color:rgba(255,255,255,0.25);border-bottom-color:rgba(255,255,255,0.06)}
+.feature-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:14px}
+.feature-check{width:16px;height:16px;flex-shrink:0;margin-top:1px}
+.feature-text{font-size:13px;color:var(--ink-soft);line-height:1.5}
+.plan-card.featured .feature-text{color:rgba(255,255,255,0.6)}
+.feature-text.locked{color:var(--ink-muted);opacity:0.5;text-decoration:line-through}
+.feature-hero{font-size:13px;font-weight:500;color:var(--ink);line-height:1.5;padding:12px 14px;background:var(--gold-pale);border-left:2px solid var(--gold);margin-bottom:16px}
+.plan-card.featured .feature-hero{background:rgba(184,150,90,0.1);border-left-color:var(--gold);color:var(--gold-light)}
+
+/* ── SCARCITY ── */
+.scarcity-bar{margin:0 32px 16px;padding:10px 14px;border:0.5px solid rgba(192,57,43,0.25);background:rgba(192,57,43,0.04);display:flex;align-items:center;gap:8px}
+.scarcity-dot{width:6px;height:6px;background:var(--danger);border-radius:50%;animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+.scarcity-text{font-size:11px;color:var(--danger)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── DIVIDER SECTION ── */
+.section-divider{padding:56px 48px 0;display:flex;align-items:center;gap:24px}
+.sd-label{font-size:10px;font-weight:500;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);white-space:nowrap}
+.sd-line{flex:1;height:0.5px;background:var(--border)}
+
+/* ── ROI CALCULATOR ── */
+.roi-section{background:var(--white);margin:0 48px;border:0.5px solid var(--border);padding:48px}
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:start;margin-top:32px}
+.roi-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:400;color:var(--ink);margin-bottom:8px}
+.roi-sub{font-size:13px;color:var(--ink-muted);line-height:1.7}
+.roi-inputs{display:flex;flex-direction:column;gap:20px}
+.roi-field label{display:block;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:8px}
+.roi-field input[type=range]{width:100%;margin-bottom:6px}
+.roi-field-val{display:flex;justify-content:space-between;align-items:center}
+.roi-field-num{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink)}
+.roi-field-hint{font-size:11px;color:var(--ink-muted)}
+.roi-result{background:var(--ink);padding:36px;display:flex;flex-direction:column;gap:20px}
+.rr-label{font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.rr-value{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:300;color:var(--white);line-height:1}
+.rr-desc{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6}
+.rr-divider{height:0.5px;background:rgba(255,255,255,0.06)}
+.rr-ratio{display:flex;align-items:baseline;gap:8px}
+.rr-ratio-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--gold-light)}
+.rr-ratio-label{font-size:12px;color:rgba(255,255,255,0.3)}
+
+/* ── COMPARISON TABLE ── */
+.comparison-section{padding:80px 48px}
+.comp-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;color:var(--ink);margin-bottom:8px;text-align:center}
+.comp-sub{font-size:14px;color:var(--ink-muted);text-align:center;margin-bottom:48px}
+.comp-table{width:100%;border-collapse:collapse;border:0.5px solid var(--border)}
+.comp-table th{padding:16px 20px;text-align:left;font-size:11px;font-weight:500;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);background:var(--surface);border-bottom:0.5px solid var(--border);border-right:0.5px solid var(--border)}
+.comp-table th:last-child{border-right:none}
+.comp-table th.featured-col{background:var(--ink);color:rgba(255,255,255,0.4)}
+.comp-table td{padding:14px 20px;font-size:13px;color:var(--ink-soft);border-bottom:0.5px solid var(--border);border-right:0.5px solid var(--border);vertical-align:middle}
+.comp-table td:last-child{border-right:none}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-table td:first-child{font-weight:500;color:var(--ink)}
+.comp-table td.featured-col{background:rgba(13,14,15,0.02)}
+.check-yes{color:var(--teal);font-size:14px;font-weight:500}
+.check-no{color:var(--border-s);font-size:14px}
+.check-partial{color:var(--gold);font-size:12px}
+
+/* ── TESTIMONIALS ── */
+.testimonials{background:var(--gold-pale);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:80px 48px}
+.testimonials-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;margin-top:48px}
+.testimonial-card{background:var(--white);border:0.5px solid var(--border);padding:32px}
+.tc-quote{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;font-weight:300;color:var(--ink);line-height:1.5;margin-bottom:24px}
+.tc-author{display:flex;align-items:center;gap:12px}
+.tc-avatar{width:40px;height:40px;border-radius:50%;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--gold-dim);border:0.5px solid var(--border)}
+.tc-name{font-size:13px;font-weight:500;color:var(--ink)}
+.tc-role{font-size:11px;color:var(--ink-muted)}
+.tc-plan{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-dim);margin-top:4px}
+
+/* ── FAQ ── */
+.faq-section{padding:80px 48px;max-width:800px;margin:0 auto}
+.faq-item{border-bottom:0.5px solid var(--border);padding:20px 0;cursor:pointer}
+.faq-question{font-size:14px;font-weight:500;color:var(--ink);display:flex;justify-content:space-between;align-items:center;gap:16px}
+.faq-icon{width:20px;height:20px;flex-shrink:0;color:var(--ink-muted);transition:transform .2s}
+.faq-item.open .faq-icon{transform:rotate(45deg)}
+.faq-answer{font-size:13px;color:var(--ink-muted);line-height:1.8;max-height:0;overflow:hidden;transition:max-height .3s ease,padding .3s ease}
+.faq-item.open .faq-answer{max-height:200px;padding-top:14px}
+
+/* ── FINAL CTA ── */
+.final-cta{background:var(--ink);padding:100px 48px;text-align:center;position:relative;overflow:hidden}
+.fc-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.02) 1px,transparent 1px);background-size:48px 48px}
+.fc-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;color:var(--white);margin-bottom:1rem;position:relative}
+.fc-title em{font-style:italic;color:var(--gold-light)}
+.fc-sub{font-size:14px;color:rgba(255,255,255,0.4);margin-bottom:2.5rem;line-height:1.7;position:relative}
+.fc-actions{display:flex;gap:12px;justify-content:center;position:relative}
+.btn-fc-primary{font-size:13px;font-weight:500;padding:14px 36px;background:var(--gold);color:var(--ink);border:none;cursor:pointer;letter-spacing:0.03em;text-decoration:none;display:inline-block;transition:background .2s}
+.btn-fc-primary:hover{background:var(--gold-light)}
+.btn-fc-ghost{font-size:13px;padding:14px 36px;background:transparent;color:rgba(255,255,255,0.5);border:0.5px solid rgba(255,255,255,0.2);cursor:pointer;text-decoration:none;display:inline-block;transition:all .2s}
+.btn-fc-ghost:hover{color:var(--white);border-color:rgba(255,255,255,0.5)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);border-top:0.5px solid rgba(255,255,255,0.06);padding:32px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:14px;color:rgba(255,255,255,0.25);letter-spacing:0.04em}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.15);letter-spacing:0.05em}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:11px;color:rgba(255,255,255,0.2);text-decoration:none;letter-spacing:0.05em;transition:color .2s}
+.footer-links a:hover{color:rgba(255,255,255,0.45)}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.reveal.visible{opacity:1;transform:none}
+.reveal-d1{transition-delay:.1s}.reveal-d2{transition-delay:.2s}.reveal-d3{transition-delay:.3s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="axioma-landing.html" class="nav-logo">
+    <div class="nav-logo-mark"><span></span></div>
+    Axioma People Analytics
+  </a>
+  <div class="nav-links">
+    <a href="#pf">Pessoa Física</a>
+    <a href="#pj">Pessoa Jurídica</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <a href="axioma-prime-v2.html" class="nav-cta">Diagnóstico grátis</a>
+</nav>
+
+<!-- HERO -->
+<section class="pricing-hero">
+  <div class="ph-grid"></div>
+  <p class="ph-eyebrow">Planos & investimento</p>
+  <h1 class="ph-title">Escolha o nível de<br/><em>clareza estratégica</em><br/>que você precisa</h1>
+  <p class="ph-sub">Do diagnóstico inicial gratuito à parceria estratégica completa — cada plano foi desenhado para maximizar o retorno sobre o seu maior ativo.</p>
+
+  <div class="tab-switch" id="tab-switch">
+    <button class="tab-btn active" onclick="switchTab('pf',this)" id="tab-pf">Pessoa Física</button>
+    <button class="tab-btn" onclick="switchTab('pj',this)" id="tab-pj">Pessoa Jurídica</button>
+  </div>
+
+  <div class="billing-wrap" id="billing-wrap">
+    <span class="billing-label active" id="label-monthly" onclick="setBilling('monthly')">Mensal</span>
+    <div class="toggle-track" id="billing-toggle" onclick="toggleBilling()">
+      <div class="toggle-thumb"></div>
+    </div>
+    <span class="billing-label" id="label-annual" onclick="setBilling('annual')">Anual</span>
+    <span class="billing-badge">Economize 20%</span>
+  </div>
+</section>
+
+<!-- PANEL: PESSOA FÍSICA -->
+<div class="panel active" id="panel-pf">
+  <div class="plans-section" id="pf">
+    <div class="plans-grid-pf">
+
+      <!-- FREE -->
+      <div class="plan-card reveal">
+        <div class="plan-header">
+          <span class="plan-badge badge-free">Grátis para sempre</span>
+          <h2 class="plan-name">Diagnóstico</h2>
+          <p class="plan-tagline">O primeiro passo para entender onde você está — e para onde pode ir.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-amount free-price">R$ 0</span>
+            </div>
+            <p class="price-annual-note">Sem cartão de crédito.</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <a href="axioma-prime-v2.html?plan=pf_free" class="btn-plan btn-free">Começar grátis</a>
+          <p class="plan-sub-note">Acesso imediato, sem burocracia</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label">O que está incluído</p>
+          <div class="feature-hero">Posicionamento nos cenários WEF 2025 — descubra em qual futuro você está hoje.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#EAF3DE" stroke="#1D9E75" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#27500A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">1 diagnóstico completo com IA</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#EAF3DE" stroke="#1D9E75" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#27500A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Posicionamento em 4 cenários WEF</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#EAF3DE" stroke="#1D9E75" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#27500A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">3 das 6 dimensões de capital humano</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Roadmap estratégico 12 meses</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Ritmos biográficos individuais</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Histórico e evolução longitudinal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRO -->
+      <div class="plan-card featured reveal reveal-d1">
+        <div class="plan-header">
+          <span class="plan-badge badge-popular">Mais popular</span>
+          <h2 class="plan-name" style="color:var(--white)">Trajetória</h2>
+          <p class="plan-tagline">Para o profissional que quer ser a pessoa mais preparada na sala — em qualquer cenário.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-currency" style="color:rgba(255,255,255,.3)">R$</span>
+              <span class="price-amount" id="pf-pro-price">197</span>
+              <span class="price-period">/mês</span>
+            </div>
+            <p class="price-annual-note" id="pf-pro-annual-note">&nbsp;</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <a href="axioma-prime-v2.html?plan=pf_traj" class="btn-plan btn-featured">Começar agora</a>
+          <p class="plan-sub-note">7 dias grátis — cancele quando quiser</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label" style="color:rgba(255,255,255,.25);border-bottom-color:rgba(255,255,255,.06)">Tudo do Diagnóstico, mais:</p>
+          <div class="feature-hero">Roadmap estratégico personalizado de 12 meses — com metas, marcos e métricas de progresso.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Diagnósticos ilimitados por mês</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">6 dimensões completas de capital humano</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Ritmos biográficos e picos cognitivos</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Histórico longitudinal e evolução</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Relatório PDF executivo exportável</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Biblioteca WEF 2025 com análises</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ELITE -->
+      <div class="plan-card featured reveal reveal-d2" style="background:#0d0e0f">
+        <div class="scarcity-bar">
+          <div class="scarcity-dot"></div>
+          <span class="scarcity-text">Apenas 40 vagas ativas · 6 disponíveis</span>
+        </div>
+        <div class="plan-header" style="border-bottom-color:rgba(255,255,255,.06)">
+          <span class="plan-badge badge-elite">Acesso por aplicação</span>
+          <h2 class="plan-name" style="color:var(--white)">Cúpula</h2>
+          <p class="plan-tagline" style="color:rgba(255,255,255,.4)">Para quem opera no topo e precisa de inteligência estratégica que antecipa, não apenas analisa.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-currency" style="color:rgba(255,255,255,.3)">R$</span>
+              <span class="price-amount" style="color:var(--gold-light)" id="pf-elite-price">497</span>
+              <span class="price-period">/mês</span>
+            </div>
+            <p class="price-annual-note" id="pf-elite-annual-note" style="color:#5DCAA5">&nbsp;</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <button class="btn-plan btn-elite" onclick="window.location.href='diagnostico.html'">Solicitar acesso</button>
+          <p class="plan-sub-note" style="color:rgba(255,255,255,.2)">Análise de perfil · 72h para resposta</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label" style="color:rgba(255,255,255,.25);border-bottom-color:rgba(255,255,255,.06)">Tudo do Trajetória, mais:</p>
+          <div class="feature-hero" style="background:rgba(184,150,90,.08);border-left-color:var(--gold);color:var(--gold-light)">Sessão estratégica 1:1 de 60 minutos todo mês com especialista Axioma.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Acesso à Rede Axioma de executivos</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Relatório executivo trimestral impresso</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Acesso antecipado a novos módulos</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Diagnóstico de equipe (até 3 pessoas)</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Linha direta com curadoria Axioma</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /plans-grid-pf -->
+
+    <!-- Testimonials PF -->
+    <div class="testimonials" style="margin:0 0;padding:64px 0 0">
+      <p style="font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:40px;text-align:center">O que dizem os membros</p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <p class="tc-quote">"O diagnóstico me mostrou que eu estava me preparando para o cenário errado. Mudei minha estratégia de carreira inteira."</p>
+          <div class="tc-author">
+            <div class="tc-avatar">RA</div>
+            <div>
+              <p class="tc-name">Rafael Andrade</p>
+              <p class="tc-role">Head de Produto · Fintech</p>
+              <p class="tc-plan">Plano Trajetória</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-d1">
+          <p class="tc-quote">"Pela primeira vez eu tenho dados reais sobre o meu capital humano — não achismos de coach."</p>
+          <div class="tc-author">
+            <div class="tc-avatar" style="background:#E6F1FB;color:#185FA5">CM</div>
+            <div>
+              <p class="tc-name">Carla Mendes</p>
+              <p class="tc-role">Diretora de Estratégia · Varejo</p>
+              <p class="tc-plan">Plano Cúpula</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal reveal-d2">
+          <p class="tc-quote">"Em 3 meses usando o Axioma, consegui negociar uma promoção que tentava há 2 anos. O roadmap foi a diferença."</p>
+          <div class="tc-author">
+            <div class="tc-avatar" style="background:#E1F5EE;color:#0F6E56">TF</div>
+            <div>
+              <p class="tc-name">Thiago Ferreira</p>
+              <p class="tc-role">Gerente Sênior · Consultoria</p>
+              <p class="tc-plan">Plano Trajetória</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANEL: PESSOA JURÍDICA -->
+<div class="panel" id="panel-pj">
+  <div class="plans-section" id="pj">
+    <div class="plans-grid-pj">
+
+      <!-- FREE PJ -->
+      <div class="plan-card reveal">
+        <div class="plan-header">
+          <span class="plan-badge badge-free">Grátis · 30 dias</span>
+          <h2 class="plan-name">Reconhecimento</h2>
+          <p class="plan-tagline">Para líderes que querem ver o diagnóstico funcionando antes de comprometer orçamento.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-amount free-price">R$ 0</span>
+            </div>
+            <p class="price-annual-note">Sem cartão · Expira em 30 dias</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <a href="axioma-prime-v2.html?plan=pj_rec" class="btn-plan btn-free">Ativar gratuito</a>
+          <p class="plan-sub-note">Diagnóstico em até 5 minutos</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label">Incluído</p>
+          <div class="feature-hero">Diagnóstico organizacional para até 3 colaboradores — veja o sistema funcionando na sua equipe real.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#EAF3DE" stroke="#1D9E75" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#27500A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Posicionamento WEF organizacional</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#EAF3DE" stroke="#1D9E75" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#27500A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Relatório PDF introdutório</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Dashboard de equipe</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Analytics coletivo de capital humano</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#f0f0f0" stroke="#ccc" stroke-width="0.5"/><path d="M5.5 10.5L8 8m0 0l2.5-2.5M8 8L5.5 5.5m2.5 2.5l2.5 2.5" stroke="#bbb" stroke-width="1" stroke-linecap="round"/></svg>
+            <span class="feature-text locked">Integração HRIS e sistemas HR</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESTRUTURA (featured) -->
+      <div class="plan-card featured reveal reveal-d1">
+        <div class="plan-header">
+          <span class="plan-badge badge-popular">Mais escolhido</span>
+          <h2 class="plan-name" style="color:var(--white)">Estrutura</h2>
+          <p class="plan-tagline">Para organizações que precisam de visibilidade real do capital humano — antes da próxima onda de transformação.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-currency" style="color:rgba(255,255,255,.3)">R$</span>
+              <span class="price-amount" id="pj-str-price">2.900</span>
+              <span class="price-period">/mês</span>
+            </div>
+            <p class="price-annual-note" id="pj-str-note"><span class="price-save-badge">Economize R$ 6.960/ano</span></p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <button class="btn-plan btn-featured" onclick="window.location.href='diagnostico.html'">Agendar demo</button>
+          <p class="plan-sub-note">Implementação em 5 dias úteis</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label" style="color:rgba(255,255,255,.25);border-bottom-color:rgba(255,255,255,.06)">Tudo do Reconhecimento, mais:</p>
+          <div class="feature-hero">Dashboard de capital humano para até 50 colaboradores — com analytics por unidade, função e cenário WEF.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Diagnósticos individuais ilimitados</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Relatório trimestral por unidade</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">3 licenças de administrador</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Identificação de top performers</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.2)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Suporte dedicado por email · 48h SLA</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- COMANDO -->
+      <div class="plan-card reveal reveal-d2">
+        <div class="plan-header">
+          <span class="plan-badge" style="background:rgba(13,14,15,.06);color:var(--ink-muted)">Escala avançada</span>
+          <h2 class="plan-name">Comando</h2>
+          <p class="plan-tagline">Para organizações em transformação acelerada — com consultor dedicado e integração ao ecossistema de RH.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-currency">R$</span>
+              <span class="price-amount" id="pj-cmd-price">7.900</span>
+              <span class="price-period">/mês</span>
+            </div>
+            <p class="price-annual-note" id="pj-cmd-note">&nbsp;</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <button class="btn-plan btn-free" onclick="window.location.href='diagnostico.html'" style="background:var(--ink);color:var(--white);border-color:var(--ink)">Agendar conversa</button>
+          <p class="plan-sub-note">Demo personalizada · sem compromisso</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label">Tudo do Estrutura, mais:</p>
+          <div class="feature-hero">Consultor Axioma dedicado com 2h mensais de sessão estratégica + integração HRIS/ADP.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#e4f0ec" stroke="#1a6b58" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#085041" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Até 200 colaboradores</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#e4f0ec" stroke="#1a6b58" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#085041" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Relatório para o board trimestralmente</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#e4f0ec" stroke="#1a6b58" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#085041" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Acesso à API Axioma</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#e4f0ec" stroke="#1a6b58" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#085041" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">SLA de 4 horas · suporte prioritário</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="#e4f0ec" stroke="#1a6b58" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#085041" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Licenças admin ilimitadas</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="plan-card featured reveal reveal-d3" style="background:#0d0e0f">
+        <div class="plan-header" style="border-bottom-color:rgba(255,255,255,.06)">
+          <span class="plan-badge badge-enterprise">Enterprise</span>
+          <h2 class="plan-name" style="color:var(--white)">Supremacia</h2>
+          <p class="plan-tagline" style="color:rgba(255,255,255,.35)">Parceria estratégica full-service para organizações que definem o padrão de capital humano do mercado.</p>
+          <div class="plan-price-wrap">
+            <div class="plan-price">
+              <span class="price-amount custom-price">Sob consulta</span>
+            </div>
+            <p class="price-annual-note" style="color:rgba(255,255,255,.25)">Contrato anual · implementação dedicada</p>
+          </div>
+        </div>
+        <div class="plan-cta-wrap">
+          <button class="btn-plan btn-elite" onclick="window.location.href='diagnostico.html'">Falar com um especialista</button>
+          <p class="plan-sub-note" style="color:rgba(255,255,255,.2)">Resposta em 24h · sem script</p>
+        </div>
+        <div class="plan-features">
+          <p class="features-label" style="color:rgba(255,255,255,.25);border-bottom-color:rgba(255,255,255,.06)">Tudo do Comando, ilimitado:</p>
+          <div class="feature-hero" style="background:rgba(184,150,90,.08);border-left-color:var(--gold);color:var(--gold-light)">Equipe dedicada Axioma + implementação white-label + treinamento presencial.</div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Colaboradores ilimitados</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">White label completo</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">API full-access + webhooks</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">Treinamento presencial da equipe</span>
+          </div>
+          <div class="feature-item">
+            <svg class="feature-check" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" fill="rgba(184,150,90,.15)" stroke="#b8965a" stroke-width="0.5"/><path d="M5 8l2 2 4-4" stroke="#d4b07a" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span class="feature-text">SLA 1h · gerente de conta exclusivo</span>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /plans-grid-pj -->
+
+    <!-- ROI CALCULATOR -->
+    <div class="section-divider" style="padding-bottom:32px">
+      <span class="sd-label">Calculadora de ROI</span>
+      <div class="sd-line"></div>
+    </div>
+    <div class="roi-section reveal">
+      <div style="max-width:480px">
+        <p style="font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Quanto custa NÃO investir</p>
+        <h3 class="roi-title">O gap não identificado<br/>tem um preço</h3>
+        <p class="roi-sub">Um colaborador sênior custa entre R$15k–30k/mês. Um gap crítico de capital humano não resolvido impacta diretamente a produtividade, retenção e competitividade. Calcule o custo de inação para sua organização.</p>
+      </div>
+      <div class="roi-grid">
+        <div class="roi-inputs">
+          <div class="roi-field">
+            <label>Colaboradores na equipe</label>
+            <input type="range" min="10" max="500" value="80" step="10" id="roi-team" oninput="calcROI()"/>
+            <div class="roi-field-val"><span class="roi-field-num" id="roi-team-val">80</span><span class="roi-field-hint">pessoas</span></div>
+          </div>
+          <div class="roi-field">
+            <label>Salário médio mensal (R$)</label>
+            <input type="range" min="5000" max="50000" value="15000" step="1000" id="roi-salary" oninput="calcROI()"/>
+            <div class="roi-field-val"><span class="roi-field-num" id="roi-salary-val">R$ 15.000</span><span class="roi-field-hint">por pessoa</span></div>
+          </div>
+          <div class="roi-field">
+            <label>Perda estimada de produtividade por gap (%)</label>
+            <input type="range" min="5" max="30" value="12" step="1" id="roi-loss" oninput="calcROI()"/>
+            <div class="roi-field-val"><span class="roi-field-num" id="roi-loss-val">12%</span><span class="roi-field-hint">referência WEF: 8–15%</span></div>
+          </div>
+        </div>
+        <div class="roi-result">
+          <div>
+            <p class="rr-label">Custo mensal estimado do gap</p>
+            <p class="rr-value" id="roi-monthly">R$ 144.000</p>
+            <p class="rr-desc">Em salários não convertidos em produtividade real por gaps não mapeados de capital humano.</p>
+          </div>
+          <div class="rr-divider"></div>
+          <div>
+            <p class="rr-label">Custo anual acumulado</p>
+            <p class="rr-value" id="roi-annual" style="font-size:32px">R$ 1.728.000</p>
+          </div>
+          <div class="rr-divider"></div>
+          <div>
+            <div class="rr-ratio">
+              <span class="rr-ratio-num" id="roi-ratio">596x</span>
+              <span class="rr-ratio-label">retorno sobre o plano Estrutura</span>
+            </div>
+            <p class="rr-desc" style="margin-top:8px">O custo anual do Axioma Estrutura é R$29.000. O gap custa R$<span id="roi-ratio-num">1.728.000</span>.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section" id="faq">
+  <p style="font-size:10px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:48px;text-align:center">Perguntas frequentes</p>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">O plano gratuito realmente não tem limite de tempo?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">Sim. O plano Diagnóstico (PF) é gratuito para sempre — você pode fazer 1 diagnóstico completo com IA a qualquer momento. O plano Reconhecimento (PJ) é gratuito por 30 dias para até 3 colaboradores. Nenhum requer cartão de crédito para ativação.</p>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">Como o diagnóstico é gerado? Existe metodologia por trás?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">O diagnóstico é fundamentado no relatório "Global Economic Futures: Productivity in 2030" do World Economic Forum × Accenture (janeiro 2025). O motor de IA cruza seus dados com os 4 cenários de produtividade do WEF, as 6 dimensões de capital humano identificadas pelo OCDE/ILO, e os padrões de competências de empresas frontier documentados por Accenture.</p>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">Posso cancelar o plano mensal a qualquer momento?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">Sim, sem taxa de cancelamento ou fidelidade. Planos mensais podem ser cancelados a qualquer momento com efeito no próximo ciclo. Planos anuais têm reembolso proporcional nos primeiros 60 dias.</p>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">Como funciona o processo de aplicação para o plano Cúpula?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">O plano Cúpula tem vagas limitadas a 40 membros ativos para garantir a qualidade das sessões 1:1. Após submissão, a equipe Axioma analisa o perfil em até 72 horas. O critério de seleção prioriza profissionais em posições de liderança com contexto estratégico relevante para maximizar o impacto da mentoria.</p>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">Planos corporativos têm contrato mínimo?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">Planos mensais não têm contrato mínimo. Planos anuais têm vigência de 12 meses e oferecem 20% de desconto. O plano Supremacia (Enterprise) é sempre contratado em ciclos anuais com implementação personalizada.</p>
+  </div>
+  <div class="faq-item" onclick="toggleFaq(this)">
+    <div class="faq-question">Os dados dos colaboradores são seguros e confidenciais?
+      <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14m-7-7h14"/></svg>
+    </div>
+    <p class="faq-answer">Todos os dados são processados em conformidade com a LGPD. Os diagnósticos individuais são confidenciais por padrão — gestores têm acesso apenas a dados agregados e anonimizados da equipe, nunca ao conteúdo individual de respostas sem consentimento explícito do colaborador.</p>
+  </div>
+</div>
+
+<!-- FINAL CTA -->
+<section class="final-cta">
+  <div class="fc-grid"></div>
+  <h2 class="fc-title">Comece pelo diagnóstico.<br/><em>Descubra em qual futuro você está.</em></h2>
+  <p class="fc-sub">Grátis. Sem cartão. Sem compromisso. O diagnóstico leva 5 minutos — o insight pode mudar os próximos 5 anos.</p>
+  <div class="fc-actions">
+    <a href="diagnostico.html" class="btn-fc-primary">Fazer diagnóstico gratuito</a>
+    <a href="axioma-landing.html" class="btn-fc-ghost">Conhecer o Axioma</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Axioma People Analytics</span>
+  <div class="footer-links">
+    <a href="axioma-landing.html">Início</a>
+    <a href="diagnostico.html">Diagnóstico</a>
+    <a href="#">Metodologia</a>
+    <a href="#">Contato</a>
+  </div>
+  <span class="footer-copy">© 2025 Axioma · LGPD Compliant</span>
+</footer>
+
+<script>
+// ── TAB SWITCH ──
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-pf').classList.toggle('active', tab === 'pf');
+  document.getElementById('panel-pj').classList.toggle('active', tab === 'pj');
+}
+
+// ── BILLING TOGGLE ──
+let isAnnual = false;
+const PF_PRICES = { pro: [197, 158], elite: [497, 398] };
+const PJ_PRICES = { str: [2900, 2320], cmd: [7900, 6320] };
+
+function toggleBilling() {
+  isAnnual = !isAnnual;
+  document.getElementById('billing-toggle').classList.toggle('annual', isAnnual);
+  document.getElementById('label-monthly').classList.toggle('active', !isAnnual);
+  document.getElementById('label-annual').classList.toggle('active', isAnnual);
+  updatePrices();
+}
+function setBilling(type) {
+  isAnnual = type === 'annual';
+  document.getElementById('billing-toggle').classList.toggle('annual', isAnnual);
+  document.getElementById('label-monthly').classList.toggle('active', !isAnnual);
+  document.getElementById('label-annual').classList.toggle('active', isAnnual);
+  updatePrices();
+}
+function updatePrices() {
+  const i = isAnnual ? 1 : 0;
+  const fmt = n => n.toLocaleString('pt-BR');
+  document.getElementById('pf-pro-price').textContent = fmt(PF_PRICES.pro[i]);
+  document.getElementById('pf-elite-price').textContent = fmt(PF_PRICES.elite[i]);
+  document.getElementById('pj-str-price').textContent = fmt(PJ_PRICES.str[i]);
+  document.getElementById('pj-cmd-price').textContent = fmt(PJ_PRICES.cmd[i]);
+  const proSave = isAnnual ? `<span class="price-save-badge">Economize R$ ${fmt((PF_PRICES.pro[0]-PF_PRICES.pro[1])*12)}/ano</span>` : '&nbsp;';
+  const eliteSave = isAnnual ? `<span class="price-save-badge">Economize R$ ${fmt((PF_PRICES.elite[0]-PF_PRICES.elite[1])*12)}/ano</span>` : '&nbsp;';
+  const strSave = isAnnual ? `<span class="price-save-badge">Economize R$ ${fmt((PJ_PRICES.str[0]-PJ_PRICES.str[1])*12)}/ano</span>` : `<span class="price-save-badge">Economize R$ ${fmt((PJ_PRICES.str[0]-PJ_PRICES.str[1])*12)}/ano no anual</span>`;
+  const cmdSave = isAnnual ? `<span class="price-save-badge">Economize R$ ${fmt((PJ_PRICES.cmd[0]-PJ_PRICES.cmd[1])*12)}/ano</span>` : '&nbsp;';
+  document.getElementById('pf-pro-annual-note').innerHTML = proSave;
+  document.getElementById('pf-elite-annual-note').innerHTML = eliteSave;
+  document.getElementById('pj-str-note').innerHTML = strSave;
+  document.getElementById('pj-cmd-note').innerHTML = cmdSave;
+}
+
+// ── ROI CALCULATOR ──
+function calcROI() {
+  const team = +document.getElementById('roi-team').value;
+  const salary = +document.getElementById('roi-salary').value;
+  const loss = +document.getElementById('roi-loss').value / 100;
+  const monthly = Math.round(team * salary * loss);
+  const annual = monthly * 12;
+  const planCost = 29000;
+  const ratio = Math.round(annual / planCost);
+  const fmt = n => 'R$ ' + n.toLocaleString('pt-BR');
+  document.getElementById('roi-team-val').textContent = team;
+  document.getElementById('roi-salary-val').textContent = fmt(salary);
+  document.getElementById('roi-loss-val').textContent = Math.round(loss*100) + '%';
+  document.getElementById('roi-monthly').textContent = fmt(monthly);
+  document.getElementById('roi-annual').textContent = fmt(annual);
+  document.getElementById('roi-ratio').textContent = ratio + 'x';
+  document.getElementById('roi-ratio-num').textContent = annual.toLocaleString('pt-BR');
+}
+calcROI();
+
+// ── FAQ ──
+function toggleFaq(item) {
+  item.classList.toggle('open');
+}
+
+// ── REVEAL SCROLL ──
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

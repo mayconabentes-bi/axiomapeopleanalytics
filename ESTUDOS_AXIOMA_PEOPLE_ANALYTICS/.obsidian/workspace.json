@@ -1,0 +1,203 @@
+{
+  "main": {
+    "id": "fdfcda3a60058a5d",
+    "type": "split",
+    "children": [
+      {
+        "id": "26326f03df20e2c5",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "754c32b9a204131f",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Fase_10_O_Selo_de_Qualidade_Axioma.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Fase_10_O_Selo_de_Qualidade_Axioma"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fef20c4763cb7111",
+    "type": "split",
+    "children": [
+      {
+        "id": "0cc73b35367cf466",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "7ef2dd9c885a10e9",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Explorador de arquivos"
+            }
+          },
+          {
+            "id": "af2ad326db2ed0bb",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Procurar"
+            }
+          },
+          {
+            "id": "e2e05f49c94f9695",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Marcadores"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "35034574ce67a97d",
+    "type": "split",
+    "children": [
+      {
+        "id": "22ba781150692710",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "91a8edf53bf70f22",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Fase_10_O_Selo_de_Qualidade_Axioma.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Links inversos para Fase_10_O_Selo_de_Qualidade_Axioma"
+            }
+          },
+          {
+            "id": "ed7ec07af290469b",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Fase_10_O_Selo_de_Qualidade_Axioma.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Links de saída para Fase_10_O_Selo_de_Qualidade_Axioma"
+            }
+          },
+          {
+            "id": "12ff987a95efaf16",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Etiquetas"
+            }
+          },
+          {
+            "id": "cfa9b754ed9e4264",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "Todas as propriedades"
+            }
+          },
+          {
+            "id": "05519b17769631c4",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Fase_10_O_Selo_de_Qualidade_Axioma.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Sumário de Fase_10_O_Selo_de_Qualidade_Axioma"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Abrir a troca rápida": false,
+      "graph:Abrir visualização em gráfico": false,
+      "canvas:Criar novo canvas": false,
+      "daily-notes:Abrir a nota de hoje": false,
+      "templates:Inserir modelo": false,
+      "command-palette:Abrir paleta de comandos": false,
+      "bases:Criar nova base": false
+    }
+  },
+  "active": "754c32b9a204131f",
+  "lastOpenFiles": [
+    "Fase_9_Certificação_e_Credenciamento.md",
+    "Fase_10_O_Selo_de_Qualidade_Axioma.md",
+    "Fase_8_Inteligência_Preditiva_e_Ritmos_Biográficos.md",
+    "Fase_7_Governança_e_Benchmarking.md",
+    "Fase_6_O_Lançamento.md",
+    "Fase_5_Estratégia_e_Monetização.md",
+    "Fase_4_Simulação_e_Persistência.md",
+    "Fase_3_Materialização_da_UI.md",
+    "Fase_3_A_Face_da_Verdade.md",
+    "Fase_2_Lógica_e_Inteligência.md",
+    "Fase_01_Arquitetura e Contratos.md",
+    "Bem-vindo.md",
+    "prompts",
+    "desktop.ini"
+  ]
+}

@@ -1,0 +1,1809 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Axioma Prime — A Inteligência que Define Trajetórias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+/* ══════════════════════════════════════════
+   AXIOMA PRIME — DESIGN SYSTEM
+   Dark Intelligence · Gold Authority · Starfield
+   ══════════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --void:#050611;--deep:#090b1c;--surface:#0e1126;--glass:rgba(255,255,255,0.03);
+  --gold:#c4a35a;--gold2:#dfc07a;--gold-pale:rgba(196,163,90,0.08);--gold-border:rgba(196,163,90,0.22);
+  --teal:#3d9e88;--teal-bg:rgba(61,158,136,0.1);
+  --violet:#7e74c0;--crimson:#b85555;--crimson-bg:rgba(184,85,85,0.08);
+  --t:#ddd9cf;--ts:#9a9890;--tm:#555560;--tdim:#2e2e3a;
+  --b:rgba(255,255,255,0.06);--bg:rgba(196,163,90,0.22);
+}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--void);color:var(--t);overflow-x:hidden;min-height:100vh}
+canvas#bg{position:fixed;inset:0;pointer-events:none;z-index:0}
+
+/* ── SCREENS ── */
+.scr{display:none;position:relative;z-index:1;min-height:100vh;flex-direction:column}
+.scr.on{display:flex}
+
+/* ── SHARED ── */
+.eyebrow{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
+.serif{font-family:'Playfair Display',serif}
+.btn-gold{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;letter-spacing:.05em;padding:14px 36px;background:var(--gold);color:var(--void);border:none;cursor:pointer;transition:background .2s;text-decoration:none;display:inline-block}
+.btn-gold:hover{background:var(--gold2)}
+.btn-ghost{font-size:13px;padding:14px 28px;background:transparent;color:var(--gold);border:.5px solid var(--gold-border);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-block}
+.btn-ghost:hover{background:var(--gold-pale)}
+.btn-ink{font-size:13px;font-weight:500;padding:13px 28px;background:rgba(255,255,255,.06);color:var(--ts);border:none;cursor:pointer;transition:background .2s}
+.btn-ink:hover{background:rgba(255,255,255,.1);color:var(--t)}
+
+/* ══════════════════════════════════════════
+   PLAN SELECTOR SCREEN
+   ══════════════════════════════════════════ */
+#scr-plan{align-items:center;justify-content:center;padding:80px 24px 60px;text-align:center}
+.plan-intro-sigil{width:64px;height:64px;border:.5px solid var(--gold-border);display:flex;align-items:center;justify-content:center;margin:0 auto 40px;animation:spin 24s linear infinite}
+.plan-intro-sigil-core{width:12px;height:12px;background:var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.plan-hero-title{font-family:'Playfair Display',serif;font-size:clamp(36px,6vw,68px);font-weight:400;line-height:1.05;margin-bottom:12px}
+.plan-hero-title em{font-style:italic;color:var(--gold2)}
+.plan-hero-sub{font-size:14px;color:var(--ts);max-width:540px;margin:0 auto 56px;line-height:1.9}
+
+/* Plan cards grid */
+.plan-type-toggle{display:inline-flex;border:.5px solid var(--b);margin-bottom:40px}
+.ptt-btn{font-size:12px;font-weight:400;padding:10px 28px;background:transparent;color:var(--tm);border:none;cursor:pointer;letter-spacing:.03em;transition:all .2s}
+.ptt-btn.active{background:rgba(255,255,255,.06);color:var(--t);font-weight:500}
+
+.plans-wrap{display:none;width:100%;max-width:1000px}
+.plans-wrap.visible{display:block}
+.plans-grid{display:grid;gap:1px;background:var(--b);border:.5px solid var(--b)}
+.pf-grid{grid-template-columns:repeat(3,1fr)}
+.pj-grid{grid-template-columns:repeat(4,1fr)}
+
+.plan-card{background:var(--deep);padding:0;display:flex;flex-direction:column;cursor:pointer;transition:background .15s;position:relative;overflow:hidden}
+.plan-card:hover{background:var(--surface)}
+.plan-card.selected{background:var(--surface);outline:1px solid var(--gold-border)}
+.plan-card.featured-card{background:var(--void)}
+.plan-card.featured-card:hover{background:#0a0c1f}
+
+.pc-top{padding:28px 24px 20px;border-bottom:.5px solid var(--b);flex:1}
+.pc-badge{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;padding:3px 10px;border-radius:20px;display:inline-block;margin-bottom:14px}
+.badge-free{background:rgba(61,158,136,.15);color:#3d9e88;border:.5px solid rgba(61,158,136,.25)}
+.badge-hot{background:var(--gold);color:var(--void)}
+.badge-elite{background:rgba(196,163,90,.1);color:var(--gold2);border:.5px solid var(--gold-border)}
+.badge-ent{background:rgba(255,255,255,.04);color:var(--tm);border:.5px solid var(--b)}
+
+.pc-name{font-family:'Playfair Display',serif;font-size:24px;font-weight:400;color:var(--t);margin-bottom:6px;line-height:1.1}
+.pc-tagline{font-size:11px;color:var(--tm);line-height:1.6;min-height:32px}
+.pc-price{margin-top:20px}
+.pc-price-num{font-family:'Playfair Display',serif;font-size:36px;font-weight:300;color:var(--t);line-height:1}
+.pc-price-num.free{color:var(--teal);font-size:28px}
+.pc-price-num.custom{font-size:20px;font-style:italic;color:var(--gold2)}
+.pc-price-per{font-size:11px;color:var(--tm);margin-top:2px}
+.pc-lenses{font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;margin-top:16px;color:var(--gold);background:var(--gold-pale);border:.5px solid var(--gold-border);padding:4px 10px;display:inline-block}
+
+.pc-features{padding:20px 24px}
+.pcf-item{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+.pcf-check{width:14px;height:14px;flex-shrink:0;margin-top:1px}
+.pcf-text{font-size:12px;color:var(--ts);line-height:1.5}
+.pcf-lock{font-size:12px;color:var(--tdim);line-height:1.5;text-decoration:line-through}
+
+.pc-cta{padding:16px 24px;border-top:.5px solid var(--b)}
+.pc-cta-btn{width:100%;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:12px;border:none;cursor:pointer;letter-spacing:.04em;transition:all .2s}
+.cta-free{background:transparent;color:var(--ts);border:.5px solid var(--b)}
+.cta-free:hover{background:var(--glass);border-color:var(--gold-border);color:var(--t)}
+.cta-hot{background:var(--gold);color:var(--void)}
+.cta-hot:hover{background:var(--gold2)}
+.cta-elite{background:transparent;color:var(--gold);border:.5px solid var(--gold-border)}
+.cta-elite:hover{background:var(--gold-pale)}
+
+/* Selector arrow */
+.selected-mark{position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.plan-card.selected .selected-mark{transform:scaleX(1)}
+
+/* ══════════════════════════════════════════
+   IDENTITY SCREEN
+   ══════════════════════════════════════════ */
+#scr-id{align-items:center;justify-content:center;padding:80px 24px}
+.id-wrap{width:100%;max-width:540px}
+.id-plan-context{display:flex;align-items:center;gap:10px;margin-bottom:32px;padding:12px 16px;border:.5px solid var(--gold-border);background:var(--gold-pale)}
+.ipc-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--gold)}
+.ipc-desc{font-size:11px;color:var(--ts)}
+.ipc-lenses{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-left:auto;white-space:nowrap}
+.id-title{font-family:'Playfair Display',serif;font-size:30px;font-weight:400;color:var(--t);margin-bottom:8px;line-height:1.2}
+.id-sub{font-size:13px;color:var(--ts);margin-bottom:36px;line-height:1.7}
+.field{margin-bottom:20px}
+.field label{display:block;font-size:10px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tm);margin-bottom:8px}
+.field input,.field select,.field textarea{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t);background:var(--glass);border:.5px solid var(--b);padding:13px 16px;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field input::placeholder{color:var(--tdim)}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold-border)}
+.field select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23555560' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;color:var(--tm)}
+.field select.filled{color:var(--t)}
+.field textarea{resize:none;min-height:80px;line-height:1.7}
+.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ══════════════════════════════════════════
+   ASSESSMENT SCREEN
+   ══════════════════════════════════════════ */
+#scr-assess{flex-direction:row;padding:0}
+.assess-sidebar{width:240px;flex-shrink:0;background:var(--deep);border-right:.5px solid var(--b);padding:56px 24px;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column}
+.sidebar-plan-badge{padding:8px 12px;background:var(--gold-pale);border:.5px solid var(--gold-border);margin-bottom:32px}
+.spb-name{font-family:'Playfair Display',serif;font-size:12px;color:var(--gold);margin-bottom:2px}
+.spb-desc{font-size:10px;color:var(--tm)}
+.sidebar-nav-label{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--tdim);margin-bottom:16px}
+.lens-item{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:.5px solid var(--b);cursor:default;position:relative;transition:opacity .2s}
+.lens-item:last-child{border-bottom:none}
+.lens-item.active{opacity:1}
+.lens-item.done{opacity:.55}
+.lens-item.locked{opacity:.25}
+.lens-item.upcoming{opacity:.3}
+.li-dot{width:6px;height:6px;border-radius:50%;background:var(--tdim);flex-shrink:0;margin-top:4px;transition:background .2s}
+.lens-item.active .li-dot{background:var(--gold);box-shadow:0 0 8px rgba(196,163,90,.5)}
+.lens-item.done .li-dot{background:var(--teal)}
+.lens-item.locked .li-dot{background:var(--tm);border-radius:2px}
+.li-name{font-size:11px;color:var(--ts);line-height:1.4}
+.li-sub{font-size:10px;color:var(--tdim);margin-top:1px}
+.li-lock{font-size:9px;color:var(--gold);background:var(--gold-pale);padding:1px 6px;border-radius:2px;margin-top:3px;display:inline-block;border:.5px solid var(--gold-border)}
+
+.sidebar-progress{margin-top:auto;padding-top:24px}
+.sp-track{height:1px;background:var(--b);margin-bottom:6px}
+.sp-fill{height:100%;background:var(--gold);transition:width .4s ease}
+.sp-pct{font-size:10px;color:var(--tdim)}
+
+.assess-main{flex:1;padding:56px 64px;overflow-y:auto}
+.lens-header{margin-bottom:44px;padding-bottom:32px;border-bottom:.5px solid var(--b)}
+.lh-num{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
+.lh-title{font-family:'Playfair Display',serif;font-size:clamp(22px,3vw,34px);font-weight:400;color:var(--t);line-height:1.15;margin-bottom:10px}
+.lh-title em{font-style:italic}
+.lh-desc{font-size:13px;color:var(--ts);line-height:1.8;max-width:520px}
+.lh-fw{font-size:10px;color:var(--tdim);margin-top:10px;letter-spacing:.06em;display:flex;align-items:center;gap:6px}
+.lh-fw-dot{width:3px;height:3px;border-radius:50%;background:var(--gold);opacity:.7}
+
+/* Question blocks */
+.qblock{margin-bottom:36px;padding-bottom:36px;border-bottom:.5px solid var(--b)}
+.qblock:last-of-type{border-bottom:none}
+.q-text{font-size:15px;color:var(--t);line-height:1.7;margin-bottom:20px;font-weight:400}
+
+/* Spectrum */
+.spec-wrap{padding-bottom:20px}
+.spec-track{height:1px;background:var(--b);position:relative;cursor:pointer;margin-bottom:18px}
+.spec-fill{position:absolute;left:0;top:0;height:100%;background:var(--gold)}
+.spec-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;background:var(--void);border:1.5px solid var(--gold);border-radius:50%;cursor:grab;z-index:2;transition:transform .1s}
+.spec-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.4)}
+.spec-val{position:absolute;top:-24px;font-size:10px;font-weight:500;color:var(--gold);transform:translateX(-50%)}
+.spec-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--tm)}
+
+/* Choices */
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{padding:16px 18px;border:.5px solid var(--b);background:var(--glass);cursor:pointer;transition:all .15s;position:relative;overflow:hidden}
+.choice::before{content:'';position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold-pale);transition:width .2s}
+.choice:hover{border-color:var(--gold-border)}
+.choice:hover::before,.choice.sel::before{width:2px;background:var(--gold)}
+.choice.sel{border-color:var(--gold-border);background:var(--gold-pale)}
+.choice-title{font-size:13px;font-weight:500;color:var(--t);margin-bottom:3px;position:relative}
+.choice-desc{font-size:11px;color:var(--ts);line-height:1.5;position:relative}
+
+/* Matrix */
+.matrix{display:grid;gap:8px}
+.matrix.c2{grid-template-columns:1fr 1fr}
+.matrix.c3{grid-template-columns:1fr 1fr 1fr}
+.mcel{padding:14px;border:.5px solid var(--b);background:var(--glass);cursor:pointer;transition:all .15s;text-align:center}
+.mcel:hover,.mcel.sel{border-color:var(--gold-border);background:var(--gold-pale)}
+.mcel-label{font-size:12px;font-weight:500;color:var(--t);margin-bottom:3px}
+.mcel-sub{font-size:10px;color:var(--ts);line-height:1.4}
+
+/* Freq */
+.freq{display:flex;border:.5px solid var(--b)}
+.freq-btn{flex:1;padding:12px 6px;background:transparent;border-right:.5px solid var(--b);font-family:'DM Sans',sans-serif;font-size:11px;color:var(--tm);cursor:pointer;transition:all .15s;text-align:center;line-height:1.3}
+.freq-btn:last-child{border-right:none}
+.freq-btn:hover{background:var(--glass);color:var(--t)}
+.freq-btn.sel{background:var(--gold-pale);color:var(--gold)}
+
+/* Textarea */
+.ptxt{width:100%;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--t);background:var(--glass);border:.5px solid var(--b);padding:14px 18px;outline:none;resize:none;line-height:1.8;min-height:110px;transition:border-color .2s}
+.ptxt::placeholder{color:var(--tdim)}
+.ptxt:focus{border-color:var(--gold-border)}
+
+/* Lens unlock teaser (shown after free lenses) */
+.lens-lock-teaser{padding:40px;border:.5px solid var(--gold-border);background:var(--gold-pale);text-align:center;margin-top:32px}
+.llt-icon{width:40px;height:40px;border:.5px solid var(--gold-border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px}
+.llt-icon-inner{width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.llt-title{font-family:'Playfair Display',serif;font-size:20px;font-weight:400;color:var(--t);margin-bottom:8px}
+.llt-sub{font-size:12px;color:var(--ts);line-height:1.7;margin-bottom:24px;max-width:400px;margin-left:auto;margin-right:auto}
+.llt-pills{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:24px}
+.llt-pill{font-size:10px;color:var(--ts);border:.5px solid var(--b);padding:4px 12px}
+.llt-continue{font-size:11px;color:var(--tm);margin-top:12px}
+
+/* Nav buttons */
+.assess-nav{display:flex;align-items:center;justify-content:space-between;margin-top:44px;padding-top:28px;border-top:.5px solid var(--b)}
+.nav-prev{font-size:12px;color:var(--tm);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:6px;transition:color .2s;padding:0}
+.nav-prev:hover{color:var(--t)}
+.nav-prev:disabled{opacity:0;pointer-events:none}
+.nav-next{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;padding:12px 32px;background:transparent;color:var(--gold);border:.5px solid var(--gold-border);cursor:pointer;letter-spacing:.04em;transition:all .2s;display:flex;align-items:center;gap:8px}
+.nav-next:hover{background:var(--gold-pale)}
+.nav-next.final{background:var(--gold);color:var(--void);border-color:var(--gold)}
+.nav-next.final:hover{background:var(--gold2)}
+
+/* ══════════════════════════════════════════
+   PROCESSING SCREEN
+   ══════════════════════════════════════════ */
+#scr-proc{align-items:center;justify-content:center;padding:80px 24px;text-align:center}
+.proc-orb{width:100px;height:100px;position:relative;margin:0 auto 48px}
+.orb-r{position:absolute;inset:0;border-radius:50%;border:.5px solid var(--gold-border);animation:orbspin 3s linear infinite}
+.orb-r:nth-child(2){inset:12px;border-color:rgba(196,163,90,.12);animation-duration:5s;animation-direction:reverse}
+.orb-r:nth-child(3){inset:24px;border-color:rgba(196,163,90,.06);animation-duration:8s}
+.orb-c{position:absolute;inset:38px;border-radius:50%;background:rgba(196,163,90,.2);animation:orbpulse 2.4s ease-in-out infinite}
+@keyframes orbspin{to{transform:rotate(360deg)}}
+@keyframes orbpulse{0%,100%{opacity:.3;transform:scale(.7)}50%{opacity:.9;transform:scale(1)}}
+.proc-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:400;color:var(--t);margin-bottom:10px}
+.proc-sub{font-size:13px;color:var(--ts);margin-bottom:40px;line-height:1.7}
+.proc-msg{font-size:11px;color:var(--tm);letter-spacing:.05em;min-height:16px;transition:opacity .3s}
+.proc-fws{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:36px;max-width:480px}
+.proc-fw{font-size:9px;color:var(--tdim);padding:3px 10px;border:.5px solid var(--b);opacity:0;transition:all .4s;letter-spacing:.06em}
+.proc-fw.on{opacity:1;color:var(--gold);border-color:var(--gold-border)}
+.proc-bar{width:260px;height:.5px;background:var(--b);margin:28px auto 0;overflow:hidden}
+.proc-bar-fill{height:100%;background:var(--gold);animation:proscan 1.8s ease-in-out infinite}
+@keyframes proscan{0%{margin-left:-100%;width:100%}100%{margin-left:100%;width:100%}}
+
+/* ══════════════════════════════════════════
+   REPORT SCREEN
+   ══════════════════════════════════════════ */
+#scr-report{flex-direction:column;align-items:stretch}
+
+/* Cover */
+.r-cover{background:var(--deep);min-height:100vh;padding:72px 80px 60px;position:relative;overflow:hidden;display:flex;flex-direction:column;border-bottom:.5px solid var(--b)}
+.r-cover::after{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(196,163,90,.025) 0%,transparent 70%);pointer-events:none}
+.rc-top{display:flex;align-items:center;gap:16px;margin-bottom:72px}
+.rc-logo{font-family:'Playfair Display',serif;font-size:13px;color:var(--gold);letter-spacing:.08em}
+.rc-line{flex:1;height:.5px;background:var(--b)}
+.rc-date{font-size:10px;color:var(--tdim);letter-spacing:.08em}
+.rc-class{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);border:.5px solid var(--gold-border);padding:4px 12px}
+
+.rc-plan-strip{display:flex;align-items:center;gap:12px;margin-bottom:40px;padding:10px 16px;border-left:2px solid var(--gold)}
+.rps-label{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--tm)}
+.rps-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold)}
+.rps-lenses{font-size:10px;color:var(--tm);margin-left:auto}
+
+.rc-eyebrow{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--tm);margin-bottom:12px}
+.rc-name{font-family:'Playfair Display',serif;font-size:clamp(36px,5vw,64px);font-weight:400;color:var(--t);line-height:1.05;margin-bottom:6px}
+.rc-role{font-family:'Playfair Display',serif;font-size:16px;font-style:italic;color:var(--gold2);margin-bottom:40px}
+.rc-headline{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,30px);font-weight:400;color:var(--t);line-height:1.3;max-width:640px;margin-bottom:12px}
+.rc-subtext{font-size:13px;color:var(--ts);line-height:1.85;max-width:580px;margin-bottom:56px}
+
+/* Score row */
+.rc-scores{display:flex;gap:1px;background:var(--b);border:.5px solid var(--b);margin-top:auto;flex-wrap:wrap}
+.rc-score{background:var(--deep);padding:18px 20px;flex:1;min-width:100px;text-align:center}
+.rcs-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:300;color:var(--gold);line-height:1}
+.rcs-label{font-size:9px;color:var(--tdim);margin-top:4px;letter-spacing:.06em;line-height:1.4}
+
+/* Report body */
+.r-body{max-width:860px;margin:0 auto;padding:80px 80px 120px;width:100%}
+.r-sec{padding:60px 0;border-bottom:.5px solid var(--b)}
+.r-sec:last-child{border-bottom:none}
+.r-sec-ov{font-size:9px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.r-sec-ov::after{content:'';height:.5px;background:var(--gold-border);opacity:.3;width:48px}
+.r-sec-title{font-family:'Playfair Display',serif;font-size:clamp(20px,2.5vw,28px);font-weight:400;color:var(--t);margin-bottom:20px;line-height:1.2}
+.r-body-txt{font-size:14px;color:var(--ts);line-height:1.9}
+.r-body-txt p{margin-bottom:18px}
+.r-body-txt p:last-child{margin-bottom:0}
+.r-body-txt strong{color:var(--t);font-weight:500}
+.r-body-txt em{color:var(--gold2);font-style:italic}
+
+/* WEF quadrants */
+.wef-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--b);border:.5px solid var(--b);margin:28px 0}
+.wq{background:var(--deep);padding:24px 20px;position:relative}
+.wq.current{background:rgba(196,163,90,.05);outline:.5px solid var(--gold-border)}
+.wq-tag{font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;margin-bottom:8px}
+.wq-name{font-family:'Playfair Display',serif;font-size:17px;color:var(--t);margin-bottom:12px;line-height:1.2}
+.wq-pct{font-family:'Playfair Display',serif;font-size:32px;font-weight:300;color:var(--t);line-height:1}
+.wq-plabel{font-size:9px;color:var(--tdim);margin-top:4px}
+.wq-bar{height:1px;background:var(--b);margin-top:14px}
+.wq-bfill{height:100%;transition:width 1.4s ease}
+.wq-curr-badge{position:absolute;top:10px;right:10px;font-size:8px;letter-spacing:.12em;text-transform:uppercase;background:var(--gold);color:var(--void);padding:2px 8px;font-weight:500}
+.wq-c1 .wq-tag{color:#3d9e88}.wq-c1 .wq-bfill{background:#3d9e88}
+.wq-c2 .wq-tag{color:#c4a35a}.wq-c2 .wq-bfill{background:#c4a35a}
+.wq-c3 .wq-tag{color:#7e74c0}.wq-c3 .wq-bfill{background:#7e74c0}
+.wq-c4 .wq-tag{color:#b85555}.wq-c4 .wq-bfill{background:#b85555}
+
+/* Dimension bars */
+.dim-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:28px 0}
+.dbar{padding:14px 18px;border:.5px solid var(--b);background:var(--glass)}
+.dbar-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.dbar-name{font-size:12px;font-weight:500;color:var(--ts)}
+.dbar-score{font-family:'Playfair Display',serif;font-size:20px;color:var(--gold)}
+.dbar-track{height:1px;background:var(--b);position:relative}
+.dbar-fill{position:absolute;left:0;top:0;height:100%;background:var(--gold);transition:width 1.4s cubic-bezier(.4,0,.2,1)}
+.dbar-tier{font-size:9px;color:var(--tdim);margin-top:5px;letter-spacing:.05em}
+
+/* Hidden pattern box */
+.hidden-box{border:.5px solid var(--gold-border);background:rgba(196,163,90,.03);padding:28px;margin:28px 0}
+.hb-head{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.hb-sigil{width:28px;height:28px;border:.5px solid var(--gold-border);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hb-sigil-core{width:7px;height:7px;background:var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.hb-label{font-size:9px;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.hb-body{font-size:14px;color:var(--ts);line-height:1.9;font-style:italic}
+
+/* Roadmap */
+.roadmap{display:flex;flex-direction:column;gap:0;margin-top:28px;position:relative}
+.roadmap::before{content:'';position:absolute;left:18px;top:0;bottom:0;width:.5px;background:var(--b)}
+.rm-item{display:flex;gap:28px;padding-bottom:36px;position:relative}
+.rm-item:last-child{padding-bottom:0}
+.rm-dot{width:36px;flex-shrink:0;display:flex;align-items:flex-start;justify-content:center;padding-top:3px}
+.rm-dot-inner{width:6px;height:6px;border-radius:50%;background:var(--tm);border:.5px solid var(--gold-border);position:relative;z-index:1;flex-shrink:0;transition:background .3s}
+.rm-item.key .rm-dot-inner{background:var(--gold);box-shadow:0 0 10px rgba(196,163,90,.4)}
+.rm-content{flex:1;padding-bottom:28px;border-bottom:.5px solid var(--b)}
+.rm-item:last-child .rm-content{border-bottom:none}
+.rm-horizon{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
+.rm-title{font-size:14px;font-weight:500;color:var(--t);margin-bottom:6px;line-height:1.4}
+.rm-body{font-size:13px;color:var(--tm);line-height:1.7}
+.rm-kpi{font-size:10px;color:var(--teal);border:.5px solid rgba(61,158,136,.25);background:var(--teal-bg);padding:3px 10px;display:inline-block;margin-top:8px;letter-spacing:.05em}
+
+/* Warning */
+.warn-box{border-left:2px solid var(--crimson);background:var(--crimson-bg);padding:20px 24px;margin:24px 0}
+.warn-label{font-size:9px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--crimson);margin-bottom:6px}
+.warn-body{font-size:13px;color:var(--ts);line-height:1.7}
+
+/* ══ LOCKED SECTION ══ */
+.locked-section{position:relative;margin:28px 0;border:.5px solid var(--b)}
+.locked-blur{filter:blur(4px);opacity:.4;pointer-events:none;user-select:none;padding:28px;max-height:200px;overflow:hidden}
+.locked-overlay{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;background:linear-gradient(to bottom,transparent 0%,rgba(5,6,17,.95) 40%,var(--void) 100%)}
+.lo-lock{font-size:18px;margin-bottom:12px;opacity:.5}
+.lo-title{font-family:'Playfair Display',serif;font-size:16px;color:var(--t);margin-bottom:6px}
+.lo-sub{font-size:11px;color:var(--ts);margin-bottom:16px;line-height:1.6;max-width:300px}
+.lo-plan{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);background:var(--gold-pale);border:.5px solid var(--gold-border);padding:3px 10px;margin-bottom:12px;display:inline-block}
+.lo-btn{font-size:11px;font-weight:500;padding:9px 20px;background:var(--gold);color:var(--void);border:none;cursor:pointer;letter-spacing:.04em;text-decoration:none}
+
+/* ══ UPGRADE STRIP (inline, appears mid-report) ══ */
+.upgrade-strip{display:flex;align-items:center;gap:20px;padding:20px 24px;border:.5px solid var(--gold-border);background:var(--gold-pale);margin:28px 0}
+.us-left{flex:1}
+.us-eyebrow{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+.us-title{font-family:'Playfair Display',serif;font-size:14px;color:var(--t);line-height:1.3}
+.us-btn{font-size:11px;font-weight:500;padding:9px 20px;background:var(--gold);color:var(--void);border:none;cursor:pointer;white-space:nowrap;text-decoration:none;display:inline-block}
+
+/* ══ SIGNATURE + FINAL CTA ══ */
+.report-final{text-align:center;padding-top:60px}
+.rf-sigil{width:44px;height:44px;border:.5px solid var(--gold-border);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:spin 24s linear infinite}
+.rf-sigil-core{width:9px;height:9px;background:var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%)}
+.rf-name{font-family:'Playfair Display',serif;font-size:14px;color:var(--gold);letter-spacing:.06em;margin-bottom:4px}
+.rf-tagline{font-size:10px;color:var(--tdim);letter-spacing:.1em;margin-bottom:32px}
+.rf-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* ══ VALUE PROOF (in report for free users) ══ */
+.value-proof{padding:36px;border:.5px solid var(--gold-border);background:var(--void);margin:40px 0;text-align:center}
+.vp-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:400;color:var(--t);margin-bottom:10px;line-height:1.3}
+.vp-sub{font-size:12px;color:var(--ts);line-height:1.7;margin-bottom:28px;max-width:440px;margin-left:auto;margin-right:auto}
+.vp-features{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;text-align:left}
+.vp-feat{display:flex;gap:10px;align-items:flex-start}
+.vp-feat-check{font-size:12px;color:var(--teal);margin-top:1px;flex-shrink:0}
+.vp-feat-text{font-size:12px;color:var(--ts);line-height:1.5}
+.vp-price{font-family:'Playfair Display',serif;font-size:13px;color:var(--tm);margin-bottom:16px}
+.vp-price strong{color:var(--gold);font-style:italic}
+
+@media(max-width:768px){
+  .assess-sidebar{display:none}
+  .assess-main{padding:40px 24px}
+  .r-cover{padding:48px 24px}
+  .r-body{padding:48px 24px}
+  .dim-grid,.wef-grid,.vp-features{grid-template-columns:1fr}
+  .pf-grid,.pj-grid{grid-template-columns:1fr}
+  .rc-scores{flex-wrap:wrap}
+}
+
+/* ── BIOGRAPHICAL ARC SVG ── */
+.bio-arc-container { position: relative; width: 100%; max-width: 600px; margin: 40px auto; aspect-ratio: 2/1; }
+.bio-arc-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.bio-path-bg { fill: none; stroke: var(--b); stroke-width: 1.5; stroke-linecap: round; }
+.bio-path-main { fill: none; stroke: var(--gold); stroke-width: 2.5; stroke-linecap: round; stroke-dasharray: 1000; stroke-dashoffset: 1000; transition: stroke-dashoffset 2s cubic-bezier(0.4, 0, 0.2, 1); }
+.bio-arc-container.on .bio-path-main { stroke-dashoffset: 0; }
+.bio-label { font-size: 10px; fill: var(--tm); font-family: 'DM Sans', sans-serif; pointer-events: none; opacity: 0; transition: opacity 0.5s 1.5s; }
+.bio-arc-container.on .bio-label { opacity: 1; }
+.bio-marker-group { transform: scale(0); transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 2s; }
+.bio-arc-container.on .bio-marker-group { transform: scale(1); }
+.bio-marker { fill: var(--gold); filter: drop-shadow(0 0 8px rgba(196,163,90,0.6)); cursor: pointer; }
+.bio-marker-pulse { fill: var(--gold); opacity: 0.3; animation: bio-pulse 2s infinite; pointer-events: none; }
+@keyframes bio-pulse { 0% { r: 5; opacity: 0.6; } 100% { r: 15; opacity: 0; } }
+.bio-phase-label { font-family: 'Playfair Display', serif; font-size: 13px; fill: var(--gold2); font-style: italic; opacity: 0; transition: opacity 1s 2.5s; text-anchor: middle; }
+.bio-arc-container.on .bio-phase-label { opacity: 1; }
+.bio-tooltip { position: absolute; background: var(--deep); border: 0.5px solid var(--gold-border); padding: 12px 16px; font-size: 11px; color: var(--t); pointer-events: none; opacity: 0; transition: opacity 0.3s, transform 0.3s; z-index: 100; max-width: 200px; transform: translateY(10px); }
+.bio-tooltip.on { opacity: 1; transform: translateY(0); }
+.bio-tooltip b { color: var(--gold); display: block; margin-bottom: 4px; font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
+
+/* ── ULTRADIAN WAVES CHART ── */
+.chrono-wrap { display: flex; gap: 24px; margin: 30px 0; align-items: stretch; height: 180px; }
+.battery-sec { width: 40px; display: flex; flex-direction: column; align-items: center; border: 1px solid var(--b); padding: 4px; border-radius: 4px; position: relative; }
+.battery-label { font-size: 8px; text-transform: uppercase; letter-spacing: 1px; writing-mode: vertical-lr; transform: rotate(180deg); margin-top: 10px; color: var(--tm); }
+.battery-fill { width: 100%; flex-grow: 1; background: linear-gradient(to top, var(--gold), var(--gold2)); border-radius: 2px; transition: height 1s, background 1s; box-shadow: 0 0 15px rgba(196,163,90,0.2); }
+.battery-fill.exhausted { background: linear-gradient(to top, #444, #666); opacity: 0.5; box-shadow: none; }
+
+.waves-sec { flex-grow: 1; position: relative; border-bottom: 1px solid var(--b); border-left: 1px solid var(--b); }
+.waves-svg { width: 100%; height: 100%; display: block; }
+.wave-path { fill: none; stroke: var(--gold); stroke-width: 2; filter: drop-shadow(0 0 5px rgba(196,163,90,0.3)); }
+.wave-peak-area { fill: url(#peak-grad); opacity: 0.2; }
+.wave-time-line { stroke: var(--teal); stroke-width: 1; stroke-dasharray: 4; }
+.wave-time-label { fill: var(--teal); font-size: 9px; font-weight: bold; }
+.convexity-txt { font-size: 11px; line-height: 1.6; color: var(--tdim); margin-top: 10px; }
+.taleb-svg { width: 100%; height: auto; max-height: 150px; display: block; }
+.bio-viz { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; }
+
+/* ── LUXURY UI/UX: BIOGRAPHICAL VECTOR ── */
+.bio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 32px;
+}
+
+.bio-card {
+    background: var(--glass);
+    border: 0.5px solid var(--gold-border);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+    .bio-grid { grid-template-columns: 1fr; }
+    .bio-card { padding: 15px; }
+}
+
+.bio-card.locked::after {
+    content: '◈ Acesso Restrito ao Plano Elite';
+    position: absolute;
+    inset: 0;
+    background: rgba(5, 6, 17, 0.9);
+    backdrop-filter: blur(12px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold);
+    font-size: 11px;
+    font-weight: bold;
+    letter-spacing: 0.15em;
+    z-index: 20;
+    text-transform: uppercase;
+}
+
+.bio-viz {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.bio-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.bio-score-mini {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 14px;
+    font-style: italic;
+}
+
+.bio-needle { transition: transform 2s cubic-bezier(0.17, 0.67, 0.83, 0.67); transform-origin: 100px 90px; }
+.bio-wave-peak { fill: rgba(196, 163, 90, 0.15); filter: blur(2px); }
+
+/* ── GATING & LOCKS (Legacy fallback) ── */
+.locked-section { position: relative; filter: blur(8px); pointer-events: none; }
+.lock-overlay { position: absolute; inset: 0; background: rgba(5,6,17,0.4); z-index: 50; display: flex; flex-direction: column; align-items: center; justify-content: center; backdrop-filter: blur(2px); }
+.lock-icon { font-size: 40px; color: var(--gold); margin-bottom: 15px; filter: drop-shadow(0 0 10px rgba(196,163,90,0.5)); }
+.lock-msg { color: var(--gold); font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+.btn-upgrade { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: #000; border: none; padding: 10px 20px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; cursor: pointer; pointer-events: auto; transition: transform 0.3s; }
+.btn-upgrade:hover { transform: scale(1.05); }
+
+.hidden-teaser { padding: 40px; text-align: center; border: 1px dashed var(--gold-border); border-radius: 8px; background: rgba(196,163,90,0.03); margin-top: 20px; }
+.hidden-teaser p { color: var(--gold); font-style: italic; font-size: 13px; line-height: 1.6; max-width: 500px; margin: 0 auto; }
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<!-- ════════════════════════════════════════
+     SCREEN 1: PLAN SELECTOR
+     ════════════════════════════════════════ -->
+<div class="scr on" id="scr-plan">
+  <div style="text-align:center;padding:80px 24px 60px">
+    <div class="plan-intro-sigil"><div class="plan-intro-sigil-core"></div></div>
+    <p class="eyebrow" style="margin-bottom:20px">Axioma Prime · Escolha sua trajetória</p>
+    <h1 class="plan-hero-title">A avaliação que as maiores<br/>consultorias do mundo<br/><em>ainda não conseguem fazer.</em></h1>
+    <p class="plan-hero-sub">Selecione o plano que corresponde ao seu acesso atual. Se você ainda não tem um plano, começar pelo gratuito revela mais do que a maioria dos diagnósticos pagos do mercado.</p>
+
+    <div class="plan-type-toggle">
+      <button class="ptt-btn active" onclick="showPlanType('pf',this)">Pessoa Física</button>
+      <button class="ptt-btn" onclick="showPlanType('pj',this)">Pessoa Jurídica</button>
+    </div>
+
+    <!-- PF Plans -->
+    <div class="plans-wrap visible" id="pw-pf">
+      <div class="plans-grid pf-grid" id="pg-pf"></div>
+    </div>
+
+    <!-- PJ Plans -->
+    <div class="plans-wrap" id="pw-pj">
+      <div class="plans-grid pj-grid" id="pg-pj"></div>
+    </div>
+
+    <div style="margin-top:32px">
+      <button class="btn-gold" id="btn-plan-start" onclick="startWithPlan()" disabled style="opacity:.3;cursor:not-allowed">Iniciar avaliação</button>
+      <p style="font-size:11px;color:var(--tdim);margin-top:12px;letter-spacing:.04em">Selecione um plano para continuar</p>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 2: IDENTITY
+     ════════════════════════════════════════ -->
+<div class="scr" id="scr-id">
+  <div class="id-wrap" style="margin:auto;padding:80px 24px">
+    <div class="id-plan-context" id="id-plan-ctx"></div>
+    <h2 class="id-title">Antes de começar,<br/>quem <em>é você?</em></h2>
+    <p class="id-sub">Estas informações calibram o diagnóstico. Quanto mais específico, mais poderoso o relatório.</p>
+    <div class="frow">
+      <div class="field"><label>Nome completo</label><input type="text" id="f-name" placeholder="Como prefere ser chamado"/></div>
+      <div class="field"><label>E-mail</label><input type="email" id="f-email" placeholder="Para receber o relatório"/></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Cargo atual</label><input type="text" id="f-role" placeholder="Ex: VP de Estratégia"/></div>
+      <div class="field"><label>Organização</label><input type="text" id="f-org" placeholder="Empresa ou área"/></div>
+    </div>
+    <div class="frow">
+      <div class="field"><label>Setor</label>
+        <select id="f-sector" onchange="this.classList.add('filled')">
+          <option value="">Selecionar...</option>
+          <option>Tecnologia & Digital</option><option>Serviços Financeiros</option>
+          <option>Saúde & Farmácia</option><option>Manufatura Avançada</option>
+          <option>Educação & Pesquisa</option><option>Energia & Infraestrutura</option>
+          <option>Consultoria & Profissional</option><option>Varejo & Consumo</option>
+          <option>Governo & Terceiro Setor</option><option>Outro</option>
+        </select>
+      </div>
+      <div class="field"><label>Anos de experiência</label>
+        <select id="f-years" onchange="this.classList.add('filled')">
+          <option value="">Selecionar...</option>
+          <option>1–3 anos</option><option>4–8 anos</option>
+          <option>9–15 anos</option><option>16–25 anos</option><option>25+ anos</option>
+        </select>
+      </div>
+      <div class="field"><label>Idade atual</label>
+        <input type="number" id="f-age" placeholder="Ex: 35" min="21" max="100"/>
+      </div>
+    </div>
+    <div class="field"><label>Maior desafio de desenvolvimento hoje</label>
+      <textarea class="ptxt" id="f-challenge" placeholder="Seja específico — isso personaliza o diagnóstico inteiramente..."></textarea>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:28px">
+      <button class="btn-ink" onclick="showScreen('scr-plan')">← Voltar</button>
+      <button class="btn-gold" onclick="startAssessment()">Iniciar avaliação →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 3: ASSESSMENT
+     ════════════════════════════════════════ -->
+<div class="scr" id="scr-assess">
+  <div class="assess-sidebar">
+    <div class="sidebar-plan-badge" id="sb-plan-badge"></div>
+    <p class="sidebar-nav-label">Lentes de análise</p>
+    <div id="sb-nav"></div>
+    <div class="sidebar-progress">
+      <div class="sp-track"><div class="sp-fill" id="sp-fill"></div></div>
+      <p class="sp-pct" id="sp-pct">0% concluído</p>
+    </div>
+  </div>
+  <div class="assess-main" id="assess-main"></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 4: PROCESSING
+     ════════════════════════════════════════ -->
+<div class="scr" id="scr-proc">
+  <div class="proc-orb">
+    <div class="orb-r"></div><div class="orb-r"></div><div class="orb-r"></div>
+    <div class="orb-c"></div>
+  </div>
+  <h2 class="proc-title">Construindo seu diagnóstico</h2>
+  <p class="proc-sub">Inteligência artificial cruzando 10 frameworks acadêmicos<br/>com seus dados para gerar o relatório mais preciso possível.</p>
+  <p class="proc-msg" id="proc-msg">Analisando posicionamento WEF 2030...</p>
+  <div class="proc-fws" id="proc-fws">
+    <span class="proc-fw">WEF 2025</span><span class="proc-fw">Taleb</span>
+    <span class="proc-fw">Kegan</span><span class="proc-fw">Bourdieu</span>
+    <span class="proc-fw">Kahneman</span><span class="proc-fw">Levinson</span>
+  </div>
+  <div class="proc-bar"><div class="proc-bar-fill"></div></div>
+</div>
+
+<!-- ════════════════════════════════════════
+     SCREEN 5: REPORT
+     ════════════════════════════════════════ -->
+<div class="scr" id="scr-report">
+  <div class="r-cover">
+    <div class="rc-top">
+      <span class="rc-logo">Axioma Prime</span>
+      <div class="rc-line"></div>
+      <span class="rc-date" id="rc-date"></span>
+      <span class="rc-class">Diagnóstico Confidencial</span>
+    </div>
+    <div class="rc-plan-strip" id="rc-plan-strip"></div>
+    <p class="rc-eyebrow">Relatório de Capital Humano</p>
+    <h1 class="rc-name" id="rc-name"></h1>
+    <p class="rc-role" id="rc-role"></p>
+    <h2 class="rc-headline" id="rc-headline"></h2>
+    <p class="rc-subtext" id="rc-subtext"></p>
+    <div class="rc-scores" id="rc-scores"></div>
+  </div>
+
+  <div class="r-body">
+    <!-- WEF -->
+    <div class="r-sec" id="sec-wef">
+      <p class="r-sec-ov">Cenários WEF 2030</p>
+      <h2 class="r-sec-title" id="wef-title"></h2>
+      <div class="wef-grid" id="wef-grid"></div>
+      <div class="r-body-txt" id="wef-body"></div>
+    </div>
+
+    <!-- DIMENSIONS -->
+    <div class="r-sec" id="sec-dims">
+      <p class="r-sec-ov" id="dims-overline">Dimensões analisadas</p>
+      <h2 class="r-sec-title" id="dims-title"></h2>
+      <div class="dim-grid" id="dim-grid"></div>
+      <div class="r-body-txt" id="dims-body"></div>
+    </div>
+
+    <!-- COGNITIVE (locked in free) -->
+    <div class="r-sec" id="sec-cog"></div>
+
+    <!-- HIDDEN PATTERN (locked below Cúpula/Comando) -->
+    <div class="r-sec" id="sec-hidden"></div>
+    <div class="r-sec" id="sec-bio">
+      <p class="r-sec-ov">Vetor Biográfico & Cronobiologia</p>
+      <h2 class="r-sec-title" id="bio-title">Trajetória de Realização</h2>
+      
+      <div class="bio-grid">
+        <!-- CARD 1: SENTENIOS -->
+        <div class="bio-card" id="card-bio">
+          <div class="bio-title-row">
+            <h3 class="rm-title" style="margin:0;font-size:12px">Arco da Trajetória (Senténios)</h3>
+            <span class="bio-score-mini" id="bio-phase-label">Fase: Consolidação</span>
+          </div>
+          <div class="bio-viz" id="bio-container">
+            <svg viewBox="0 0 200 100" class="taleb-svg">
+              <path d="M20 90 A 80 80 0 0 1 180 90" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="8" />
+              <path d="M20 90 A 80 80 0 0 1 180 90" fill="none" stroke="var(--gold)" stroke-width="1" id="bio-arc-path-lux" stroke-dasharray="2,2" />
+              <g id="bio-marker-lux" style="transition: transform 1s ease-out">
+                <circle cx="0" cy="0" r="4" fill="var(--gold)">
+                  <animate attributeName="r" values="3;5;3" dur="2s" repeatCount="indefinite" />
+                </circle>
+              </g>
+              <text x="20" y="98" font-size="6" fill="var(--tm)">21 anos</text>
+              <text x="160" y="98" font-size="6" fill="var(--tm)">70 anos+</text>
+            </svg>
+          </div>
+          <div class="rm-body" id="bio-body"></div>
+        </div>
+
+        <!-- CARD 2: ENERGY -->
+        <div class="bio-card" id="card-chrono">
+          <div class="bio-title-row">
+            <h3 class="rm-title" style="margin:0;font-size:12px">Arquitetura de Energia</h3>
+            <span class="bio-score-mini" id="chrono-peak-label">Pico: 08h - 11h</span>
+          </div>
+          <div class="bio-viz">
+            <svg viewBox="0 0 240 80" class="taleb-svg">
+              <path d="M0 60 Q 30 60, 60 20 T 120 60 T 180 20 T 240 60" fill="none" stroke="rgba(196,163,90,0.2)" stroke-width="1" />
+              <path d="" class="bio-wave-peak" id="chrono-peak-lux" />
+              <line x1="100" y1="0" x2="100" y2="80" stroke="var(--gold)" stroke-width="0.5" stroke-dasharray="4" id="chrono-now-lux" />
+              <text x="102" y="10" font-size="6" fill="var(--gold)">Agora</text>
+            </svg>
+          </div>
+          <div class="rm-body" id="chrono-body"></div>
+        </div>
+
+        <!-- CARD 3: ANTIFRAGILITY -->
+        <div class="bio-card" id="card-taleb">
+          <div class="bio-title-row">
+            <h3 class="rm-title" style="margin:0;font-size:12px">Medidor de Antifragilidade</h3>
+            <span class="bio-score-mini" id="taleb-status-label">Convexidade: --</span>
+          </div>
+          <div class="bio-viz">
+            <svg viewBox="0 0 200 120" class="taleb-svg">
+              <path d="M 40 100 A 60 60 0 0 1 160 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10" />
+              <path d="M 40 100 A 60 60 0 0 1 80 48" fill="none" stroke="#ff3b3b" stroke-width="2" opacity="0.4" id="gz-f-lux" />
+              <path d="M 85 45 A 60 60 0 0 1 115 45" fill="none" stroke="#888" stroke-width="2" opacity="0.4" id="gz-r-lux" />
+              <path d="M 120 48 A 60 60 0 0 1 160 100" fill="none" stroke="var(--gold)" stroke-width="2" opacity="0.4" id="gz-a-lux" />
+              
+              <!-- Labels Internos -->
+              <text x="40" y="115" font-size="5" fill="#ff3b3b" text-anchor="middle" opacity="0.7">Frágil</text>
+              <text x="100" y="35" font-size="5" fill="#888" text-anchor="middle" opacity="0.7">Robusto</text>
+              <text x="160" y="115" font-size="5" fill="var(--gold)" text-anchor="middle" opacity="0.7">Antifrágil</text>
+
+              <path d="M 100 100 L 100 40 L 97 100 Z" fill="var(--gold)" class="bio-needle" id="taleb-needle-lux" style="transition: transform 1.5s cubic-bezier(0.34, 1.56, 0.64, 1)" />
+              <circle cx="100" cy="100" r="3" fill="var(--gold)" />
+            </svg>
+          </div>
+          <div class="rm-body" id="taleb-body">
+            <div style="font-weight:bold; font-size:10px; color:var(--gold); margin-top:10px; text-transform:uppercase; letter-spacing:1px;">Convexidade de Resposta</div>
+            <div class="convexity-txt" id="taleb-convexity"></div>
+          </div>
+        </div>
+      </div>
+    <!-- ROADMAP -->
+    <div class="r-sec" id="sec-roadmap">
+
+    <!-- ROADMAP -->
+    <div class="r-sec" id="sec-roadmap">
+      <p class="r-sec-ov">Roadmap estratégico</p>
+      <h2 class="r-sec-title" id="road-title"></h2>
+      <div class="r-body-txt" id="road-intro"></div>
+      <div class="roadmap" id="roadmap"></div>
+    </div>
+
+    <!-- WARNING -->
+    <div class="r-sec" id="sec-warn">
+      <p class="r-sec-ov">Ponto de atenção crítico</p>
+      <h2 class="r-sec-title" id="warn-title"></h2>
+      <div class="warn-box"><p class="warn-label">Atenção prioritária</p><div class="warn-body" id="warn-alert"></div></div>
+      <div class="r-body-txt" id="warn-body"></div>
+    </div>
+
+    <!-- VALUE PROOF + UPGRADE (for non-top plans) -->
+    <div id="sec-upgrade"></div>
+
+    <!-- SIGNATURE -->
+    <div class="report-final">
+      <div class="rf-sigil"><div class="rf-sigil-core"></div></div>
+      <p class="rf-name">Axioma Prime</p>
+      <p class="rf-tagline">A infraestrutura cognitiva da elite da produtividade moderna</p>
+      <div class="rf-actions" id="rf-actions"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════
+// STARFIELD
+// ════════════════════════════════════════
+(()=>{
+  const c=document.getElementById('bg'),ctx=c.getContext('2d');
+  let stars=[];
+  const resize=()=>{c.width=window.innerWidth;c.height=window.innerHeight;};
+  const init=()=>{stars=Array.from({length:160},()=>({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*.9+.15,b:Math.random()*.08+.03,p:Math.random()*.35+.15,d:Math.random()*5+3,ph:Math.random()*Math.PI*2}));};
+  const draw=()=>{ctx.clearRect(0,0,c.width,c.height);const t=Date.now()/1000;stars.forEach(s=>{const o=s.b+(s.p-s.b)*(.5+.5*Math.sin(t*2*Math.PI/s.d+s.ph));ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle=`rgba(221,217,207,${o})`;ctx.fill();});requestAnimationFrame(draw);};
+  window.addEventListener('resize',()=>{resize();init();});
+  resize();init();draw();
+})();
+
+// ════════════════════════════════════════
+// PLAN DEFINITIONS
+// ════════════════════════════════════════
+const PLANS = {
+  // PF
+  pf_free: {
+    id:'pf_free', type:'pf', name:'Diagnóstico', tier:'free',
+    badge:'badge-free', badgeText:'Grátis para sempre',
+    price:'R$ 0', priceSub:'Sem cartão de crédito',
+    tagline:'O primeiro passo. Descubra em qual cenário WEF você está.',
+    lenses:3, lensLabel:'3 Lentes',
+    features:['Posicionamento WEF 2030','Arquitetura Cognitiva básica','Impulso Biográfico'],
+    locked:['Padrão oculto (Lentes 4–10)','Kegan + Antifragilidade','Roadmap completo 12 meses','Exportar PDF'],
+    ctaClass:'cta-free', ctaText:'Começar grátis',
+    color:'#3d9e88',
+    dims:3, hasHidden:false, hasKegan:false, hasRoadmapFull:false, hasPDF:false
+  },
+  pf_traj: {
+    id:'pf_traj', type:'pf', name:'Trajetória', tier:'pro',
+    badge:'badge-hot', badgeText:'Mais popular',
+    price:'R$ 197', priceSub:'/mês · 7 dias grátis',
+    tagline:'Para o profissional que quer ser a pessoa mais preparada da sala.',
+    lenses:7, lensLabel:'7 Lentes',
+    features:['Tudo do Diagnóstico','Antifragilidade (Taleb)','Estágio Kegan + Desenvolvimento vertical','Capital Social Estratégico (Bourdieu)','Metabolismo Tecnológico + AI Readiness','Acuidade Sistêmica (Senge)','Roadmap completo 12 meses','Exportar PDF'],
+    locked:['Padrão oculto multi-dimensional','Cronobiologia + Arquitetura de Energia','Visão Prospectiva (Lente X)','Sessão 1:1 com especialista'],
+    ctaClass:'cta-hot', ctaText:'Ativar Trajetória',
+    color:'#c4a35a',
+    dims:7, hasHidden:false, hasKegan:true, hasRoadmapFull:true, hasPDF:true
+  },
+  pf_cupula: {
+    id:'pf_cupula', type:'pf', name:'Cúpula', tier:'elite',
+    badge:'badge-elite', badgeText:'Acesso por aplicação',
+    price:'R$ 497', priceSub:'/mês · vagas limitadas',
+    tagline:'Para quem opera no topo e precisa da inteligência mais completa.',
+    lenses:10, lensLabel:'10 Lentes completas',
+    features:['Tudo do Trajetória','Padrão oculto multi-dimensional','Arquitetura de Energia + Cronobiologia','Visão Prospectiva — detecção de futuros','Diagnóstico de equipe (até 3 pessoas)','Sessão estratégica 1:1 mensal','Relatório impresso trimestral'],
+    locked:[],
+    ctaClass:'cta-elite', ctaText:'Solicitar acesso',
+    color:'#c4a35a',
+    dims:10, hasHidden:true, hasKegan:true, hasRoadmapFull:true, hasPDF:true
+  },
+  // PJ
+  pj_rec: {
+    id:'pj_rec', type:'pj', name:'Reconhecimento', tier:'free',
+    badge:'badge-free', badgeText:'Grátis · 30 dias',
+    price:'R$ 0', priceSub:'Sem cartão · expira em 30 dias',
+    tagline:'Veja o sistema funcionando na sua equipe antes de comprometer orçamento.',
+    lenses:3, lensLabel:'3 Lentes · até 3 pessoas',
+    features:['Posicionamento WEF 2030 organizacional','Relatório PDF introdutório','Até 3 colaboradores'],
+    locked:['Dashboard de equipe completo','Analytics coletivo','Roadmap estratégico de equipe','Integração HRIS'],
+    ctaClass:'cta-free', ctaText:'Ativar grátis',
+    color:'#3d9e88',
+    dims:3, hasHidden:false, hasKegan:false, hasRoadmapFull:false, hasPDF:false
+  },
+  pj_est: {
+    id:'pj_est', type:'pj', name:'Estrutura', tier:'pro',
+    badge:'badge-hot', badgeText:'Mais escolhido',
+    price:'R$ 2.900', priceSub:'/mês · implementação em 5 dias',
+    tagline:'Para organizações que precisam de visibilidade real do capital humano.',
+    lenses:7, lensLabel:'7 Lentes · até 50 pessoas',
+    features:['Dashboard de capital humano (50 colaboradores)','7 dimensões por pessoa','Análise de gaps por unidade','Identificação de top performers','Relatório trimestral por unidade','Exportar PDF executivo'],
+    locked:['Padrão oculto coletivo','Kegan organizacional','Cronobiologia de equipe','Consultor dedicado'],
+    ctaClass:'cta-hot', ctaText:'Agendar demo',
+    color:'#c4a35a',
+    dims:7, hasHidden:false, hasKegan:true, hasRoadmapFull:true, hasPDF:true
+  },
+  pj_cmd: {
+    id:'pj_cmd', type:'pj', name:'Comando', tier:'pro2',
+    badge:'badge-ent', badgeText:'Escala avançada',
+    price:'R$ 7.900', priceSub:'/mês · até 200 colaboradores',
+    tagline:'Para organizações em transformação acelerada com consultor dedicado.',
+    lenses:10, lensLabel:'10 Lentes · até 200 pessoas',
+    features:['Tudo do Estrutura','10 dimensões por pessoa','Padrão oculto coletivo','2h mensais com consultor Axioma','Integração HRIS/ADP','Relatório para board trimestral','API Axioma + SLA 4h'],
+    locked:['White-label','Colaboradores ilimitados'],
+    ctaClass:'cta-elite', ctaText:'Agendar conversa',
+    color:'#7e74c0',
+    dims:10, hasHidden:true, hasKegan:true, hasRoadmapFull:true, hasPDF:true
+  },
+  pj_sup: {
+    id:'pj_sup', type:'pj', name:'Supremacia', tier:'enterprise',
+    badge:'badge-ent', badgeText:'Enterprise',
+    price:'Sob consulta', priceSub:'Contrato anual · implementação dedicada',
+    tagline:'Parceria estratégica full-service para organizações que definem o padrão do mercado.',
+    lenses:10, lensLabel:'10 Lentes · ilimitado',
+    features:['Tudo do Comando — ilimitado','Colaboradores ilimitados','White-label completo','Treinamento presencial','SLA 1h · gerente exclusivo','API full-access + webhooks'],
+    locked:[],
+    ctaClass:'cta-elite', ctaText:'Falar com especialista',
+    color:'#c4a35a',
+    dims:10, hasHidden:true, hasKegan:true, hasRoadmapFull:true, hasPDF:true
+  }
+};
+
+const PF_ORDER = ['pf_free','pf_traj','pf_cupula'];
+const PJ_ORDER = ['pj_rec','pj_est','pj_cmd','pj_sup'];
+
+// ════════════════════════════════════════
+// STATE
+// ════════════════════════════════════════
+let selectedPlan = null;
+let currentLens = 0;
+const ANS = {};
+
+// ════════════════════════════════════════
+// PLAN GRID RENDER
+// ════════════════════════════════════════
+function renderPlanGrids(){
+  renderPlanGrid('pg-pf', PF_ORDER);
+  renderPlanGrid('pg-pj', PJ_ORDER);
+}
+
+function renderPlanGrid(elId, order){
+  const el = document.getElementById(elId);
+  el.innerHTML = order.map(id => {
+    const p = PLANS[id];
+    const feats = p.features.map(f => `<div class="pcf-item"><svg class="pcf-check" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="rgba(61,158,136,.12)" stroke="#3d9e88" stroke-width=".5"/><path d="M4.5 7l2 2 3.5-3.5" stroke="#3d9e88" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="pcf-text">${f}</span></div>`).join('');
+    const locks = p.locked.slice(0,2).map(f => `<div class="pcf-item"><svg class="pcf-check" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="6.5" fill="rgba(255,255,255,.02)" stroke="rgba(255,255,255,.08)" stroke-width=".5"/><path d="M4.5 4.5a2.5 2.5 0 0 1 5 0V6H4V4.5z" stroke="rgba(255,255,255,.15)" stroke-width=".8" fill="none"/><rect x="3.5" y="6" width="7" height="5" rx="1" stroke="rgba(255,255,255,.15)" stroke-width=".8" fill="none"/></svg><span class="pcf-lock">${f}</span></div>`).join('');
+    const isFeatured = p.tier === 'pro' || p.tier === 'elite';
+    return `<div class="plan-card ${isFeatured?'featured-card':''}" id="pc-${id}" onclick="selectPlan('${id}')">
+      <div class="selected-mark"></div>
+      <div class="pc-top">
+        <span class="pc-badge ${p.badge}">${p.badgeText}</span>
+        <p class="pc-name">${p.name}</p>
+        <p class="pc-tagline">${p.tagline}</p>
+        <div class="pc-price">
+          <div class="pc-price-num ${p.tier==='free'?'free':p.tier==='enterprise'?'custom':''}">${p.price}</div>
+          <p class="pc-price-per">${p.priceSub}</p>
+        </div>
+        <span class="pc-lenses">${p.lensLabel}</span>
+      </div>
+      <div class="pc-features">${feats}${locks}</div>
+      <div class="pc-cta"><button class="pc-cta-btn ${p.ctaClass}">${p.ctaText}</button></div>
+    </div>`;
+  }).join('');
+}
+
+function selectPlan(id){
+  selectedPlan = PLANS[id];
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('pc-'+id).classList.add('selected');
+  const btn = document.getElementById('btn-plan-start');
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  btn.style.cursor = 'pointer';
+}
+
+function showPlanType(type, btn){
+  document.querySelectorAll('.ptt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pw-pf').classList.toggle('visible', type==='pf');
+  document.getElementById('pw-pj').classList.toggle('visible', type==='pj');
+  selectedPlan = null;
+  const sb = document.getElementById('btn-plan-start');
+  sb.disabled = true; sb.style.opacity='.3'; sb.style.cursor='not-allowed';
+}
+
+function startWithPlan(){
+  if (!selectedPlan) return;
+  // Populate identity context
+  document.getElementById('id-plan-ctx').innerHTML = `
+    <div>
+      <p class="ipc-name">${selectedPlan.name}</p>
+      <p class="ipc-desc">${selectedPlan.tagline}</p>
+    </div>
+    <span class="ipc-lenses">${selectedPlan.lensLabel}</span>`;
+  showScreen('scr-id');
+}
+
+// ════════════════════════════════════════
+// LENS DEFINITIONS (10 total)
+// ════════════════════════════════════════
+const LENSES_ALL = [
+  { id:'wef', num:'I', name:'Cenários WEF 2030', sub:'Posicionamento macro', minPlan:1,
+    title:'Onde você está nos <em>futuros da produtividade</em>',
+    desc:'O relatório WEF × Accenture (janeiro 2025) mapeou 4 cenários determinados pela interação de tecnologia e capital humano. Esta lente identifica seu posicionamento atual.',
+    fw:'WEF Global Economic Futures 2025 × Accenture',
+    questions:[
+      {id:'wef1',type:'spec',text:'Como você avalia sua velocidade de adoção e integração de novas tecnologias no trabalho?',left:'Adoto com cautela',right:'Experimento sistematicamente',val:50},
+      {id:'wef2',type:'choice',text:'Sua trajetória de desenvolvimento de capital humano nos últimos 2 anos:',
+        opts:[{t:'Aceleração intensa',d:'Investi significativamente — mudei capacidades de forma mensurável.'},{t:'Crescimento gradual',d:'Evolução constante mas sem saltos qualitativos expressivos.'},{t:'Estabilidade',d:'Mantive competências, pouco desenvolvimento ativo.'},{t:'Lacuna crescente',d:'A velocidade das mudanças supera minha capacidade de adaptação.'}]}
+    ]},
+  { id:'cogn', num:'II', name:'Arquitetura Cognitiva', sub:'Como você pensa', minPlan:1,
+    title:'O mapa da sua <em>mente estratégica</em>',
+    desc:'Baseado em neurociência cognitiva e na teoria de duplo-processo de Kahneman. Mapeia como você processa informação complexa e toma decisões.',
+    fw:'Kahneman Sistema 1/2 · Neurociência Cognitiva',
+    questions:[
+      {id:'cog1',type:'spec',text:'Diante de decisões complexas e ambíguas, você tende a:',left:'Confiar na intuição imediata',right:'Demandar análise estruturada',val:50},
+      {id:'cog2',type:'matrix',cols:3,text:'Qual é sua vantagem cognitiva mais distintiva?',
+        opts:[{t:'Análise profunda',d:'Decompõe sistemas'},{t:'Síntese criativa',d:'Conecta domínios'},{t:'Execução precisa',d:'Estratégia → ação'},{t:'Sensing humano',d:'Lê contextos'},{t:'Visão sistêmica',d:'Padrões e feedbacks'},{t:'Narração estratégica',d:'Dados → história'}]}
+    ]},
+  { id:'bio', num:'III', name:'Impulso Biográfico', sub:'Seu momento de carreira', minPlan:1,
+    title:'Em que ponto do <em>arco da sua trajetória</em> você está?',
+    desc:'Daniel Levinson e Donald Super mapearam ciclos previsíveis de carreira. Esta lente detecta seu "impulso biográfico" — o vetor de energia do momento atual.',
+    fw:'Levinson & Super · Ciclos de Vida de Carreira',
+    questions:[
+      {id:'bio1',type:'choice',text:'Qual descrição melhor captura sua relação atual com a carreira?',
+        opts:[{t:'Construção ativa',d:'Cada movimento é calculado para acumular posição e capacidade.'},{t:'Consolidação',d:'Atingi um patamar. O desafio é aprofundar, não expandir.'},{t:'Transição',d:'Uma fase terminou e outra ainda não começou. Estou no entre.'},{t:'Renovação',d:'Depois de um plateau, encontrei um segundo impulso.'}]},
+      {id:'bio2',type:'freq',text:'Com que frequência seu trabalho atual está à altura do seu potencial?',opts:['Raramente','Às vezes','Frequentemente','Quase sempre','Consistentemente']}
+    ]},
+  { id:'anti', num:'IV', name:'Antifragilidade', sub:'Resposta ao caos', minPlan:2,
+    title:'Você <em>cresce com o caos</em> ou sobrevive a ele?',
+    desc:'Nassim Taleb distingue frágil, robusto e antifrágil. Esta lente mede seu índice de antifragilidade — a capacidade de sair mais forte das rupturas.',
+    fw:'Antifragilidade · Nassim Nicholas Taleb',
+    questions:[
+      {id:'anti1',type:'choice',text:'Quando você vivenciou uma ruptura significativa, qual foi o padrão predominante?',
+        opts:[{t:'Crescimento por ruptura',d:'A crise revelou algo que não teria acessado de outra forma. Saí mais capaz.'},{t:'Recuperação resiliente',d:'Absorvi o impacto, mantive o núcleo, me reestabilizei.'},{t:'Recuperação lenta',d:'Levei tempo mas voltei ao patamar anterior.'},{t:'Ainda processando',d:'Tenho dificuldade de fazer sentido de rupturas maiores.'}]},
+      {id:'anti2',type:'spec',text:'Diante de alta incerteza e volatilidade, você tende a:',left:'Aguardar clareza para agir',right:'Agir estrategicamente com informação parcial',val:50}
+    ]},
+  { id:'tech', num:'V', name:'Metabolismo Tecnológico', sub:'AI Readiness real', minPlan:2,
+    title:'Sua <em>velocidade real</em> de integração tecnológica',
+    desc:'Baseado na curva de difusão de Rogers e em pesquisa de AI Readiness. Vai além da autopercepção — mede comportamentos observáveis.',
+    fw:'Diffusion of Innovations · Rogers · AI Adoption Index',
+    questions:[
+      {id:'tech1',type:'matrix',cols:2,multi:true,text:'Selecione todos os comportamentos que descrevem sua relação com tecnologias emergentes:',
+        opts:[{t:'Experimento ferramentas de IA semanalmente',d:''},{t:'Integrei IA em fluxos de trabalho reais',d:''},{t:'Ensino/apresento novas tecnologias',d:''},{t:'Monitoro tendências sistematicamente',d:''},{t:'Avalio ROI antes de adotar',d:''},{t:'Sou o primeiro no meu time a testar novidades',d:''}]},
+      {id:'tech2',type:'spec',text:'Profundidade da sua compreensão sobre como IA afeta especificamente seu campo:',left:'Conhecimento superficial',right:'Compreensão profunda e específica',val:50}
+    ]},
+  { id:'social', num:'VI', name:'Capital Social Estratégico', sub:'Posição na rede', minPlan:2,
+    title:'A <em>qualidade real</em> do seu capital relacional',
+    desc:'Pierre Bourdieu e Mark Granovetter mostraram que posição na rede — não tamanho — determina acesso a oportunidade. Esta lente mapeia onde você está.',
+    fw:'Capital Social · Bourdieu · Network Science · Granovetter',
+    questions:[
+      {id:'soc1',type:'choice',text:'Como você descreveria sua posição típica em redes profissionais?',
+        opts:[{t:'Conector entre mundos',d:'Faço a ponte entre comunidades diferentes. Sou quem apresenta pessoas que nunca se encontrariam.'},{t:'Núcleo de cluster',d:'Central em um grupo coeso de alta confiança. Profundidade sobre amplitude.'},{t:'Nó periférico ativo',d:'Transito por diferentes redes sem estar no centro de nenhuma.'},{t:'Construção em curso',d:'Minha rede está sendo construída de forma deliberada.'}]},
+      {id:'soc2',type:'spec',text:'Sua rede inclui pessoas radicalmente diferentes de você (setor, formação, cultura, geração)?',left:'Principalmente similar a mim',right:'Alta diversidade e amplitude',val:50}
+    ]},
+  { id:'sys', num:'VII', name:'Acuidade Sistêmica', sub:'Pensamento de segunda ordem', minPlan:2,
+    title:'Você vê os <em>sistemas que moldam os sistemas</em>',
+    desc:'Peter Senge e Donella Meadows documentaram que líderes que operam em pensamento linear perdem os pontos de alavanca. Esta lente mede sua capacidade de detectar loops de feedback.',
+    fw:'A Quinta Disciplina · Senge · Thinking in Systems · Meadows',
+    questions:[
+      {id:'sys1',type:'choice',text:'Quando toma uma decisão importante, até onde você naturalmente projeta as consequências?',
+        opts:[{t:'Resultado direto imediato',d:'Foco no objetivo da ação.'},{t:'Reações de segundo nível',d:'Penso em como os sistemas afetados vão reagir.'},{t:'Loops sistêmicos',d:'Identifico como as reações criam novas condições.'},{t:'Evolução do sistema',d:'Modelo como a decisão altera a estrutura ao longo do tempo.'}]},
+      {id:'sys2',type:'freq',text:'Com que frequência você identifica causas raiz de problemas que outros tentam resolver pelos sintomas?',opts:['Raramente','Às vezes','Frequentemente','Quase sempre','Sistematicamente']}
+    ]},
+  { id:'kegan', num:'VIII', name:'Estágio de Desenvolvimento', sub:'Vertical development', minPlan:2,
+    title:'A <em>profundidade</em> do seu centro de gravidade de liderança',
+    desc:'Robert Kegan mapeou estágios de desenvolvimento adulto que determinam a capacidade de operar com complexidade. A maioria das ferramentas de liderança ignora completamente essa dimensão.',
+    fw:'Teoria de Desenvolvimento Adulto · Robert Kegan',
+    questions:[
+      {id:'keg1',type:'choice',text:'Quando você encontra duas perspectivas opostas e válidas, sua reação mais natural é:',
+        opts:[{t:'Selecionar a mais defensável',d:'Há uma resposta mais correta. Avalio os argumentos e adoto a posição mais forte.'},{t:'Buscar síntese',d:'Ambas capturam algo real. Integro as duas perspectivas.'},{t:'Manter ambas ativas',d:'Consigo operar com a tensão produtiva entre opostos sem precisar resolvê-la.'},{t:'Questionar o frame',d:'Pergunto que contexto faz uma ou outra parecer verdadeira.'}]},
+      {id:'keg2',type:'spec',text:'O quanto sua identidade profissional é independente de validação externa?',left:'Muito ligada ao cargo/status',right:'Completamente independente',val:50}
+    ]},
+  { id:'energy', num:'IX', name:'Arquitetura de Energia', sub:'Cronobiologia e performance', minPlan:3,
+    title:'O <em>ritmo real</em> da sua performance cognitiva',
+    desc:'Cronobiologia e neurofisiologia mostram que performance cognitiva de pico é cíclica e previsível. Esta lente mapeia sua arquitetura de energia e identifica onde você desperdiça seu ativo mais escasso.',
+    fw:'Cronobiologia · Neurociência da Performance · Ultradian Rhythm',
+    questions:[
+      {id:'ene1',type:'matrix',cols:3,text:'Quando você experimenta seu pico de clareza cognitiva?',
+        opts:[{t:'4–7h',d:'Madrugada'},{t:'7–10h',d:'Manhã cedo'},{t:'10–12h',d:'Meio-manhã'},{t:'13–15h',d:'Pós-almoço'},{t:'15–18h',d:'Tarde'},{t:'19h+',d:'Noite'}]},
+      {id:'ene2',type:'choice',text:'Como é sua relação atual com recuperação cognitiva?',
+        opts:[{t:'Recuperação intencional',d:'Protejo ativamente períodos de recuperação.'},{t:'Recuperação reativa',d:'Recupero quando não tenho alternativa — férias forçadas.'},{t:'Déficit crônico',d:'Opero consistentemente abaixo do pico.'},{t:'Construção em curso',d:'Desenvolvendo práticas deliberadas de gestão de energia.'}]}
+    ]},
+  { id:'fore', num:'X', name:'Visão Prospectiva', sub:'Detecção de futuros', minPlan:3,
+    title:'A sua capacidade de <em>ver o que ainda não chegou</em>',
+    desc:'A visão prospectiva é a meta-competência do século 21. Esta lente avalia sua aptidão para operar com horizontes de tempo expandidos e incerteza estrutural.',
+    fw:'Strategic Foresight · Futures Studies · IFTF',
+    questions:[
+      {id:'fore1',type:'spec',text:'Qual é o horizonte de tempo com que você naturalmente pensa e planeja?',left:'3–6 meses (tático)',right:'5–10 anos (estrutural)',val:30},
+      {id:'fore2',type:'choice',text:'Em relação a sinais fracos de mudança — tendências emergentes antes de se tornarem óbvias — você:',
+        opts:[{t:'Detecção sistemática',d:'Tenho práticas deliberadas para capturar sinais fracos.'},{t:'Detecção intuitiva',d:'Percebo tendências, mas sem processo sistemático.'},{t:'Reativa',d:'Reconheço as tendências quando já estão amplamente visíveis.'},{t:'Construção necessária',d:'Preciso desenvolver essa capacidade deliberadamente.'}]},
+      {id:'fore3',type:'txt',text:'Qual é sua aposta estratégica sobre como seu campo vai evoluir nos próximos 5 anos — algo que ainda não é consenso?',ph:'Descreva em 2-4 frases a tendência que você acredita ser real antes de todo mundo...'}
+    ]}
+];
+
+// ════════════════════════════════════════
+// PLAN → LENSES MAPPING
+// ════════════════════════════════════════
+// minPlan: 1=free(3 lenses), 2=pro(7 lenses), 3=elite(10 lenses)
+function getPlanLensCount(plan){ return plan ? plan.lenses : 3; }
+function getPlanMinTier(plan){
+  if (!plan) return 1;
+  if (plan.tier==='free') return 1;
+  if (plan.tier==='pro' || plan.tier==='pro2') return 2;
+  if (plan.tier==='elite' || plan.tier==='enterprise') return 3;
+  return 1;
+}
+
+function getActiveLenses(){
+  const tier = getPlanMinTier(selectedPlan);
+  const count = getPlanLensCount(selectedPlan);
+  return LENSES_ALL.filter((l,i) => l.minPlan <= tier).slice(0, count);
+}
+
+// ════════════════════════════════════════
+// ASSESSMENT RENDER
+// ════════════════════════════════════════
+function startAssessment(){
+  const lenses = getActiveLenses();
+  renderSidebar(lenses);
+  renderLensContent(0);
+  showScreen('scr-assess');
+}
+
+function renderSidebar(lenses){
+  const p = selectedPlan;
+  document.getElementById('sb-plan-badge').innerHTML = `<p class="spb-name">${p.name}</p><p class="spb-desc">${p.lensLabel}</p>`;
+  
+  const nav = document.getElementById('sb-nav');
+  const allLenses = LENSES_ALL;
+  const planTier = getPlanMinTier(p);
+  const planCount = getPlanLensCount(p);
+  
+  nav.innerHTML = allLenses.map((l, i) => {
+    const isActive = i === 0;
+    const isLocked = l.minPlan > planTier || i >= planCount;
+    const isDone = false;
+    const cls = isLocked ? 'locked' : isActive ? 'active' : 'upcoming';
+    return `<div class="lens-item ${cls}" id="lnav-${i}">
+      <div class="li-dot"></div>
+      <div>
+        <p class="li-name">${l.name}</p>
+        <p class="li-sub">${l.sub}</p>
+        ${isLocked ? `<span class="li-lock">+ ${getUpgradeName(l.minPlan, p)}</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function getUpgradeName(minPlan, currentPlan){
+  if (!currentPlan) return 'Upgrade';
+  const t = currentPlan.type;
+  if (t === 'pf') return minPlan === 2 ? 'Trajetória' : 'Cúpula';
+  if (t === 'pj') return minPlan === 2 ? 'Estrutura' : 'Comando';
+  return 'Upgrade';
+}
+
+function renderLensContent(idx){
+  currentLens = idx;
+  const lenses = getActiveLenses();
+  const isLast = idx === lenses.length - 1;
+  const l = lenses[idx];
+  
+  // Update sidebar
+  document.querySelectorAll('.lens-item:not(.locked)').forEach((el,i) => {
+    el.classList.remove('active','done','upcoming');
+    if (i < idx) el.classList.add('done');
+    else if (i === idx) el.classList.add('active');
+    else el.classList.add('upcoming');
+    const dot = el.querySelector('.li-dot');
+    if (i < idx) dot.style.background='var(--teal)';
+    else if (i === idx) dot.style.background='var(--gold)';
+    else dot.style.background='';
+  });
+  
+  // Progress
+  const pct = Math.round((idx / lenses.length) * 100);
+  document.getElementById('sp-fill').style.width = pct + '%';
+  document.getElementById('sp-pct').textContent = pct + '% concluído';
+  
+  let html = `<div class="lens-header">
+    <p class="lh-num">Lente ${l.num} · ${l.name}</p>
+    <h2 class="lh-title">${l.title}</h2>
+    <p class="lh-desc">${l.desc}</p>
+    <p class="lh-fw"><span class="lh-fw-dot"></span>${l.fw}</p>
+  </div>`;
+  
+  l.questions.forEach(q => { html += renderQ(q); });
+  
+  // If this is the last free lens and plan has more locked, show teaser
+  const planCount = getPlanLensCount(selectedPlan);
+  const planTier = getPlanMinTier(selectedPlan);
+  const lockedLenses = LENSES_ALL.filter(ll => ll.minPlan > planTier || LENSES_ALL.indexOf(ll) >= planCount);
+  if (isLast && lockedLenses.length > 0) {
+    html += renderLockTeaser(lockedLenses);
+  }
+  
+  html += `<div class="assess-nav">
+    <button class="nav-prev" id="np" ${idx===0?'disabled':''} onclick="goLens(${idx-1})">
+      <svg style="width:12px;height:12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5m0 0l7 7m-7-7l7-7"/></svg> Anterior
+    </button>
+    <button class="nav-next ${isLast?'final':''}" onclick="${isLast?'submitNow()':'goLens('+( idx+1)+')'}">
+      ${isLast ? 'Gerar diagnóstico' : 'Próxima lente'}
+      <svg style="width:12px;height:12px" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14m0 0l-7-7m7 7l-7 7"/></svg>
+    </button>
+  </div>`;
+  
+  document.getElementById('assess-main').innerHTML = html;
+  restoreAndAttach(l);
+  document.getElementById('assess-main').scrollTop = 0;
+  window.scrollTo(0,0);
+}
+
+function renderLockTeaser(lockedLenses){
+  const upName = getUpgradeName(2, selectedPlan);
+  const pills = lockedLenses.slice(0,6).map(l=>`<span class="llt-pill">${l.name}</span>`).join('');
+  return `<div class="lens-lock-teaser">
+    <div class="llt-icon"><div style="width:10px;height:10px;background:var(--gold);clip-path:polygon(50% 0,100% 100%,0 100%)"></div></div>
+    <h3 class="llt-title">O diagnóstico completo tem ${lockedLenses.length} lentes adicionais</h3>
+    <p class="llt-sub">Seu plano atual acessa as ${getPlanLensCount(selectedPlan)} dimensões fundamentais. As próximas lentes revelam o que nenhuma ferramenta de People Analytics ainda entrega:</p>
+    <div class="llt-pills">${pills}</div>
+    <a href="planos.html" class="btn-gold" style="font-size:12px;padding:11px 28px">Desbloquear ${lockedLenses.length} lentes com ${upName}</a>
+    <p class="llt-continue">Ou continue com o diagnóstico atual — já é superior a 90% do mercado.</p>
+  </div>`;
+}
+
+function renderQ(q){
+  let html = `<div class="qblock"><p class="q-text">${q.text}</p>`;
+  const val = ANS[q.id];
+  
+  if (q.type === 'spec'){
+    const v = val !== undefined ? val : q.val;
+    html += `<div class="spec-wrap">
+      <div class="spec-track" id="st-${q.id}" style="cursor:pointer">
+        <div class="spec-fill" id="sf-${q.id}" style="width:${v}%"></div>
+        <div class="spec-thumb" id="sth-${q.id}" style="left:${v}%"></div>
+        <span class="spec-val" id="sv-${q.id}" style="left:${v}%">${Math.round(v)}</span>
+      </div>
+      <div class="spec-ends"><span>${q.left}</span><span>${q.right}</span></div>
+    </div>`;
+  } else if (q.type === 'choice'){
+    html += `<div class="choices">` + q.opts.map((o,i) => `
+      <div class="choice ${val===i?'sel':''}" onclick="pickChoice('${q.id}',${i},this)">
+        <p class="choice-title">${o.t}</p>${o.d?`<p class="choice-desc">${o.d}</p>`:''}
+      </div>`).join('') + `</div>`;
+  } else if (q.type === 'matrix'){
+    html += `<div class="matrix ${q.cols===3?'c3':'c2'}">` + q.opts.map((o,i) => {
+      const isSel = q.multi ? (Array.isArray(val)&&val.includes(i)) : val===i;
+      return `<div class="mcel ${isSel?'sel':''}" onclick="${q.multi?`toggleMat('${q.id}',${i},this)`:`pickMat('${q.id}',${i},this)`}">
+        <p class="mcel-label">${o.t}</p>${o.d?`<p class="mcel-sub">${o.d}</p>`:''}
+      </div>`;
+    }).join('') + `</div>`;
+  } else if (q.type === 'freq'){
+    html += `<div class="freq">` + q.opts.map((o,i) => `
+      <button class="freq-btn ${val===i?'sel':''}" onclick="pickFreq('${q.id}',${i},this)">${o}</button>`).join('') + `</div>`;
+  } else if (q.type === 'txt'){
+    html += `<textarea class="ptxt" id="ta-${q.id}" placeholder="${q.ph||''}" oninput="ANS['${q.id}']=this.value">${val||''}</textarea>`;
+  }
+  
+  html += `</div>`;
+  return html;
+}
+
+function restoreAndAttach(lens){
+  lens.questions.forEach(q => {
+    if (q.type === 'spec') {
+      const v = ANS[q.id] !== undefined ? ANS[q.id] : q.val;
+      attachSpec(q.id, v);
+    }
+  });
+}
+
+function attachSpec(id, initVal){
+  const track = document.getElementById('st-'+id);
+  if (!track) return;
+  let drag = false;
+  const getV = e => {
+    const r = track.getBoundingClientRect();
+    const x = (e.touches?e.touches[0].clientX:e.clientX) - r.left;
+    return Math.max(0, Math.min(100, (x/r.width)*100));
+  };
+  const set = v => {
+    ANS[id] = v;
+    const f=document.getElementById('sf-'+id), t=document.getElementById('sth-'+id), s=document.getElementById('sv-'+id);
+    if(f){f.style.width=v+'%'}; if(t){t.style.left=v+'%'}; if(s){s.style.left=v+'%;';s.textContent=Math.round(v);}
+  };
+  track.addEventListener('mousedown', e=>{drag=true;set(getV(e));});
+  track.addEventListener('touchstart', e=>{drag=true;set(getV(e));},{passive:true});
+  window.addEventListener('mousemove', e=>{if(drag)set(getV(e));});
+  window.addEventListener('touchmove', e=>{if(drag)set(getV(e));},{passive:true});
+  window.addEventListener('mouseup', ()=>drag=false);
+  window.addEventListener('touchend', ()=>drag=false);
+  set(initVal);
+}
+
+function pickChoice(id, idx, el){
+  ANS[id]=idx;
+  el.closest('.choices').querySelectorAll('.choice').forEach((c,i)=>c.classList.toggle('sel',i===idx));
+}
+function pickMat(id, idx, el){
+  ANS[id]=idx;
+  el.closest('.matrix').querySelectorAll('.mcel').forEach((c,i)=>c.classList.toggle('sel',i===idx));
+}
+function toggleMat(id, idx, el){
+  if(!ANS[id])ANS[id]=[];
+  const p=ANS[id].indexOf(idx);
+  if(p>-1){ANS[id].splice(p,1);el.classList.remove('sel');}
+  else{ANS[id].push(idx);el.classList.add('sel');}
+}
+function pickFreq(id, idx, el){
+  ANS[id]=idx;
+  el.closest('.freq').querySelectorAll('.freq-btn').forEach((b,i)=>b.classList.toggle('sel',i===idx));
+}
+
+function goLens(idx){
+  renderLensContent(idx);
+}
+
+// ════════════════════════════════════════
+// SUBMIT
+// ════════════════════════════════════════
+async function submitNow(){
+  showScreen('scr-proc');
+  animateProc();
+  try {
+    const report = await buildReport();
+    renderReport(report);
+  } catch(e){
+    renderReport(getMockReport());
+  }
+}
+
+function animateProc(){
+  const msgs=['Analisando posicionamento WEF 2030...','Calculando quociente de antifragilidade...','Mapeando estágio de desenvolvimento (Kegan)...','Avaliando capital social estratégico...','Detectando padrão oculto...','Cruzando arquitetura cognitiva...','Construindo roadmap personalizado...','Calibrando para o plano '+selectedPlan.name+'...','Finalalizando relatório de inteligência...'];
+  let i=0;
+  const fws=document.querySelectorAll('.proc-fw');
+  setInterval(()=>{
+    document.getElementById('proc-msg').textContent=msgs[i%msgs.length];
+    if(fws[i%fws.length]) fws[i%fws.length].classList.add('on');
+    i++;
+  },1400);
+}
+
+// ════════════════════════════════════════
+// CLAUDE API CALL
+// ════════════════════════════════════════
+async function buildReport(){
+  const p = selectedPlan;
+  const name=document.getElementById('f-name').value||'Avaliado';
+  const role=document.getElementById('f-role').value||'';
+  const org=document.getElementById('f-org').value||'';
+  const sector=document.getElementById('f-sector').value||'';
+  const years=document.getElementById('f-years').value||'';
+  const age=parseInt(document.getElementById('f-age').value)||35;
+  const challenge=document.getElementById('f-challenge').value||'';
+
+  const activeLenses = getActiveLenses();
+  const lensData = activeLenses.map(l=>({
+    lens:l.name, fw:l.fw,
+    answers:l.questions.map(q=>{
+      let v=ANS[q.id];
+      if(q.type==='choice'&&typeof v==='number') v=q.opts[v]?.t||v;
+      if(q.type==='matrix'&&typeof v==='number') v=q.opts[v]?.t||v;
+      if(q.type==='matrix'&&Array.isArray(v)) v=v.map(i=>q.opts[i]?.t).filter(Boolean).join(', ');
+      if(q.type==='freq'&&typeof v==='number') v=q.opts[v]||v;
+      return {q:q.text.substring(0,80), a:v};
+    })
+  }));
+
+  const planContext = `
+PLANO DO USUÁRIO: ${p.name} (${p.tier})
+LENTES AVALIADAS: ${activeLenses.length} de 10
+DIMENSÕES DISPONÍVEIS: ${p.dims}
+TEM PADRÃO OCULTO: ${p.hasHidden}
+TEM KEGAN COMPLETO: ${p.hasKegan}
+TEM ROADMAP COMPLETO: ${p.hasRoadmapFull}
+TIPO: ${p.type === 'pf' ? 'Pessoa Física' : 'Pessoa Jurídica'}`;
+
+  const sys = `Você é o motor analítico do Axioma Prime — a avaliação de capital humano mais avançada já criada, fundada no relatório WEF "Global Economic Futures: Productivity in 2030" (Accenture, janeiro 2025) e em 9 outros frameworks acadêmicos de elite.
+
+FRAMEWORKS OBRIGATÓRIOS:
+1. WEF 2025 — 4 cenários: Productivity Leap, Automation Overload, Human Advantage, Productivity Drought
+2. Antifragilidade — Taleb: frágil/robusto/antifrágil, convexidade de resposta ao caos
+3. Desenvolvimento Adulto — Kegan: estágios 3 (socializado), 4 (autodeterminado), 5 (autoconstrói)
+4. Capital Social — Bourdieu + Granovetter: capital econômico/cultural/social, laços fortes/fracos
+5. Pensamento Sistêmico — Senge + Meadows: loops de feedback, pontos de alavanca, arquétipos
+6. Cronobiologia — Foster + Roenneberg: cronotipos, picos cognitivos, ritmo ultrádiano
+7. Impulso Biográfico — Levinson + Super: fases de carreira, transições, crises de desenvolvimento
+8. Arquitetura Cognitiva — Kahneman Sistema 1/2 + neurociência de decisão
+9. Visão Prospectiva — IFTF + Causal Layered Analysis + detecção de sinais fracos
+10. Metabolismo Tecnológico — Rogers + AI Adoption Readiness
+
+REGRAS CRÍTICAS DE GERAÇÃO:
+- SEJA ESPECÍFICO ao ponto de desconforto. Diagnósticos genéricos são inúteis.
+- Cite os frameworks EXPLICITAMENTE nas análises (ex: "No framework de Kegan, isso indica...")
+- O PADRÃO OCULTO só é gerado se hasHidden=true no plano
+- O roadmap completo (5 etapas) só é gerado se hasRoadmapFull=true
+- Para planos free, gere roadmap simplificado (2 etapas) + teaser das 3 restantes
+- Adapte a PROFUNDIDADE ao número de lentes avaliadas
+- O relatório deve superar qualquer coisa que McKinsey, Deloitte ou Gallup produziria
+
+Responda APENAS em JSON válido. Sem markdown, sem texto fora do JSON.`;
+
+  const usr = `${planContext}
+
+DADOS DO AVALIADO:
+Nome: ${name} | Cargo: ${role} | Org: ${org} | Setor: ${sector} | Experiência: ${years}
+Maior desafio: ${challenge}
+
+RESPOSTAS (${activeLenses.length} lentes avaliadas):
+${JSON.stringify(lensData, null, 2)}
+
+ESTRUTURA JSON EXATA REQUERIDA:
+{
+  "headline": "Frase diagnóstica de máximo impacto. Use <strong>palavra</strong> para ênfase",
+  "subtext": "2 frases síntese executiva — específicas ao setor e momento de carreira (máx 50 palavras)",
+  "scores": [
+    {"num":"XX","label":"Índice Prime"},
+    {"num":"XX","label":"Score WEF"},
+    {"num":"X.X","label":"Nível Kegan"},
+    {"num":"XX","label":"Antifragilidade"},
+    {"num":"XX","label":"Visão Prospectiva"}
+  ],
+  "wef_title": "Título analítico cativante para seção WEF",
+  "wef_scenarios": [
+    {"name":"Productivity Leap","pct":0,"primary":false,"cls":"wq-c1"},
+    {"name":"Automation Overload","pct":0,"primary":false,"cls":"wq-c2"},
+    {"name":"Human Advantage","pct":0,"primary":false,"cls":"wq-c3"},
+    {"name":"Productivity Drought","pct":0,"primary":false,"cls":"wq-c4"}
+  ],
+  "wef_body": "<p>Análise profunda — cite o relatório WEF 2025, mencione dados específicos (ex: gap de 11.8pp entre frontier firms e laggards). 3 parágrafos.</p>",
+  "dims_overline": "Texto do eyebrow para seção de dimensões (ex: '3 dimensões analisadas' ou '7 dimensões')",
+  "dims_title": "Título para seção de dimensões",
+  "dimensions": [
+    {"name":"Nome da dimensão","score":0,"tier":"[Iniciante|Em desenvolvimento|Competente|Avançado|Excepcional]"}
+  ],
+  "dims_body": "<p>Análise integrada dos scores — padrões, assimetrias, o que revelam em conjunto. Cite frameworks específicos.</p>",
+  "cog_title": "Título analítico para arquitetura cognitiva",
+  "cog_body": "<p>Se plano tem Kegan: análise profunda do estágio provável (3.0/3.5/4.0/4.5/5.0) e o que significa. Se não tem: análise da arquitetura cognitiva baseada nas 3 lentes. 2-3 parágrafos.</p>",
+  "has_hidden": ${p.hasHidden},
+  "hidden_title": "Título intrigante para padrão oculto (só se has_hidden=true, senão null)",
+  "hidden_insight": "O insight que cruza múltiplas dimensões de forma não-óbvia (só se has_hidden=true, senão null)",
+  "hidden_body": "<p>Expansão do padrão oculto. Por que é estrategicamente relevante? (só se has_hidden=true, senão null)</p>",
+  "bio_title": "Título para impulso biográfico",
+  "bio_body": "<p>Análise do momento biográfico (Levinson/Super) e quociente de antifragilidade (Taleb). Qual é a janela de oportunidade única deste momento? 2-3 parágrafos.</p>",
+  "road_title": "Título para roadmap",
+  "road_intro": "<p>Introdução estratégica — por que estes movimentos, por que esta sequência. 1 parágrafo.</p>",
+  "roadmap": [
+    {"horizon":"Semanas 1–4","title":"","body":"","kpi":"","key":false},
+    {"horizon":"Meses 2–3","title":"","body":"","kpi":"","key":true},
+    {"horizon":"Meses 4–6 (prévia)","title":"Desbloqueie para ver","body":"Para acessar os próximos movimentos estratégicos, ative o plano [UPGRADE].","kpi":"","key":false,"locked":true}
+  ],
+  "warn_title": "Título para ponto de atenção",
+  "warn_alert": "O risco específico identificado — direto e sem eufemismo. 2-3 frases.",
+  "warn_body": "<p>Contexto do risco com referência a framework. O que acontece se não for endereçado? 1-2 parágrafos.</p>",
+  "upgrade_plan_name": "${getUpgradeName(2, selectedPlan)}",
+  "upgrade_missing_lenses": ${LENSES_ALL.length - activeLenses.length}
+}
+
+ATENÇÃO: O roadmap deve ter ${p.hasRoadmapFull ? '5 etapas completas' : '2 etapas completas + 1 etapa locked com teaser do upgrade'}. Se locked=true em uma etapa, o título e body devem chamar para o upgrade de forma específica e irresistível.`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,system:sys,messages:[{role:'user',content:usr}]})
+  });
+  if(!res.ok) throw new Error('API');
+  const data = await res.json();
+  return JSON.parse(data.content[0].text.replace(/```json|```/g,'').trim());
+}
+
+// ════════════════════════════════════════
+// RENDER REPORT
+// ════════════════════════════════════════
+function renderReport(d){
+  const p = selectedPlan;
+  const name=document.getElementById('f-name').value||'Avaliado';
+  const role=document.getElementById('f-role').value||'';
+  const org=document.getElementById('f-org').value||'';
+  const now=new Date().toLocaleDateString('pt-BR',{day:'2-digit',month:'long',year:'numeric'});
+
+  document.getElementById('rc-date').textContent=now;
+  document.getElementById('rc-name').textContent=name;
+  document.getElementById('rc-role').textContent=[role,org].filter(Boolean).join(' · ');
+  document.getElementById('rc-headline').innerHTML=d.headline||'Diagnóstico concluído';
+  document.getElementById('rc-subtext').textContent=d.subtext||'';
+  document.getElementById('rc-plan-strip').innerHTML=`
+    <div><p class="rps-label">Plano ativo</p><p class="rps-name">${p.name}</p></div>
+    <span class="rps-lenses">${p.lensLabel} · ${p.dims} dimensões</span>`;
+  document.getElementById('rc-scores').innerHTML=(d.scores||[]).map(s=>
+    `<div class="rc-score"><div class="rcs-num">${s.num}</div><div class="rcs-label">${s.label}</div></div>`).join('');
+
+  // WEF
+  document.getElementById('wef-title').textContent=d.wef_title||'Cenários WEF 2030';
+  document.getElementById('wef-grid').innerHTML=(d.wef_scenarios||[]).map(s=>`
+    <div class="wq ${s.primary?'current':''} ${s.cls}">
+      ${s.primary?'<span class="wq-curr-badge">Posição atual</span>':''}
+      <p class="wq-tag">${s.name}</p>
+      <p class="wq-name">${s.name}</p>
+      <div class="wq-pct">${s.pct}%</div>
+      <p class="wq-plabel">aderência ao cenário</p>
+      <div class="wq-bar"><div class="wq-bfill ${s.cls.replace('wq-','')}-fill" style="width:0%" data-w="${s.pct}"></div></div>
+    </div>`).join('');
+  document.getElementById('wef-body').innerHTML=d.wef_body||'';
+
+  // Dimensions
+  document.getElementById('dims-overline').textContent=d.dims_overline||'Dimensões analisadas';
+  document.getElementById('dims-title').textContent=d.dims_title||'Perfil de capital humano';
+  document.getElementById('dim-grid').innerHTML=(d.dimensions||[]).map(dim=>`
+    <div class="dbar">
+      <div class="dbar-top"><span class="dbar-name">${dim.name}</span><span class="dbar-score">${dim.score}</span></div>
+      <div class="dbar-track"><div class="dbar-fill" style="width:0%" data-t="${dim.score}"></div></div>
+      <p class="dbar-tier">${dim.tier}</p>
+    </div>`).join('');
+  document.getElementById('dims-body').innerHTML=d.dims_body||'';
+
+  // Cognitive (locked for free)
+  const secCog = document.getElementById('sec-cog');
+  if (p.hasKegan || d.cog_body) {
+    secCog.innerHTML = `
+      <p class="r-sec-ov">Arquitetura Cognitiva & Estágio de Desenvolvimento</p>
+      <h2 class="r-sec-title">${d.cog_title||'Arquitetura cognitiva'}</h2>
+      <div class="r-body-txt">${d.cog_body||''}</div>`;
+  } else {
+    secCog.innerHTML = buildLockedSection(
+      'Estágio de Desenvolvimento (Kegan) + Arquitetura Cognitiva Profunda',
+      'Esta análise identifica seu estágio exato de desenvolvimento adulto segundo Kegan (3.0 a 5.0) — a dimensão que mais determina sua capacidade de liderança em ambientes de alta complexidade.',
+      getUpgradeName(2, p),
+      'Uma análise que nenhuma consultoria de RH oferece gratuitamente...'
+    );
+  }
+
+  // Hidden Pattern (only for elite plans)
+  const secHidden = document.getElementById('sec-hidden');
+  if (p.hasHidden && d.has_hidden && d.hidden_title) {
+    secHidden.innerHTML = `
+      <p class="r-sec-ov">O padrão oculto</p>
+      <h2 class="r-sec-title">${d.hidden_title}</h2>
+      <div class="hidden-box">
+        <div class="hb-head"><div class="hb-sigil"><div class="hb-sigil-core"></div></div><span class="hb-label">Insight exclusivo Axioma Prime</span></div>
+        <p class="hb-body">${d.hidden_insight||''}</p>
+      </div>
+      <div class="r-body-txt">${d.hidden_body||''}</div>`;
+  } else if (!p.hasHidden) {
+    secHidden.innerHTML = `
+      <p class="r-sec-ov">Padrão Oculto — Inteligência Transversal</p>
+      <h2 class="r-sec-title">Insight de Correlação Axioma</h2>
+      <div class="hidden-teaser">
+        <p>A IA detetou um padrão entre a sua biografia e o seu capital social. Desbloqueia a Credencial Elite para ver o insight.</p>
+        <button class="btn-upgrade" style="margin-top:20px" onclick="location.reload()">Upgrade para Elite</button>
+      </div>`;
+  } else { secHidden.innerHTML = ''; }
+
+  // BIOGRAPHICAL VECTOR (LUXURY UI/UX)
+  const age = parseInt(document.getElementById('f-age').value) || 35;
+  renderBioArc(age);
+  document.getElementById('bio-body').innerHTML = d.bio_body || '';
+  
+  // Cronobiologia
+  renderChronoChart();
+  document.getElementById('chrono-body').innerHTML = d.chrono_body || '<p>Sua arquitetura de energia indica janelas de alta performance que devem ser protegidas para trabalho profundo.</p>';
+  
+  // Antifragilidade
+  renderTalebGauge();
+  document.getElementById('taleb-body').innerHTML = d.taleb_body || '';
+
+  // Gating (Luxury Card style)
+  applyGatingLuxury(p);
+
+  // Roadmap
+
+  // Roadmap
+  document.getElementById('road-title').textContent=d.road_title||'Roadmap estratégico';
+  document.getElementById('road-intro').innerHTML=d.road_intro||'';
+  document.getElementById('roadmap').innerHTML=(d.roadmap||[]).map(r=>{
+    if (r.locked) {
+      return `<div class="rm-item">
+        <div class="rm-dot"><div class="rm-dot-inner" style="background:var(--tdim);border-color:var(--b)"></div></div>
+        <div class="rm-content" style="opacity:.4">
+          <p class="rm-horizon">${r.horizon}</p>
+          <div class="upgrade-strip" style="margin:0">
+            <div class="us-left"><p class="us-eyebrow">Desbloqueado no plano ${d.upgrade_plan_name}</p><p class="us-title">${r.title||'Próximos movimentos estratégicos — '+d.upgrade_missing_lenses+' lentes adicionais'}</p></div>
+            <a href="planos.html" class="us-btn">Desbloquear →</a>
+          </div>
+        </div>
+      </div>`;
+    }
+    return `<div class="rm-item ${r.key?'key':''}">
+      <div class="rm-dot"><div class="rm-dot-inner"></div></div>
+      <div class="rm-content">
+        <p class="rm-horizon">${r.horizon}</p>
+        <p class="rm-title">${r.title}</p>
+        <p class="rm-body">${r.body}</p>
+        ${r.kpi?`<span class="rm-kpi">${r.kpi}</span>`:''}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Warning
+  document.getElementById('warn-title').textContent=d.warn_title||'Ponto de atenção';
+  document.getElementById('warn-alert').textContent=d.warn_alert||'';
+  document.getElementById('warn-body').innerHTML=d.warn_body||'';
+
+  // Upgrade section (for non-top plans)
+  const secUp = document.getElementById('sec-upgrade');
+  if (p.tier !== 'elite' && p.tier !== 'enterprise') {
+    const nextPlan = p.type==='pf' ? (p.tier==='free'?PLANS.pf_traj:PLANS.pf_cupula) : (p.tier==='free'?PLANS.pj_est:PLANS.pj_cmd);
+    const missingLenses = LENSES_ALL.length - getActiveLenses().length;
+    const missingFeats = nextPlan.features.filter(f => !p.features.includes(f)).slice(0,4);
+    secUp.innerHTML = `<div class="r-sec">
+      <div class="value-proof">
+        <h3 class="vp-title">Você viu ${getActiveLenses().length} das 10 dimensões.<br/>As outras ${missingLenses} revelam o restante.</h3>
+        <p class="vp-sub">O plano ${nextPlan.name} adiciona ${missingLenses} lentes — incluindo as dimensões que mais determinam o futuro da sua carreira ou organização.</p>
+        <div class="vp-features">${missingFeats.map(f=>`<div class="vp-feat"><span class="vp-feat-check">✓</span><span class="vp-feat-text">${f}</span></div>`).join('')}</div>
+        <p class="vp-price">Por apenas <strong>${nextPlan.price}</strong> ${nextPlan.priceSub}</p>
+        <a href="planos.html" class="btn-gold" style="margin-right:10px">Ativar ${nextPlan.name}</a>
+        <a href="planos.html" class="btn-ghost" style="font-size:12px">Ver todos os planos</a>
+      </div>
+    </div>`;
+  } else { secUp.innerHTML=''; }
+
+  // Actions
+  const acts = [];
+  if (p.hasPDF) acts.push(`<button class="btn-ghost" onclick="window.print()">Exportar PDF</button>`);
+  acts.push(`<a href="planos.html" class="btn-gold">Ver planos</a>`);
+  acts.push(`<button class="btn-ink" onclick="location.reload()">Nova avaliação</button>`);
+  document.getElementById('rf-actions').innerHTML = acts.join('');
+
+  showScreen('scr-report');
+
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.dbar-fill[data-t]').forEach(el=>el.style.width=el.dataset.t+'%');
+    document.querySelectorAll('.wq-bfill[data-w]').forEach(el=>el.style.width=el.dataset.w+'%');
+  },300);
+}
+
+// ════════════════════════════════════════
+// BIOGRAPHICAL ARC LOGIC
+// ════════════════════════════════════════
+function renderBioArc(age) {
+  const marker = document.getElementById('bio-marker-lux');
+  const phaseLabel = document.getElementById('bio-phase-label');
+  
+  const minAge = 21;
+  const maxAge = 70;
+  const ratio = Math.min(1, Math.max(0, (age - minAge) / (maxAge - minAge)));
+  
+  // Arco Semicircular luxury (200x100). Centro (100, 90). Raio 80.
+  // De 180deg (left, 20,90) para 0deg (right, 180,90)
+  const angleDeg = 180 - (ratio * 180);
+  const angleRad = angleDeg * (Math.PI / 180);
+  
+  const cx = 100 + 80 * Math.cos(angleRad);
+  const cy = 90 - 80 * Math.sin(angleRad);
+  
+  marker.setAttribute('transform', `translate(${cx}, ${cy})`);
+  
+  let phase = "Construção";
+  if (age < 28) phase = "Afirmação";
+  else if (age < 49) phase = "Consolidação";
+  else phase = "Liderança";
+  
+  phaseLabel.textContent = "Fase: " + phase;
+}
+
+// ════════════════════════════════════════
+// ULTRADIAN WAVES LOGIC
+// ════════════════════════════════════════
+function renderChronoChart() {
+  const peak = document.getElementById('chrono-peak-lux');
+  const nowLine = document.getElementById('chrono-now-lux');
+  const label = document.getElementById('chrono-peak-label');
+  
+  // Peak Windows (Lens IX)
+  const peaksArray = ANS['ene1'] || [];
+  const peakWindowsText = ["04h-07h", "07h-10h", "10h-12h", "13h-15h", "15h-18h", "19h-23h"];
+  const peakWindowsCoords = [[44,103], [103,162], [162,201], [221,260], [260,320], [339,400]]; // Approximate for 240px wide
+
+  if (peaksArray.length > 0) {
+    const primaryIdx = Array.isArray(peaksArray) ? peaksArray[0] : peaksArray;
+    label.textContent = "Pico: " + (peakWindowsText[primaryIdx] || "--");
+    
+    // Draw Peak Highlight in luxury SVG (240px wide)
+    const xBase = (primaryIdx / 6) * 240;
+    const xEnd = ((primaryIdx + 1) / 6) * 240;
+    peak.setAttribute('d', `M ${xBase} 80 L ${xBase} 40 Q ${(xBase+xEnd)/2} 10, ${xEnd} 40 L ${xEnd} 80 Z`);
+  }
+
+  // Real-Time Indicator
+  const now = new Date();
+  const currentHr = now.getHours() + now.getMinutes()/60;
+  const timeX = (currentHr / 24) * 240;
+  nowLine.setAttribute('x1', timeX);
+  nowLine.setAttribute('x2', timeX);
+}
+
+// ════════════════════════════════════════
+// ANTIFRAGILITY GAUGE LOGIC
+// ════════════════════════════════════════
+function renderTalebGauge() {
+  const needle = document.getElementById('taleb-needle-lux');
+  const label = document.getElementById('taleb-status-label');
+  const convexityTxt = document.getElementById('taleb-convexity');
+  
+  const scoreIdx = ANS['cli4'] || 0; 
+  let angle = -60;
+  let status = "Frágil";
+  let desc = "Sua resposta indica uma tendência à fragilidade: sistemas que sofrem com a volatilidade e buscam apenas o retorno ao estado anterior.";
+
+  if (scoreIdx === 2) {
+    angle = 60;
+    status = "Antifrágil";
+    desc = "Alta Convexidade: Você possui a rara capacidade de converter estresse, desordem e caos em combustível para evolução.";
+  } else if (scoreIdx === 1) {
+    angle = 0;
+    status = "Robusto";
+    desc = "Robustez: Você demonstra alta resistência a choques externos, mantendo a integridade sob pressão.";
+  }
+
+  needle.style.transform = `rotate(${angle}deg)`;
+  label.textContent = "Convexidade: " + status;
+  convexityTxt.textContent = desc;
+}
+
+function applyGatingLuxury(plan) {
+  const isFree = plan.id === 'pf_free' || plan.id === 'pj_rec';
+  const cardChrono = document.getElementById('card-chrono');
+  const cardTaleb = document.getElementById('card-taleb');
+  
+  if (isFree) {
+    cardChrono.classList.add('locked');
+    cardTaleb.classList.add('locked');
+  } else {
+    cardChrono.classList.remove('locked');
+    cardTaleb.classList.remove('locked');
+  }
+}
+
+function applyGating(secId, plan) {
+  const isFree = plan.id === 'pf_free' || plan.id === 'pj_rec';
+  const sec = document.getElementById(secId);
+  if (!sec) return;
+  
+  if (isFree) {
+    sec.classList.add('locked-section');
+    // Check if overlay already exists
+    if (!sec.querySelector('.lock-overlay')) {
+      const overlay = document.createElement('div');
+      overlay.className = 'lock-overlay';
+      overlay.innerHTML = `
+        <div class="lock-icon">🔒</div>
+        <div class="lock-msg">Conteúdo Exclusivo Elite</div>
+        <button class="btn-upgrade" onclick="location.reload()">Upgrade para Elite</button>
+      `;
+      sec.appendChild(overlay);
+    }
+  } else {
+    sec.classList.remove('locked-section');
+    const existing = sec.querySelector('.lock-overlay');
+    if (existing) existing.remove();
+  }
+}
+
+function buildLockedSection(title, desc, planName, hint){
+  const mockText = `<p style="color:var(--tdim)">Este diagnóstico revelaria como sua arquitetura cognitiva interage com sua posição atual na rede profissional — e onde estão os pontos de alavanca não-óbvios...</p><p style="color:var(--tdim)">Baseado em análise profunda de ${Math.floor(Math.random()*3)+4} frameworks cruzados, o insight principal seria...</p>`;
+  return `
+    <p class="r-sec-ov">Análise bloqueada</p>
+    <h2 class="r-sec-title">${title}</h2>
+    <div class="locked-section">
+      <div class="locked-blur">${mockText}</div>
+      <div class="locked-overlay">
+        <span class="lo-lock">◈</span>
+        <p class="lo-title">${title}</p>
+        <p class="lo-sub">${desc}</p>
+        <span class="lo-plan">Disponível no plano ${planName}</span>
+        <p style="font-size:10px;color:var(--tdim);margin-bottom:12px">${hint}</p>
+        <a href="planos.html" class="lo-btn">Desbloquear análise completa →</a>
+      </div>
+    </div>`;
+}
+
+// ════════════════════════════════════════
+// MOCK REPORT
+// ════════════════════════════════════════
+function getMockReport(){
+  const p = selectedPlan || PLANS.pf_free;
+  const activeLenses = getActiveLenses();
+  const dims = activeLenses.map((l,i)=>({name:l.name,score:[68,79,72,74,76,54,71,69,61,71][i]||65,tier:['Competente','Avançado','Avançado','Avançado','Avançado','Em desenvolvimento','Avançado','Avançado','Competente','Avançado'][i]||'Competente'}));
+  const roadmap = p.hasRoadmapFull ? [
+    {horizon:'Semanas 1–4',title:'Auditoria de energia cognitiva e redesenho de blocos de pico',body:'Mapeie seus cronotipos reais e proteja 3 blocos semanais de 90 minutos de pico para trabalho de alta complexidade. A maioria dos líderes desperdiça 30-40% do pico cognitivo em reuniões operacionais.',kpi:'Meta: 3 blocos protegidos/semana',key:false},
+    {horizon:'Meses 2–3',title:'Construção deliberada de capital social de bridge',body:'Identifique e cultive 5 conexões estratégicas fora do seu setor. Granovetter demonstrou que são os laços fracos — conexões com pessoas radicalmente diferentes — que mais geram acesso a informação assimétrica.',kpi:'Meta: 5 novos laços de bridge em 90 dias',key:true},
+    {horizon:'Meses 4–6',title:'Projeto de visibilidade estratégica externa',body:'Crie um vetor de expressão pública para o capital intelectual gerado internamente. O objetivo é converter capital cultural em capital simbólico reconhecido externamente.',kpi:'Meta: 1 publicação ou fala de alto impacto',key:false},
+    {horizon:'Meses 7–12',title:'Desenvolvimento do estágio Kegan 4.5',body:'Engaje deliberadamente com perspectivas que contradizem sua visão de mundo. Este é desenvolvimento vertical — mais raro e valioso que qualquer certificação.',kpi:'Meta: 1 mentoria cross-domain ativa',key:true},
+    {horizon:'Ano 2–3',title:'Posicionamento como conector entre sistemas',body:'Usando o capital social expandido e a visão sistêmica desenvolvida, posicione-se como ponto de conexão entre dois domínios que não se falam mas deveriam.',kpi:'Meta: referência cross-domain reconhecida',key:false}
+  ] : [
+    {horizon:'Imediato — 30 dias',title:'Primeiro movimento: mapear o gap de cenário WEF',body:'O diagnóstico revelou seu posicionamento atual. O passo imediato é identificar as 2-3 competências específicas que mais separam seu cenário atual do Productivity Leap.',kpi:'Meta: lista de prioridades de desenvolvimento',key:true},
+    {horizon:'Próximos 90 dias',title:'Desenvolvimento de competência de maior alavancagem',body:'Com base no diagnóstico, a dimensão de maior retorno é Capital Social Estratégico. Comece com 3 conexões deliberadas fora do seu campo habitual.',kpi:'Meta: 3 novas conexões cross-domain',key:false},
+    {horizon:'Lentes 4–10 desbloqueiam os próximos movimentos',title:'Roadmap completo disponível no plano '+getUpgradeName(2,p||PLANS.pf_free),body:'As próximas 3 etapas do roadmap requerem análise de Antifragilidade (Lente IV), Capital Social (Lente VI) e Estágio Kegan (Lente VIII) — disponíveis no plano '+getUpgradeName(2,p||PLANS.pf_free)+'.',kpi:'',key:false,locked:true}
+  ];
+  return {
+    headline:`Um <strong>perfil de alto potencial</strong> com uma assimetria estratégica que precisa de atenção imediata`,
+    subtext:`Você está posicionado no Cenário 2 (Automation Overload) do WEF, mas com vetores claros de migração para o Productivity Leap. A assimetria entre cognição (forte) e capital social (sub-explorado) é sua maior alavanca.`,
+    scores:[{num:'70',label:'Índice Prime'},{num:'68',label:'Score WEF'},{num:'3.8',label:'Nível Kegan'},{num:'74',label:'Antifragilidade'},{num:'71',label:'Visão Prospectiva'}],
+    wef_title:'Posicionado no Cenário 2 — com trajetória real para o Cenário 1',
+    wef_scenarios:[{name:'Productivity Leap',pct:28,primary:false,cls:'wq-c1'},{name:'Automation Overload',pct:47,primary:true,cls:'wq-c2'},{name:'Human Advantage',pct:18,primary:false,cls:'wq-c3'},{name:'Productivity Drought',pct:7,primary:false,cls:'wq-c4'}],
+    wef_body:`<p>Seu posicionamento atual apresenta maior aderência ao <strong>Cenário 2 (Automation Overload)</strong> do relatório WEF × Accenture de janeiro 2025. O relatório documenta que este cenário se caracteriza por avanço tecnológico que supera o desenvolvimento de capital humano — criando uma dinâmica de concentração de valor nos que operam na fronteira.</p><p>O WEF aponta que o gap entre <em>frontier firms</em> e retardatárias saltou de 6.3 para 11.8 pontos percentuais entre 2016 e 2023 (Accenture, 2024). Seus dados indicam que você está mais próximo da fronteira do que a maioria, mas não suficientemente posicionado para capturar os ganhos do Cenário 1. O gap principal não é tecnológico — é de capital social e desenvolvimento vertical.</p><p>A boa notícia do relatório WEF: empresas que investem simultaneamente em tecnologia <strong>e</strong> capital humano geram ganhos de produtividade de até 11% acima das que investem apenas em uma das dimensões (Accenture, 2023). Você está a uma decisão estratégica de fazer esse salto.</p>`,
+    dims_overline:`${activeLenses.length} dimensões analisadas`,
+    dims_title:'O mapa completo do seu capital humano em '+activeLenses.length+' dimensões',
+    dimensions:dims,
+    dims_body:`<p>O conjunto de scores revela uma arquitetura assimétrica: <strong>alto desempenho cognitivo</strong> (${dims[1]?.score||79}/100 em Arquitetura Cognitiva) combinado com capital social significativamente abaixo do potencial (${dims[5]?.score||54}/100). Segundo Bourdieu, esse padrão indica que o capital cultural acumulado não está sendo convertido eficientemente em capital social estratégico.</p><p>A Arquitetura Cognitiva forte e o Impulso Biográfico ativo formam uma base de força rara. O desafio é construir a infraestrutura relacional que amplifica esses ativos — sem ela, o desenvolvimento cognitivo gera retorno limitado.</p>`,
+    cog_title:p.hasKegan ? 'Estágio 3.8 de Kegan — na transição mais produtiva' : 'Arquitetura cognitiva: orientação analítica com síntese emergente',
+    cog_body:p.hasKegan ? `<p>Seus padrões de resposta indicam posicionamento no que Kegan chama de <strong>"4.0 em formação"</strong>: você transitou do Estágio 3 (identidade definida pelos grupos de referência) para o início do Estágio 4 (identidade autodeterminada), mas ainda mantém âncoras do Estágio 3 em contextos de alta pressão social.</p><p>O Estágio 4 é a condição necessária para liderança de alta complexidade. A diferença entre um líder de Estágio 3 e um de Estágio 4 não é a competência técnica — é a capacidade de <em>ter uma perspectiva sem ser essa perspectiva</em>. Você está cruzando esse limiar.</p>` : `<p>Sua arquitetura cognitiva indica predominância de processamento analítico estruturado (Sistema 2 de Kahneman) com boa integração de intuição em domínios familiares. Isso cria um perfil de tomador de decisão que performa excepcionalmente em problemas bem-definidos, mas pode subvalorizar o insight intuitivo em territórios novos.</p>`,
+    has_hidden:p.hasHidden,
+    hidden_title:p.hasHidden ? 'A assimetria oculta: alta cognição, baixa conversão relacional' : null,
+    hidden_insight:p.hasHidden ? 'Você tem uma das combinações mais raras e mais desperdiçadas: arquitetura cognitiva de alto desempenho (79) com capital social significativamente abaixo do potencial (54). Cada ponto de capital intelectual está gerando retorno reduzido porque não é amplificado por uma rede que o distribua.' : null,
+    hidden_body:p.hasHidden ? `<p>Granovetter demonstrou que são os laços fracos — conexões com pessoas radicalmente diferentes — que mais geram acesso a oportunidades. Bourdieu complementou mostrando que a conversão de capital cultural em capital social exige presença intencional em campos onde seu capital seja reconhecido.</p><p>O padrão dos seus dados: um profissional que investe profundamente no próprio desenvolvimento cognitivo mas não investe proporcionalmente em posicionar esse desenvolvimento onde pode ser visto, valorizado e multiplicado. Isso não é modéstia — é uma ineficiência estratégica que custa oportunidades mensuráveis a cada trimestre.</p>` : null,
+    bio_title:'Fase de Consolidação com Impulso de Segunda Curva — a janela rara',
+    bio_body:`<p>Levinson identificou que os períodos de "transição estrutural" — quando a consolidação encontra a necessidade de renovação — são os momentos de maior potencial de salto qualitativo. Seus dados indicam exatamente esse ponto: solidez suficiente para ter credibilidade, mas impulso de crescimento ainda ativo.</p><p>Do ponto de vista da antifragilidade de Taleb, seu score indica que você não apenas sobrevive a rupturas — você as usa. A maioria das pessoas é frágil ou robusta. Você tem convexidade positiva: perturbações de tamanho adequado tendem a revelar capacidades que ficariam latentes em ambiente estável. Esta janela de transformação não é permanente — Levinson estima duração de 2-4 anos.</p>`,
+    road_title:'Os movimentos estratégicos dos próximos meses',
+    road_intro:`<p>Este roadmap foi construído para converter a assimetria identificada em vantagem composta. A sequência é deliberada: começa pelo fundamento invisível antes de escalar para os movimentos de maior visibilidade.</p>`,
+    roadmap,
+    warn_title:'O risco que os scores revelam com clareza',
+    warn_alert:`Com Arquitetura Cognitiva em posição de força e Capital Social subexplorado, você está em risco de "execução em câmara de eco" — desenvolvendo insights cada vez mais sofisticados em uma rede sem diversidade suficiente para testá-los ou amplificá-los.`,
+    warn_body:`<p>O relatório WEF 2025 documenta que empresas frontier têm quase o dobro de habilidades de gestão e comunicação comparadas às retardatárias. Mas essa vantagem é sistêmica — emerge da rede de relações de alta qualidade que circunda esses líderes, não apenas de competências individuais.</p>`,
+    upgrade_plan_name:getUpgradeName(2,p),
+    upgrade_missing_lenses:LENSES_ALL.length-getActiveLenses().length
+  };
+}
+
+// ════════════════════════════════════════
+// SCREEN MANAGER
+// ════════════════════════════════════════
+function showScreen(id){
+  document.querySelectorAll('.scr').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo(0,0);
+}
+
+// ════════════════════════════════════════
+// INIT
+// ════════════════════════════════════════
+renderPlanGrids();
+
+// URL param: ?plan=pf_traj
+const urlPlan = new URLSearchParams(location.search).get('plan');
+if (urlPlan && PLANS[urlPlan]) {
+  selectPlan(urlPlan);
+  if (urlPlan.startsWith('pj')) showPlanType('pj', document.querySelectorAll('.ptt-btn')[1]);
+}
+</script>
+</body>
+</html>

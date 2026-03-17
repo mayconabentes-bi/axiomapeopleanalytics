@@ -1,0 +1,392 @@
+:root {
+  --axioma-pricing-ink: #0d0e0f;
+  --axioma-pricing-ink-soft: #3a3b3d;
+  --axioma-pricing-ink-muted: #7a7b80;
+  --axioma-pricing-surface: #f8f7f4;
+  --axioma-pricing-white: #ffffff;
+  --axioma-pricing-gold: #b8965a;
+  --axioma-pricing-gold-light: #d4b07a;
+  --axioma-pricing-gold-pale: #f5ede0;
+  --axioma-pricing-gold-dim: #8a6e3f;
+  --axioma-pricing-teal: #1a6b58;
+  --axioma-pricing-danger: #c0392b;
+  --axioma-pricing-border: #e2ddd6;
+  --axioma-pricing-border-s: #c8c0b4;
+}
+
+.pricing-container-v2 {
+  background: var(--axioma-pricing-surface);
+  color: var(--axioma-pricing-ink);
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+/* ── HERO ── */
+.pricing-hero-v2 {
+  padding: 120px 48px 72px;
+  text-align: center;
+  background: var(--axioma-pricing-ink);
+  position: relative;
+  overflow: hidden;
+}
+
+.ph-grid-v2 {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), 
+                    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.ph-eyebrow-v2 {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ph-title-v2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 300;
+  line-height: 1.1;
+  color: var(--axioma-pricing-white);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ph-title-v2 em {
+  font-style: italic;
+  color: var(--axioma-pricing-gold-light);
+}
+
+.ph-sub-v2 {
+  font-size: 15px;
+  color: rgba(255,255,255,0.4);
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.8;
+  position: relative;
+}
+
+/* ── TABS ── */
+.tab-switch-v2 {
+  display: inline-flex;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  position: relative;
+  z-index: 10;
+  margin-top: 20px;
+}
+
+.tab-btn-v2 {
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  padding: 11px 32px;
+  background: transparent;
+  color: rgba(255,255,255,0.45);
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: all 0.2s;
+}
+
+.tab-btn-v2.active {
+  background: var(--axioma-pricing-gold);
+  color: var(--axioma-pricing-ink);
+  font-weight: 500;
+}
+
+/* ── BILLING TOGGLE ── */
+.billing-wrap-v2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 40px;
+  position: relative;
+  z-index: 10;
+}
+
+.billing-label-v2 {
+  font-size: 12px;
+  color: rgba(255,255,255,0.35);
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.billing-label-v2.active {
+  color: rgba(255,255,255,0.7);
+}
+
+.toggle-track-v2 {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  background: rgba(255,255,255,0.12);
+  border-radius: 12px;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.toggle-track-v2.annual {
+  background: var(--axioma-pricing-gold-dim);
+}
+
+.toggle-thumb-v2 {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.annual .toggle-thumb-v2 {
+  transform: translateX(20px);
+}
+
+.billing-badge-v2 {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(26, 107, 88, 0.3);
+  color: #5DCAA5;
+  border: 0.5px solid rgba(93, 202, 165, 0.3);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+/* ── PLANS GRID ── */
+.plans-section-v2 {
+  padding: 0 48px 100px;
+  margin-top: -1px;
+}
+
+.plans-grid {
+  display: grid;
+  gap: 0;
+  border: 0.5px solid var(--axioma-pricing-border-s);
+  border-top: none;
+  background: var(--axioma-pricing-white);
+}
+
+.plans-grid-pf { grid-template-columns: repeat(3, 1fr); }
+.plans-grid-pj { grid-template-columns: repeat(4, 1fr); }
+
+/* ── CARD ── */
+.plan-card-v2 {
+  padding: 48px 32px;
+  border-right: 0.5px solid var(--axioma-pricing-border-s);
+  display: flex;
+  flex-direction: column;
+  background: var(--axioma-pricing-white);
+  transition: all 0.3s ease;
+}
+
+.plan-card-v2:last-child { border-right: none; }
+
+.plan-card-v2.featured {
+  background: var(--axioma-pricing-ink);
+  color: white;
+  border-right-color: rgba(255,255,255,0.08);
+}
+
+.plan-header-v2 { margin-bottom: 32px; }
+
+.plan-tag-v2 {
+  display: inline-block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+}
+
+.tag-free { background: #EAF3DE; color: #27500A; }
+.tag-popular { background: var(--axioma-pricing-gold); color: var(--axioma-pricing-ink); }
+.tag-elite { background: rgba(184, 150, 90, 0.15); color: var(--axioma-pricing-gold-light); border: 0.5px solid rgba(184, 150, 90, 0.3); }
+
+.plan-name-v2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 32px;
+  margin-bottom: 8px;
+  line-height: 1.1;
+}
+
+.plan-desc-v2 {
+  font-size: 13px;
+  color: var(--axioma-pricing-ink-muted);
+  line-height: 1.6;
+  min-height: 48px;
+}
+
+.featured .plan-desc-v2 { color: rgba(255,255,255,0.4); }
+
+.price-display-v2 {
+  margin-top: 24px;
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.currency-v2 { font-size: 16px; color: var(--axioma-pricing-ink-muted); }
+.amount-v2 { font-family: 'Cormorant Garamond', serif; font-size: 52px; font-weight: 300; }
+.period-v2 { font-size: 12px; color: var(--axioma-pricing-ink-muted); }
+
+.featured .currency-v2, .featured .period-v2 { color: rgba(255,255,255,0.3); }
+
+.btn-plan-v2 {
+  width: 100%;
+  padding: 16px;
+  font-family: 'Outfit', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  border: 1px solid var(--axioma-pricing-border-s);
+  background: transparent;
+  cursor: pointer;
+  margin: 32px 0;
+  transition: all 0.2s;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.btn-plan-v2:hover { background: var(--axioma-pricing-surface); border-color: var(--axioma-pricing-ink); }
+
+.featured .btn-plan-v2 {
+  background: var(--axioma-pricing-gold);
+  color: var(--axioma-pricing-ink);
+  border: none;
+}
+
+.featured .btn-plan-v2:hover { background: var(--axioma-pricing-gold-light); }
+
+.features-list-v2 {
+  list-style: none;
+  padding: 0;
+}
+
+.feature-item-v2 {
+  display: flex;
+  gap: 12px;
+  font-size: 13px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+  color: var(--axioma-pricing-ink-soft);
+}
+
+.featured .feature-item-v2 { color: rgba(255,255,255,0.6); }
+
+/* ── SCARCITY ── */
+.scarcity-v2 {
+  background: rgba(192, 57, 43, 0.05);
+  border: 0.5px solid rgba(192, 57, 43, 0.2);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.scarcity-dot-v2 {
+  width: 6px;
+  height: 6px;
+  background: var(--axioma-pricing-danger);
+  border-radius: 50%;
+  animation: pulse-v2 2s infinite;
+}
+
+.scarcity-text-v2 { font-size: 11px; color: var(--axioma-pricing-danger); font-weight: 500; }
+
+@keyframes pulse-v2 {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(1.2); }
+}
+
+/* ── ROI CALCULATOR ── */
+.roi-section-v2 {
+  background: var(--axioma-pricing-white);
+  margin: 0 48px 100px;
+  padding: 64px;
+  border: 0.5px solid var(--axioma-pricing-border-s);
+}
+
+.roi-grid-v2 {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 64px;
+  margin-top: 48px;
+}
+
+.roi-input-group-v2 {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.roi-field-v2 label {
+  display: block;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: var(--axioma-pricing-ink-muted);
+  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 2px;
+  background: var(--axioma-pricing-border);
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--axioma-pricing-gold);
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.roi-display-v2 {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 20px;
+}
+
+.roi-card-v2 {
+  background: var(--axioma-pricing-ink);
+  padding: 48px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.roi-res-label-v2 { font-size: 10px; text-transform: uppercase; color: rgba(255,255,255,0.3); letter-spacing: 0.1em; }
+.roi-res-val-v2 { font-family: 'Cormorant Garamond', serif; font-size: 48px; color: var(--axioma-pricing-gold-light); }
+
+.roi-ratio-v2 {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  line-height: 1.6;
+}
+
+.roi-ratio-v2 strong { color: var(--axioma-pricing-gold); font-size: 24px; font-family: 'Cormorant Garamond', serif; }
+
+@media (max-width: 1024px) {
+  .plans-grid-pf, .plans-grid-pj { grid-template-columns: 1fr; }
+  .plan-card-v2 { border-right: none; border-bottom: 0.5px solid var(--axioma-pricing-border-s); }
+  .roi-grid-v2 { grid-template-columns: 1fr; }
+}

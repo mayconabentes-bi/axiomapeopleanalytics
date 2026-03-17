@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Axioma People Analytics — A Infraestrutura Cognitiva da Produtividade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --ink:#0d0e0f;
+  --ink-soft:#3a3b3d;
+  --ink-muted:#7a7b80;
+  --surface:#f8f7f4;
+  --white:#ffffff;
+  --gold:#b8965a;
+  --gold-light:#d4b07a;
+  --gold-pale:#f5ede0;
+  --teal:#1a6b58;
+  --teal-light:#e4f0ec;
+  --border:#e2ddd6;
+  --border-strong:#c8c0b4;
+}
+
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--surface);color:var(--ink);overflow-x:hidden}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(248,247,244,0.92);backdrop-filter:blur(12px);border-bottom:0.5px solid var(--border)}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:17px;font-weight:500;letter-spacing:0.04em;color:var(--ink);display:flex;align-items:center;gap:8px}
+.nav-logo-mark{width:22px;height:22px;border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center}
+.nav-logo-mark span{width:6px;height:6px;background:var(--gold);border-radius:50%}
+.nav-links{display:flex;gap:36px;align-items:center}
+.nav-links a{font-size:13px;font-weight:400;color:var(--ink-muted);text-decoration:none;letter-spacing:0.01em;transition:color 0.2s}
+.nav-links a:hover{color:var(--ink)}
+.nav-cta{font-size:13px;font-weight:500;padding:9px 22px;background:var(--ink);color:var(--white);border:none;cursor:pointer;letter-spacing:0.02em;transition:background 0.2s}
+.nav-cta:hover{background:var(--ink-soft)}
+
+/* ── HERO ── */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 80px;position:relative;overflow:hidden;background:var(--ink)}
+.hero-bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:64px 64px}
+.hero-bg-line{position:absolute;top:0;right:180px;width:0.5px;height:100%;background:rgba(255,255,255,0.06)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:0.5px solid rgba(184,150,90,0.4);padding:6px 14px;margin-bottom:2.5rem;font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold-light)}
+.hero-badge-dot{width:5px;height:5px;background:var(--gold);border-radius:50%;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.hero-headline{font-family:'Cormorant Garamond',serif;font-size:clamp(44px,6.5vw,88px);font-weight:300;line-height:1.05;color:var(--white);max-width:820px;margin-bottom:2rem;position:relative;z-index:1}
+.hero-headline em{font-style:italic;color:var(--gold-light)}
+.hero-sub{font-size:15px;font-weight:300;color:rgba(255,255,255,0.5);max-width:480px;line-height:1.8;margin-bottom:3rem;position:relative;z-index:1}
+.hero-actions{display:flex;gap:16px;align-items:center;position:relative;z-index:1}
+.btn-hero-primary{font-family:'Outfit',sans-serif;font-size:13px;font-weight:500;padding:13px 30px;background:var(--gold);color:var(--ink);border:none;cursor:pointer;letter-spacing:0.04em;transition:background 0.2s}
+.btn-hero-primary:hover{background:var(--gold-light)}
+.btn-hero-ghost{font-family:'Outfit',sans-serif;font-size:13px;font-weight:400;padding:13px 30px;background:transparent;color:rgba(255,255,255,0.6);border:0.5px solid rgba(255,255,255,0.2);cursor:pointer;letter-spacing:0.02em;transition:all 0.2s}
+.btn-hero-ghost:hover{color:var(--white);border-color:rgba(255,255,255,0.5)}
+.hero-scroll{position:absolute;bottom:40px;right:48px;display:flex;flex-direction:column;align-items:center;gap:8px;font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.3)}
+.hero-scroll-line{width:0.5px;height:48px;background:linear-gradient(to bottom,rgba(255,255,255,0.3),transparent)}
+
+/* ── SHARED SECTION ── */
+section{padding:100px 48px}
+.section-eyebrow{font-size:10px;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:1.5rem}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,52px);font-weight:300;line-height:1.15;color:var(--ink);margin-bottom:1.5rem}
+.section-title em{font-style:italic;color:var(--gold)}
+.section-body{font-size:15px;color:var(--ink-soft);line-height:1.8;max-width:560px}
+
+/* ── TRUST BAR ── */
+.trust{padding:32px 48px;background:var(--white);border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);display:flex;align-items:center;gap:0}
+.trust-label{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);white-space:nowrap;padding-right:40px;border-right:0.5px solid var(--border);margin-right:40px;flex-shrink:0}
+.trust-logos{display:flex;align-items:center;gap:48px;flex-wrap:wrap}
+.trust-logo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:var(--ink-muted);letter-spacing:0.05em;opacity:0.6}
+
+/* ── STATS ── */
+.stats{background:var(--white);padding:80px 48px;border-bottom:0.5px solid var(--border)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:0.5px solid var(--border)}
+.stat-item{padding:40px 32px;border-right:0.5px solid var(--border)}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Cormorant Garamond',serif;font-size:54px;font-weight:300;line-height:1;color:var(--ink);margin-bottom:8px}
+.stat-num sup{font-size:28px;vertical-align:super;color:var(--gold)}
+.stat-desc{font-size:12px;color:var(--ink-muted);line-height:1.6;max-width:160px}
+.stat-source{font-size:10px;color:var(--border-strong);margin-top:8px;letter-spacing:0.05em}
+
+/* ── PROBLEM ── */
+.problem{background:var(--surface);display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+.problem-left{padding:100px 48px;border-right:0.5px solid var(--border)}
+.problem-right{padding:100px 48px;display:flex;flex-direction:column;gap:32px}
+.problem-card{padding:28px;border:0.5px solid var(--border);background:var(--white);position:relative}
+.problem-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:var(--gold)}
+.pc-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:8px}
+.pc-body{font-size:13px;color:var(--ink-soft);line-height:1.7}
+
+/* ── CENÁRIOS ── */
+.scenarios{background:var(--ink);padding:100px 48px;overflow:hidden}
+.scenarios .section-eyebrow{color:rgba(255,255,255,0.3)}
+.scenarios .section-title{color:var(--white)}
+.scenarios .section-body{color:rgba(255,255,255,0.45)}
+.scenarios-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:56px;border:0.5px solid rgba(255,255,255,0.08)}
+.scenario-item{padding:36px 28px;border-right:0.5px solid rgba(255,255,255,0.08);position:relative;overflow:hidden;cursor:default;transition:background 0.3s}
+.scenario-item:last-child{border-right:none}
+.scenario-item:hover{background:rgba(255,255,255,0.03)}
+.scenario-num{font-family:'Cormorant Garamond',serif;font-size:64px;font-weight:300;color:rgba(255,255,255,0.04);position:absolute;top:16px;right:20px;line-height:1}
+.scenario-tag{font-size:9px;letter-spacing:0.16em;text-transform:uppercase;margin-bottom:20px;font-weight:500}
+.sc1 .scenario-tag{color:#1D9E75}
+.sc2 .scenario-tag{color:#BA7517}
+.sc3 .scenario-tag{color:#378ADD}
+.sc4 .scenario-tag{color:#D85A30}
+.scenario-name{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;color:var(--white);margin-bottom:16px;line-height:1.2}
+.scenario-desc{font-size:12px;color:rgba(255,255,255,0.4);line-height:1.7;margin-bottom:24px}
+.scenario-axis{display:flex;flex-direction:column;gap:6px}
+.axis-row{display:flex;align-items:center;gap:8px;font-size:11px}
+.axis-label{color:rgba(255,255,255,0.25);min-width:80px;font-size:10px;letter-spacing:0.05em}
+.axis-bar-wrap{flex:1;height:2px;background:rgba(255,255,255,0.06);border-radius:1px}
+.axis-bar{height:100%;border-radius:1px;transition:width 0.6s ease}
+.axis-up{background:var(--gold)}
+.axis-down{background:rgba(255,255,255,0.15)}
+
+/* ── PRODUTO ── */
+.product{background:var(--white);display:grid;grid-template-columns:5fr 7fr;gap:0;align-items:stretch}
+.product-left{padding:100px 48px;border-right:0.5px solid var(--border);display:flex;flex-direction:column;justify-content:space-between}
+.product-right{padding:80px 48px}
+.feature-list{display:flex;flex-direction:column;gap:0;border:0.5px solid var(--border);margin-top:48px}
+.feature-item{padding:28px;border-bottom:0.5px solid var(--border);display:flex;gap:20px;align-items:flex-start;cursor:default;transition:background 0.15s}
+.feature-item:last-child{border-bottom:none}
+.feature-item:hover{background:var(--surface)}
+.feature-num{font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--gold);min-width:20px;font-weight:500;margin-top:2px}
+.feature-title{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:6px}
+.feature-body{font-size:12px;color:var(--ink-muted);line-height:1.7}
+.product-visual{background:var(--surface);border:0.5px solid var(--border);padding:40px;position:relative;overflow:hidden}
+.pv-header{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:32px;display:flex;align-items:center;gap:10px}
+.pv-header::after{content:'';flex:1;height:0.5px;background:var(--border)}
+.pv-row{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+.pv-avatar{width:36px;height:36px;border-radius:50%;background:var(--gold-pale);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:13px;font-weight:500;color:var(--gold);flex-shrink:0}
+.pv-info{flex:1}
+.pv-name{font-size:13px;font-weight:500;color:var(--ink)}
+.pv-role{font-size:11px;color:var(--ink-muted)}
+.pv-bars{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.pv-bar-row{display:flex;align-items:center;gap:8px}
+.pv-bar-label{font-size:10px;color:var(--ink-muted);min-width:80px}
+.pv-bar-track{flex:1;height:4px;background:var(--border);border-radius:2px}
+.pv-bar-fill{height:100%;border-radius:2px}
+.pv-bar-fill.gold{background:var(--gold)}
+.pv-bar-fill.teal{background:var(--teal)}
+.pv-bar-fill.blue{background:#378ADD}
+.pv-score{font-size:11px;font-weight:500;color:var(--ink-muted);min-width:28px;text-align:right}
+.pv-divider{height:0.5px;background:var(--border);margin:24px 0}
+.pv-insight{font-size:12px;color:var(--ink-soft);line-height:1.6;padding:16px;background:var(--teal-light);border-left:2px solid var(--teal)}
+.pv-insight strong{font-weight:500;color:var(--teal)}
+
+/* ── ICP ── */
+.icp{background:var(--surface);padding:100px 48px}
+.icp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--border);margin-top:56px;border:0.5px solid var(--border)}
+.icp-card{background:var(--white);padding:40px;position:relative}
+.icp-card-role{font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+.icp-card-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--ink);margin-bottom:12px;line-height:1.3}
+.icp-card-pain{font-size:13px;color:var(--ink-soft);line-height:1.7;margin-bottom:24px;padding-bottom:24px;border-bottom:0.5px solid var(--border)}
+.icp-card-trigger{font-size:12px;color:var(--ink-muted);line-height:1.6}
+.icp-card-trigger strong{font-weight:500;color:var(--ink)}
+
+/* ── QUOTE ── */
+.quote-section{background:var(--gold-pale);padding:100px 48px;text-align:center;border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border)}
+.blockquote{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3.5vw,44px);font-weight:300;font-style:italic;line-height:1.3;color:var(--ink);max-width:800px;margin:0 auto 2rem;position:relative}
+.blockquote::before{content:'\201C';position:absolute;top:-40px;left:-20px;font-size:120px;color:var(--gold);opacity:0.25;font-family:'Cormorant Garamond',serif;line-height:1}
+.quote-attr{font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted)}
+
+/* ── POSICIONAMENTO ── */
+.positioning{background:var(--white);padding:100px 48px}
+.positioning-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0;border:0.5px solid var(--border);margin-top:56px}
+.pos-col{padding:40px 32px;border-right:0.5px solid var(--border)}
+.pos-col:last-child{border-right:none}
+.pos-col-label{font-size:10px;font-weight:500;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:24px;padding-bottom:16px;border-bottom:0.5px solid var(--border)}
+.pos-audience{font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);font-style:italic;margin-bottom:8px}
+.pos-message{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--ink);line-height:1.35;margin-bottom:16px}
+.pos-sub{font-size:12px;color:var(--ink-muted);line-height:1.7}
+
+/* ── METHODOLOGY ── */
+.method{background:var(--ink);padding:100px 48px}
+.method .section-eyebrow{color:rgba(255,255,255,0.3)}
+.method .section-title{color:var(--white)}
+.method .section-body{color:rgba(255,255,255,0.45)}
+.method-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:64px;position:relative}
+.method-steps::before{content:'';position:absolute;top:20px;left:10%;right:10%;height:0.5px;background:rgba(255,255,255,0.08)}
+.method-step{padding:0 20px;position:relative;z-index:1}
+.ms-dot{width:40px;height:40px;border:0.5px solid rgba(184,150,90,0.4);display:flex;align-items:center;justify-content:center;margin-bottom:24px;background:var(--ink)}
+.ms-dot-num{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--gold)}
+.ms-title{font-size:13px;font-weight:500;color:var(--white);margin-bottom:10px;letter-spacing:0.01em}
+.ms-body{font-size:12px;color:rgba(255,255,255,0.35);line-height:1.7}
+
+/* ── CTA FINAL ── */
+.final-cta{background:var(--gold);padding:100px 48px;display:flex;align-items:flex-end;justify-content:space-between;gap:40px}
+.fc-text .section-eyebrow{color:rgba(13,14,15,0.5)}
+.fc-text .section-title{color:var(--ink);max-width:600px}
+.fc-text em{font-style:italic;color:var(--ink)}
+.fc-actions{display:flex;flex-direction:column;gap:12px;flex-shrink:0}
+.btn-fc-primary{font-size:13px;font-weight:500;padding:15px 36px;background:var(--ink);color:var(--white);border:none;cursor:pointer;letter-spacing:0.03em;white-space:nowrap;transition:background 0.2s}
+.btn-fc-primary:hover{background:var(--ink-soft)}
+.btn-fc-ghost{font-size:13px;padding:15px 36px;background:transparent;color:var(--ink);border:1.5px solid rgba(13,14,15,0.25);cursor:pointer;letter-spacing:0.02em;white-space:nowrap;transition:border-color 0.2s}
+.btn-fc-ghost:hover{border-color:var(--ink)}
+
+/* ── FOOTER ── */
+footer{background:var(--ink);padding:40px 48px;display:flex;align-items:center;justify-content:space-between;border-top:0.5px solid rgba(255,255,255,0.06)}
+.footer-logo{font-family:'Cormorant Garamond',serif;font-size:14px;font-weight:500;color:rgba(255,255,255,0.35);letter-spacing:0.04em}
+.footer-copy{font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.05em}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:11px;color:rgba(255,255,255,0.25);text-decoration:none;letter-spacing:0.05em;transition:color 0.2s}
+.footer-links a:hover{color:rgba(255,255,255,0.5)}
+
+/* ── ANIMATIONS ── */
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.7s ease,transform 0.7s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:0.1s}
+.reveal-delay-2{transition-delay:0.2s}
+.reveal-delay-3{transition-delay:0.3s}
+.reveal-delay-4{transition-delay:0.4s}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-mark"><span></span></div>
+    Axioma People Analytics
+  </div>
+  <div class="nav-links">
+    <a href="#produto">Produto</a>
+    <a href="#cenarios">Cenários</a>
+    <a href="#metodologia">Metodologia</a>
+    <a href="#icp">Para quem</a>
+  </div>
+  <a href="diagnostico.html" style="text-decoration:none"><button class="nav-cta">Solicitar diagnóstico</button></a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-bg-line"></div>
+  <div class="hero-badge">
+    <span class="hero-badge-dot"></span>
+    Baseado no relatório WEF × Accenture · Produtividade em 2030
+  </div>
+  <h1 class="hero-headline">
+    O capital humano é a<br/>única vantagem<br/><em>que a tecnologia</em><br/>não pode comprar.
+  </h1>
+  <p class="hero-sub">Diagnóstico de elite baseado nos cenários WEF 2025 e ritmos biográficos. A infraestrutura cognitiva para a elite da produtividade moderna.</p>
+  <div class="hero-actions">
+    <a href="diagnostico.html" style="text-decoration:none"><button class="btn-hero-primary">Solicitar diagnóstico</button></a>
+    <a href="#metodologia" style="text-decoration:none"><button class="btn-hero-ghost">Ver metodologia</button></a>
+  </div>
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- TRUST -->
+<div class="trust">
+  <span class="trust-label">Baseado em dados de</span>
+  <div class="trust-logos">
+    <span class="trust-logo">World Economic Forum</span>
+    <span class="trust-logo">Accenture Research</span>
+    <span class="trust-logo">IMF World Economic Outlook</span>
+    <span class="trust-logo">ILO Labour Statistics</span>
+    <span class="trust-logo">OECD Productivity</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats" id="stats">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <div class="stat-num">46<sup>%</sup></div>
+      <div class="stat-desc">da força de trabalho global em desalinhamento de competências</div>
+      <div class="stat-source">OECD/ILO, 2021</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-1">
+      <div class="stat-num">50<sup>%+</sup></div>
+      <div class="stat-desc">da desaceleração global desde 2008 causada por queda de produtividade</div>
+      <div class="stat-source">FMI, 2024</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-2">
+      <div class="stat-num">43<sup>%</sup></div>
+      <div class="stat-desc">dos executivos citam falta de visão de liderança como barreira à IA</div>
+      <div class="stat-source">WEF Executive Survey, 2024</div>
+    </div>
+    <div class="stat-item reveal reveal-delay-3">
+      <div class="stat-num">11<sup>%</sup></div>
+      <div class="stat-desc">de ganho adicional de produtividade quando dados, tecnologia e talento são integrados</div>
+      <div class="stat-source">Accenture, 2023</div>
+    </div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<section class="problem" id="problema" style="padding:0">
+  <div class="problem-left reveal">
+    <div>
+      <p class="section-eyebrow">O problema</p>
+      <h2 class="section-title">Seu RH mede o passado.<br/>O mercado exige <em>o futuro.</em></h2>
+      <p class="section-body">As ferramentas tradicionais de People Analytics foram construídas para registrar o que aconteceu — turnover, engajamento, satisfação. Nenhuma delas responde à pergunta que realmente importa: sua organização está preparada para os próximos cenários de produtividade?</p>
+    </div>
+    <div style="margin-top:48px;padding:28px;border:0.5px solid var(--border);background:var(--gold-pale)">
+      <p style="font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:var(--ink);line-height:1.5">"Empresas frontier têm o dobro de competências em gestão e comunicação — e mais que o dobro em TI — comparadas às retardatárias."</p>
+      <p style="font-size:11px;color:var(--ink-muted);margin-top:12px;letter-spacing:0.06em;text-transform:uppercase">OCDE, The Human Side of Productivity</p>
+    </div>
+  </div>
+  <div class="problem-right">
+    <div class="problem-card reveal reveal-delay-1">
+      <p class="pc-title">Você não sabe em qual cenário WEF está</p>
+      <p class="pc-body">O FEM mapeou 4 futuros para produtividade até 2030. A maioria das organizações opera sem saber qual é o mais provável para seu setor — e qual gap de capital humano as separa do cenário desejado.</p>
+    </div>
+    <div class="problem-card reveal reveal-delay-2">
+      <p class="pc-title">Investimento em treinamento sem direção estratégica</p>
+      <p class="pc-body">OECD mostra queda de 0,2% para 0,1% do PIB em investimento em capacitação desde 2008, enquanto a aceleração tecnológica exige o oposto. O que é treinado hoje está alinhado ao cenário de amanhã?</p>
+    </div>
+    <div class="problem-card reveal reveal-delay-3">
+      <p class="pc-title">Gap crescente entre empresas líderes e retardatárias</p>
+      <p class="pc-body">O diferencial de produtividade entre frontier firms e laggards saltou de 6,3 para 11,8 pontos percentuais entre 2016 e 2023. A janela de recuperação está fechando.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CENÁRIOS WEF -->
+<section class="scenarios" id="cenarios">
+  <p class="section-eyebrow">WEF Global Economic Futures 2025</p>
+  <h2 class="section-title reveal">Quatro futuros.<br/>Um diagnóstico para cada um.</h2>
+  <p class="section-body reveal reveal-delay-1">O Axioma mapeia a posição da sua organização em cada cenário — e identifica os gaps que precisam ser resolvidos antes que o futuro chegue.</p>
+  <div class="scenarios-grid">
+    <div class="scenario-item sc1 reveal">
+      <div class="scenario-num">1</div>
+      <p class="scenario-tag">Tecnologia Alta · Capital Humano Alto</p>
+      <h3 class="scenario-name">Productivity Leap</h3>
+      <p class="scenario-desc">Círculo virtuoso entre inovação disruptiva e desenvolvimento humano. Ganhos amplos de produtividade e melhora real nos padrões de vida.</p>
+      <div class="scenario-axis">
+        <div class="axis-row">
+          <span class="axis-label">Tecnologia</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-up" style="width:90%"></div></div>
+        </div>
+        <div class="axis-row">
+          <span class="axis-label">Capital humano</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-up" style="width:90%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="scenario-item sc2 reveal reveal-delay-1">
+      <div class="scenario-num">2</div>
+      <p class="scenario-tag">Tecnologia Alta · Capital Humano Baixo</p>
+      <h3 class="scenario-name">Automation Overload</h3>
+      <p class="scenario-desc">Tecnologia supera humanos. Dinâmica winner-takes-all. Concentração de riqueza e poder. Deslocamento em massa da força de trabalho.</p>
+      <div class="scenario-axis">
+        <div class="axis-row">
+          <span class="axis-label">Tecnologia</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-up" style="width:90%"></div></div>
+        </div>
+        <div class="axis-row">
+          <span class="axis-label">Capital humano</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-down" style="width:20%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="scenario-item sc3 reveal reveal-delay-2">
+      <div class="scenario-num">3</div>
+      <p class="scenario-tag">Tecnologia Baixa · Capital Humano Alto</p>
+      <h3 class="scenario-name">Human Advantage</h3>
+      <p class="scenario-desc">Capital humano é o ativo central. Crescimento lento mas centrado em pessoas. Talento é a única vantagem competitiva sustentável.</p>
+      <div class="scenario-axis">
+        <div class="axis-row">
+          <span class="axis-label">Tecnologia</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-down" style="width:25%"></div></div>
+        </div>
+        <div class="axis-row">
+          <span class="axis-label">Capital humano</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-up" style="width:85%"></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="scenario-item sc4 reveal reveal-delay-3">
+      <div class="scenario-num">4</div>
+      <p class="scenario-tag">Tecnologia Baixa · Capital Humano Baixo</p>
+      <h3 class="scenario-name">Productivity Drought</h3>
+      <p class="scenario-desc">Estagnação simultânea. Economias perdem força. Padrões de vida em queda. Tensões sociais crescentes e retração do investimento.</p>
+      <div class="scenario-axis">
+        <div class="axis-row">
+          <span class="axis-label">Tecnologia</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-down" style="width:20%"></div></div>
+        </div>
+        <div class="axis-row">
+          <span class="axis-label">Capital humano</span>
+          <div class="axis-bar-wrap"><div class="axis-bar axis-down" style="width:15%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUTO -->
+<section class="product" id="produto" style="padding:0">
+  <div class="product-left">
+    <div>
+      <p class="section-eyebrow">O produto</p>
+      <h2 class="section-title reveal">Não é um sistema de RH.<br/><em>É inteligência</em><br/>estratégica.</h2>
+      <p class="section-body reveal reveal-delay-1">Axioma conecta ritmos biográficos individuais com os cenários macroeconômicos do WEF para gerar diagnósticos acionáveis — no nível do indivíduo, da equipe e da organização.</p>
+    </div>
+    <div class="feature-list reveal reveal-delay-2">
+      <div class="feature-item">
+        <span class="feature-num">01</span>
+        <div>
+          <p class="feature-title">Diagnóstico biográfico individual</p>
+          <p class="feature-body">Mapeia ritmos de energia, picos cognitivos e ciclos de performance ao longo da carreira de cada colaborador.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-num">02</span>
+        <div>
+          <p class="feature-title">Posicionamento nos cenários WEF</p>
+          <p class="feature-body">Identifica em qual futuro de produtividade a equipe está — e qual capital humano precisa ser desenvolvido para cada cenário.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-num">03</span>
+        <div>
+          <p class="feature-title">Inteligência coletiva de time</p>
+          <p class="feature-body">Agrega perfis para revelar padrões, gaps de liderança e distribuição de competências por unidade estratégica.</p>
+        </div>
+      </div>
+      <div class="feature-item">
+        <span class="feature-num">04</span>
+        <div>
+          <p class="feature-title">Roadmap de desenvolvimento personalizado</p>
+          <p class="feature-body">Gera planos de ação individuais e coletivos alinhados ao cenário estratégico escolhido pela organização.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="product-right reveal reveal-delay-1">
+    <div class="product-visual">
+      <p class="pv-header">Exemplo de diagnóstico — Equipe de Liderança</p>
+
+      <div class="pv-row">
+        <div class="pv-avatar">MA</div>
+        <div class="pv-info">
+          <p class="pv-name">Maria Almeida</p>
+          <p class="pv-role">VP de Tecnologia · 8 anos de empresa</p>
+          <div class="pv-bars">
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Prontidão para IA</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill gold" style="width:82%"></div></div>
+              <span class="pv-score">82</span>
+            </div>
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Adaptabilidade</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill teal" style="width:74%"></div></div>
+              <span class="pv-score">74</span>
+            </div>
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Capital relacional</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill blue" style="width:91%"></div></div>
+              <span class="pv-score">91</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pv-row">
+        <div class="pv-avatar" style="background:#E6F1FB;color:#378ADD">RC</div>
+        <div class="pv-info">
+          <p class="pv-name">Rafael Costa</p>
+          <p class="pv-role">Head de Estratégia · 3 anos de empresa</p>
+          <div class="pv-bars">
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Prontidão para IA</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill gold" style="width:61%"></div></div>
+              <span class="pv-score">61</span>
+            </div>
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Adaptabilidade</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill teal" style="width:88%"></div></div>
+              <span class="pv-score">88</span>
+            </div>
+            <div class="pv-bar-row">
+              <span class="pv-bar-label">Capital relacional</span>
+              <div class="pv-bar-track"><div class="pv-bar-fill blue" style="width:55%"></div></div>
+              <span class="pv-score">55</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pv-divider"></div>
+
+      <div class="pv-insight">
+        <strong>Diagnóstico Axioma:</strong> Esta equipe está bem posicionada para o Cenário 3 (Human Advantage) mas apresenta gap crítico em prontidão técnica para o Cenário 1 (Productivity Leap). Recomendação: programa de upskilling em IA nos próximos 18 meses para Rafael Costa e dois outros membros.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ICP -->
+<section class="icp" id="icp">
+  <p class="section-eyebrow">Para quem é o Axioma</p>
+  <h2 class="section-title reveal">Os executivos que já sabem<br/>que <em>o problema é de pessoas.</em></h2>
+  <div class="icp-grid">
+    <div class="icp-card reveal">
+      <p class="icp-card-role">CHRO / VP de People</p>
+      <p class="icp-card-title">"Preciso provar ROI de desenvolvimento humano para o board."</p>
+      <p class="icp-card-pain">Você tem dados de engajamento, satisfação e turnover — mas o board quer saber como isso se traduz em produtividade e competitividade. O Axioma conecta desenvolvimento humano a resultados de negócio com linguagem estratégica.</p>
+      <p class="icp-card-trigger"><strong>Gatilho:</strong> Ciclo de planejamento estratégico anual ou revisão de budget de L&D</p>
+    </div>
+    <div class="icp-card reveal reveal-delay-1">
+      <p class="icp-card-role">CEO / Chief Strategy Officer</p>
+      <p class="icp-card-title">"Qual dos 4 futuros WEF nossa equipe está preparada para enfrentar?"</p>
+      <p class="icp-card-pain">Você leu o relatório. Sabe que vem aí uma bifurcação entre Productivity Leap e Automation Overload. O Axioma mapeia onde sua organização está hoje — e o que falta para você estar no cenário certo.</p>
+      <p class="icp-card-trigger"><strong>Gatilho:</strong> Iniciativa de transformação digital ou adoção de IA</p>
+    </div>
+    <div class="icp-card reveal reveal-delay-2">
+      <p class="icp-card-role">Head de People Analytics</p>
+      <p class="icp-card-title">"Tenho dados. Falta o framework que conecte tudo."</p>
+      <p class="icp-card-pain">Você já tem HRIS, pesquisa de clima, dados de performance. O Axioma não substitui — integra. Adiciona a camada de ritmos biográficos e cenários macroeconômicos que transforma dados operacionais em inteligência estratégica.</p>
+      <p class="icp-card-trigger"><strong>Gatilho:</strong> Novo mandato de analytics ou expansão do escopo de People</p>
+    </div>
+    <div class="icp-card reveal reveal-delay-3">
+      <p class="icp-card-role">Chief Learning Officer / VP L&D</p>
+      <p class="icp-card-title">"Estamos treinando para o cenário certo?"</p>
+      <p class="icp-card-pain">OECD mostra queda contínua em investimento per capita em capacitação. Cada real precisa de ROI claro. O Axioma garante que o portfólio de desenvolvimento está alinhado com os gaps identificados para o cenário estratégico da organização.</p>
+      <p class="icp-card-trigger"><strong>Gatilho:</strong> Redesenho do portfólio de L&D ou processo de M&A</p>
+    </div>
+  </div>
+</section>
+
+<!-- QUOTE -->
+<div class="quote-section">
+  <p class="blockquote reveal">"A vantagem competitiva do próximo ciclo não será quem tem mais IA — será quem tem o capital humano para operar no nível mais alto com ela."</p>
+  <p class="quote-attr reveal reveal-delay-1">Axioma People Analytics · Tese de fundação, 2025</p>
+</div>
+
+<!-- POSICIONAMENTO -->
+<section class="positioning" id="posicionamento">
+  <p class="section-eyebrow">Posicionamento</p>
+  <h2 class="section-title reveal">Uma mensagem diferente<br/>para cada <em>sala.</em></h2>
+  <div class="positioning-grid">
+    <div class="pos-col reveal">
+      <p class="pos-col-label">Para o C-suite estratégico</p>
+      <p class="pos-audience">CEO · CSO · CFO</p>
+      <p class="pos-message">"Qual dos 4 cenários WEF sua organização está preparada para enfrentar em 2030?"</p>
+      <p class="pos-sub">Conversa de nível de board. O Axioma fala a língua do planejamento estratégico — não de RH.</p>
+    </div>
+    <div class="pos-col reveal reveal-delay-1">
+      <p class="pos-col-label">Para o C-suite de pessoas</p>
+      <p class="pos-audience">CHRO · CLO · VP People</p>
+      <p class="pos-message">"Pela primeira vez, você terá dados que conectam desenvolvimento humano a resultados de produtividade."</p>
+      <p class="pos-sub">Eleva a conversa de RH para o nível estratégico com dados que o board entende e valoriza.</p>
+    </div>
+    <div class="pos-col reveal reveal-delay-2">
+      <p class="pos-col-label">Para o time técnico</p>
+      <p class="pos-audience">Head Analytics · HRIS · Data</p>
+      <p class="pos-message">"Uma metodologia com respaldo WEF e dados biográficos que nenhum outro vendor oferece."</p>
+      <p class="pos-sub">Complementa sua stack atual. Adiciona a camada de inteligência estratégica que faltava nos dados operacionais.</p>
+    </div>
+  </div>
+</section>
+
+<!-- METODOLOGIA -->
+<section class="method" id="metodologia">
+  <p class="section-eyebrow">Metodologia</p>
+  <h2 class="section-title reveal">Como o diagnóstico<br/>é construído.</h2>
+  <p class="section-body reveal reveal-delay-1">Quatro etapas que transformam dados individuais e organizacionais em inteligência estratégica de capital humano.</p>
+  <div class="method-steps">
+    <div class="method-step reveal">
+      <div class="ms-dot"><span class="ms-dot-num">01</span></div>
+      <p class="ms-title">Mapeamento biográfico</p>
+      <p class="ms-body">Coleta estruturada de dados individuais: trajetória, ritmos de energia, marcos de carreira e padrões de performance ao longo do tempo.</p>
+    </div>
+    <div class="method-step reveal reveal-delay-1">
+      <div class="ms-dot"><span class="ms-dot-num">02</span></div>
+      <p class="ms-title">Diagnóstico de competências</p>
+      <p class="ms-body">Avaliação das dimensões críticas identificadas pelo WEF: prontidão para IA, adaptabilidade, skills cognitivos e relacionais, liderança.</p>
+    </div>
+    <div class="method-step reveal reveal-delay-2">
+      <div class="ms-dot"><span class="ms-dot-num">03</span></div>
+      <p class="ms-title">Cruzamento com cenários</p>
+      <p class="ms-body">Posicionamento dos perfis individuais e coletivos nos 4 cenários WEF. Identificação de gaps críticos por cenário e por função.</p>
+    </div>
+    <div class="method-step reveal reveal-delay-3">
+      <div class="ms-dot"><span class="ms-dot-num">04</span></div>
+      <p class="ms-title">Roadmap estratégico</p>
+      <p class="ms-body">Plano de desenvolvimento personalizado, alinhado ao cenário estratégico da organização, com marcos, prioridades e métricas de ROI.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA FINAL -->
+<section class="final-cta">
+  <div class="fc-text">
+    <p class="section-eyebrow">Próximo passo</p>
+    <h2 class="section-title reveal">Descubra em qual<br/>cenário sua organização<br/><em>está de verdade.</em></h2>
+  </div>
+  <div class="fc-actions reveal reveal-delay-1">
+    <a href="diagnostico.html" style="text-decoration:none"><button class="btn-fc-primary">Solicitar diagnóstico gratuito</button></a>
+    <button class="btn-fc-ghost">Falar com um especialista</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">Axioma People Analytics</span>
+  <div class="footer-links">
+    <a href="#">Produto</a>
+    <a href="#">Metodologia</a>
+    <a href="#">Para quem</a>
+    <a href="#">Contato</a>
+  </div>
+  <span class="footer-copy">© 2025 Axioma · Todos os direitos reservados</span>
+</footer>
+
+<script>
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('visible')}});
+},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});
+reveals.forEach(function(r){obs.observe(r)});
+</script>
+</body>
+</html>
