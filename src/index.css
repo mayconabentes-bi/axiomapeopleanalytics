@@ -10,3 +10,52 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  /* Resetting dashboard colors for print */
+  .bg-zinc-900\/20, 
+  .bg-black\/40, 
+  .bg-zinc-950,
+  .bg-zinc-900\/40 {
+    background-color: #f8f8f8 !important;
+    border-color: #ddd !important;
+    color: black !important;
+  }
+
+  h1, h2, h3, h4, p, span {
+    color: black !important;
+    text-shadow: none !important;
+  }
+
+  .text-zinc-500, .text-zinc-600, .text-zinc-400 {
+    color: #444 !important;
+  }
+
+  /* Removing blurs and heavy gradients for clean PDF */
+  .blur-md, .blur-\[150px\], .blur-sm {
+    filter: none !important;
+    opacity: 1 !important;
+  }
+
+  .bg-gradient-to-r, .bg-gradient-to-b {
+    background-image: none !important;
+    background-color: #f8f8f8 !important;
+  }
+
+  /* Ensure borders are visible */
+  .border, .border-l, .border-zinc-800, .border-zinc-900 {
+    border-color: #eee !important;
+    border-width: 1px !important;
+  }
+}

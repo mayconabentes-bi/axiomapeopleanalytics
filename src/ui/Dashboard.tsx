@@ -141,7 +141,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
               {isAdmin && !showMetrics && (
                 <button 
                   onClick={onExit}
-                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-blue-900 text-[10px] text-blue-400 hover:bg-blue-900/10 transition-all uppercase tracking-widest bg-black"
+                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-blue-900 text-[10px] text-blue-400 hover:bg-blue-900/10 transition-all uppercase tracking-widest bg-black no-print"
                 >
                   ➕ Iniciar Nova Pesquisa (Debug)
                 </button>
@@ -149,7 +149,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
               {isAdmin && (
                 <button 
                   onClick={() => setShowMetrics(!showMetrics)}
-                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-blue-900/50 text-[10px] text-blue-500 hover:bg-blue-950/20 transition-all uppercase tracking-widest bg-black"
+                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-blue-900/50 text-[10px] text-blue-500 hover:bg-blue-950/20 transition-all uppercase tracking-widest bg-black no-print"
                 >
                   {showMetrics ? 'Voltar ao Dashboard' : 'Ver Indicadores (Analytics)'}
                 </button>
@@ -170,11 +170,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
           <>
             {resultado ? (
               <>
-                <div className="flex justify-end mb-8">
+                <div className="flex justify-end mb-8 no-print">
                    <button 
                      onClick={() => {
                         trackEvent('pdf_download', { cenario: resultado.cenario });
-                        alert("Preparando exportação para PDF... (Aviso: Recurso em processamento offline)");
+                        alert("Preparando exportação para PDF... Alinhando estilos de alta legibilidade.");
                         window.print();
                      }}
                      className="px-8 py-3 bg-zinc-900 border border-zinc-800 text-[10px] uppercase tracking-widest text-[#D4AF37] hover:bg-zinc-800 transition-all font-bold"
