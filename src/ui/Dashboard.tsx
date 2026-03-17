@@ -46,7 +46,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
   const isEnterprise = plano?.tier === 'enterprise';
   const [showAdminTool, setShowAdminTool] = React.useState(false);
   
-  const isAdmin = selectedPlan === 'pf_elite' && window.location.pathname === '/axioma-dev-master';
+  const isAdmin = selectedPlan === 'pf_elite' && (
+    window.location.pathname === '/axioma-dev-master' || 
+    new URLSearchParams(window.location.search).get('admin') === 'true'
+  );
 
   // Se não houver resultado E não for admin, não renderiza nada
   if (!resultado && !isAdmin) return null;
