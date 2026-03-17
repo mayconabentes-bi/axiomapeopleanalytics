@@ -118,7 +118,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
         )}
 
         {resultado ? (
-          <div className="grid lg:grid-cols-3 gap-8 mb-8">
+          <>
+            <div className="grid lg:grid-cols-3 gap-8 mb-8">
           
           {/* Coluna 1: Matriz WEF */}
           <motion.div variants={itemVariants} className="lg:col-span-2 bg-zinc-900/20 border border-zinc-800/50 p-8 relative overflow-hidden group">
@@ -252,7 +253,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
               <div className="h-[1px] flex-1 bg-zinc-800" />
             </div>
             <ArquivoVivoVisuals data={resultado.arquivo} />
-          </motion.div>
+            </motion.div>
+          </>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
             <div className="w-16 h-16 border-2 border-dashed border-zinc-700 rounded-full mb-6 animate-spin-slow" />
