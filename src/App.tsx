@@ -4,6 +4,7 @@ import { calcularDiagnosticoCompleto } from './domain/analisadorSetorial';
 import { FluxoAvaliacao } from './ui/FluxoAvaliacao';
 import ErrorBoundary from './ui/components/ErrorBoundary';
 import * as storage from './config/storage';
+import { validateToken } from './utils/accessUtils';
 
 import { LandingPage } from './ui/LandingPage';
 import { PricingPlans } from './ui/PricingPlans';
@@ -41,30 +42,44 @@ function App() {
     const params = new URLSearchParams(window.location.search);
     if (params.get('mode') === 'engineer') {
       setIsEngineerMode(true);
-      return; // O resto será tratado pelo EngineerRoute
+      return; 
     }
 
     if (window.location.pathname === '/axioma-dev-master') {
       const key = window.prompt("ACESSO RESTRITO - CHAVE DE ENGENHARIA:");
       if (key === DEV_KEY) {
         setView('dashboard');
-        setSelectedPlan('business');
+        setSelectedPlan('pf_elite'); 
       } else {
         window.location.href = '/';
       }
     }
 
-    // Regra de Liberação (Magic Link via URL parameter)
+    // Regras de Liberação
     const planoLiberado = params.get('liberar');
+    const tokenAcesso = params.get('token');
+
+    if (tokenAcesso) {
+      const { planId, valid, expired } = validateToken(tokenAcesso);
+      if (valid && !expired) {
+        const prefixo = planId.split('_')[0]; 
+        setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
+        setSelectedPlan(planId);
+        setView('diagnostico');
+        return;
+      } else if (expired) {
+        alert("Este link de acesso temporário expirou. Por favor, solicite um novo acesso.");
+      }
+    }
+
     if (planoLiberado) {
       const planosPagosPermitidos = ['pf_traj', 'pf_elite', 'pj_str', 'pj_cmd', 'pj_sup'];
       if (planosPagosPermitidos.includes(planoLiberado)) {
-        // Validação básica do setor (pf/pj) baseado no prefixo do ID do plano
         const prefixo = planoLiberado.split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
         setSelectedPlan(planoLiberado);
         setView('diagnostico');
-        return; // Pula as outras verificações e o carregamento do storage
+        return;
       }
     }
 

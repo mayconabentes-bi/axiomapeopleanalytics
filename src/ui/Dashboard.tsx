@@ -9,6 +9,7 @@ import { NarrativeVisuals } from './components/NarrativeVisuals';
 import { ShadowVisuals } from './components/ShadowVisuals';
 import { ArquivoVivoVisuals } from './components/ArquivoVivoVisuals';
 import { calcularDadosBioArc, calcularDadosOndas, calcularDadosTaleb } from '../domain/motorVisualizacao';
+import { TokenGenerator } from './components/TokenGenerator';
 
 interface DashboardProps {
   selectedPlan: string | null;
@@ -43,6 +44,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
   const isElite = verificarAcessoROI(selectedPlan);
   const hasHidden = verificarAcessoHidden(selectedPlan);
   const isEnterprise = plano?.tier === 'enterprise';
+  const [showAdminTool, setShowAdminTool] = React.useState(false);
+  
+  // O usuário solicitou uma forma de cancelar/suspender. 
+  // O administrador pode gerar tokens temporários aqui.
+  const isAdmin = selectedPlan === 'pf_elite' && window.location.pathname === '/axioma-dev-master';
   
   if (!resultado) return null;
 
@@ -90,16 +96,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
              <div className="text-zinc-600 text-[9px] uppercase tracking-widest">
                {isEnterprise ? `Ref: ENT-${resultado.id}` : `Hash: AX-${Math.random().toString(36).substr(2, 9).toUpperCase()}`}
              </div>
-             {onExit && (
-               <button 
-                 onClick={onExit}
-                 className="mt-4 px-6 py-2 border border-zinc-800 text-[10px] text-zinc-400 hover:border-red-900/50 hover:text-red-500 transition-all uppercase tracking-widest bg-zinc-950/50"
-               >
-                 Sair / Voltar ao Início
-               </button>
-             )}
+              {onExit && (
+                <button 
+                  onClick={onExit}
+                  className="mt-4 px-6 py-2 border border-zinc-800 text-[10px] text-zinc-400 hover:border-red-900/50 hover:text-red-500 transition-all uppercase tracking-widest bg-zinc-950/50"
+                >
+                  Sair / Voltar ao Início
+                </button>
+              )}
+              {isAdmin && (
+                <button 
+                  onClick={() => setShowAdminTool(!showAdminTool)}
+                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-amber-900/50 text-[10px] text-amber-500 hover:bg-amber-950/20 transition-all uppercase tracking-widest bg-black"
+                >
+                  {showAdminTool ? 'Fechar Gerador' : 'Gerar Acesso Temporário'}
+                </button>
+              )}
           </div>
         </motion.header>
+
+        {showAdminTool && (
+          <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} className="mb-12 overflow-hidden">
+            <TokenGenerator />
+          </motion.div>
+        )}
 
         <div className="grid lg:grid-cols-3 gap-8 mb-8">
           
