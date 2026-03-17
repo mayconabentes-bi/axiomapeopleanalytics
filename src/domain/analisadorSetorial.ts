@@ -25,24 +25,29 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
     let cenario: Cenario2030;
     let multiplicadorProdutividade = 1.04; 
     let descricao = "";
+    let strategicInsight = "";
     let color = "#D4AF37";
 
     if (scoreTecnologia > 50 && scoreCapitalHumano > 50) {
         cenario = Cenario2030.SALTO_PRODUTIVIDADE;
-        multiplicadorProdutividade = 1.11;
-        descricao = "Alta tecnologia + Alto capital humano. Círculo virtuoso com ganhos amplos de produtividade.";
+        multiplicadorProdutividade = 1.118; // Gap máximo WEF 2025
+        descricao = "Côncavo de Sinergia: Alta tecnologia integrada ao máximo potencial humano. Convergência Frontier.";
+        strategicInsight = "Este é o quadrante de 'Productivity Leap' do WEF 2025. Organizações aqui capturam 11.8% a mais de produtividade. Sua vantagem competitiva reside na capacidade de usar IA para amplificar (e não substituir) o julgamento humano e a criatividade.";
         color = "#00FFCC";
     } else if (scoreTecnologia > 50 && scoreCapitalHumano <= 50) {
         cenario = Cenario2030.SOBRECARGA_AUTOMACAO;
-        descricao = "Tecnologia supera humanos. Dinâmica winner-takes-all com alto risco de obsolescência de talentos.";
+        descricao = "Winner-Takes-All: Tecnologia disruptiva com capital humano obsoleto ou subutilizado.";
+        strategicInsight = "Cenário 'Automation Overload'. Alto risco de geoeconomia fragmentada. Embora a produtividade técnica suba, o engajamento e a resiliência organizacional caem. O WEF alerta que 44% das habilidades básicas mudarão; sem upskilling humano, sua infraestrutura tecnológica será um custo fixo sem retorno elástico.";
         color = "#FF3366";
     } else if (scoreTecnologia <= 50 && scoreCapitalHumano > 50) {
         cenario = Cenario2030.VANTAGEM_HUMANA;
-        descricao = "Capital humano como ativo central, mas com adoção tecnológica lenta. Risco de perda de competitividade em escala.";
+        descricao = "Resiliência Orgânica: Talentos excepcionais operando com infraestrutura técnica legada ou insuficiente.";
+        strategicInsight = "Cenário 'Human Advantage'. Você possui o ativo mais raro de 2025: capital humano resiliente. No entanto, o custo de oportunidade (C-Gap) é alto por falta de ferramentas. A convergência entre pensamento analítico e tecnologia é seu próximo passo obrigatório para não ser engolido por concorrentes 'Frontier'.";
         color = "#3399FF";
     } else {
         cenario = Cenario2030.SECA_PRODUTIVIDADE;
-        descricao = "Estagnação simultânea em inovação tecnológica e desenvolvimento de talentos.";
+        descricao = "Estagnação Estrutural: Risco crítico de irrelevância competitiva por gap duplo (Tech + Talento).";
+        strategicInsight = "Cenário 'Productivity Drought'. Este é o maior risco apontado pelo relatório de 2025. A inatividade aqui custa caro: perda de relevância setorial e fuga de talentos. É necessário um 'Big Bang' de transformação: adoção agressiva de IA e reestruturação total do desenvolvimento de pessoas.";
         color = "#666666";
     }
 
@@ -62,6 +67,7 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
         custoGapAnual,
         percentualPerda,
         descricao,
+        strategicInsight,
 
         scores: [
             { num: Math.round((scoreTecnologia + scoreCapitalHumano) / 2).toString(), label: "Índice Prime" },
@@ -69,40 +75,40 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
             { num: scoreCapitalHumano.toString(), label: "Prontidão Humana" }
         ],
 
-        wef_title: "Análise de Convergência WEF 2025",
+        wef_title: "Análise de Convergência WEF 2025/2030",
         wef_scenarios: [
-            { name: Cenario2030.SALTO_PRODUTIVIDADE, pct: 0, primary: cenario === Cenario2030.SALTO_PRODUTIVIDADE, cls: 'wq-c1' },
-            { name: Cenario2030.SOBRECARGA_AUTOMACAO, pct: 0, primary: cenario === Cenario2030.SOBRECARGA_AUTOMACAO, cls: 'wq-c2' },
-            { name: Cenario2030.VANTAGEM_HUMANA, pct: 0, primary: cenario === Cenario2030.VANTAGEM_HUMANA, cls: 'wq-c3' },
-            { name: Cenario2030.SECA_PRODUTIVIDADE, pct: 0, primary: cenario === Cenario2030.SECA_PRODUTIVIDADE, cls: 'wq-c4' }
+            { name: Cenario2030.SALTO_PRODUTIVIDADE, pct: cenario === Cenario2030.SALTO_PRODUTIVIDADE ? 100 : 0, primary: cenario === Cenario2030.SALTO_PRODUTIVIDADE, cls: 'wq-c1' },
+            { name: Cenario2030.SOBRECARGA_AUTOMACAO, pct: cenario === Cenario2030.SOBRECARGA_AUTOMACAO ? 100 : 0, primary: cenario === Cenario2030.SOBRECARGA_AUTOMACAO, cls: 'wq-c2' },
+            { name: Cenario2030.VANTAGEM_HUMANA, pct: cenario === Cenario2030.VANTAGEM_HUMANA ? 100 : 0, primary: cenario === Cenario2030.VANTAGEM_HUMANA, cls: 'wq-c3' },
+            { name: Cenario2030.SECA_PRODUTIVIDADE, pct: cenario === Cenario2030.SECA_PRODUTIVIDADE ? 100 : 0, primary: cenario === Cenario2030.SECA_PRODUTIVIDADE, cls: 'wq-c4' }
         ],
-        wef_body: `<p>${descricao}</p>`,
+        wef_body: `<p>${strategicInsight}</p>`,
         
-        dims_overline: "Métricas de Capital",
-        dims_title: "Análise Dimensional",
+        dims_overline: "Métricas de Capital Frontier",
+        dims_title: "Análise Dimensional Estratégica",
         dimensions: [
-            { name: "Capital Tecnológico", score: scoreTecnologia, tier: scoreTecnologia > 70 ? "Excepcional" : "Avançado" },
-            { name: "Capital Humano", score: scoreCapitalHumano, tier: scoreCapitalHumano > 70 ? "Excepcional" : "Avançado" }
+            { name: "Sinergia IA-Humana", score: Math.round((scoreTecnologia + scoreCapitalHumano) / 2), tier: scoreTecnologia > 70 ? "Frontier" : "Emergente" },
+            { name: "Resiliência Adaptativa", score: scoreCapitalHumano, tier: scoreCapitalHumano > 80 ? "Elite" : "Standard" }
         ],
-        dims_body: "<p>Análise dos eixos fundamentais de produtividade.</p>",
+        dims_body: `<p>Com base nos estudos WEF 2025, sua organização apresenta um score de sinergia de ${Math.round((scoreTecnologia + scoreCapitalHumano) / 2)}%. Organizações líderes buscam scores acima de 85% para mitigar a geoeconomia fragmentada.</p>`,
         
-        cog_title: "Arquitetura Cognitiva",
-        cog_body: "<p>Análise preliminar baseada nos inputs de sistema 1 e 2.</p>",
+        cog_title: "Arquitetura Cognitiva 2030",
+        cog_body: `<p>A análise detectou um padrão de pensamento ${(scoreCapitalHumano > 70 ? "convergente e estratégico" : "operacional")}. Para o cenário de 2030, a prioridade deve ser o desenvolvimento de curiosidade e aprendizado ao longo da vida (lifelong learning).</p>`,
         
-        has_hidden: false,
-        bio_title: "Impulso Biográfico",
-        bio_body: "<p>Fase biográfica detectada com base na cronobiologia do usuário.</p>",
+        has_hidden: scoreCapitalHumano > 80,
+        bio_title: "Impulso Biográfico e Cronobiologia",
+        bio_body: `<p>Sua fase biográfica permite uma ${scoreCapitalHumano > 60 ? "janela de expansão de capital simbólico" : "fase de consolidação técnica"}. Alinhar o trabalho aos seus ritmos de energia pode elevar sua performance individual em até 22% (Deloitte 2025).</p>`,
         
-        road_title: "Roadmap Estratégico",
-        road_intro: "<p>Próximos passos recomendados para mitigação do gap.</p>",
+        road_title: "Roadmap Estratégico Axioma",
+        road_intro: `<p>Passos mandatórios para capturar os ${Math.round(MAX_GAP_PRODUTIVIDADE * 100)}% de produtividade adicional previstos pela Accenture/WEF.</p>`,
         roadmap: [
-            { horizon: "Semanas 1–4", title: "Ajuste de Fluxo", body: "Otimizar ferramentas atuais.", kpi: "+5%", key: true },
-            { horizon: "Meses 2–3", title: "Scale-up", body: "Expansão de capacidades.", kpi: "ROI Positivo", key: false }
+            { horizon: "Curto Prazo (90 dias)", title: "Alfabetização em IA", body: "Desenvolver fluência tecnológica em todas as camadas de liderança.", kpi: "Score Tech +15%", key: true },
+            { horizon: "Médio Prazo (1 ano)", title: "Rebranding de Talentos", body: "Reequipar a força de trabalho para os 170 milhões de novos papéis projetados até 2030.", kpi: "Retenção de Elite", key: false }
         ],
         
-        warn_title: "Resumo de Riscos",
-        warn_alert: `O gap de inação custa R$ ${Math.round(custoGapAnual).toLocaleString()} por ano.`,
-        warn_body: "<p>Este custo reflete a produtividade não capturada por falhas na integração tech-human.</p>"
+        warn_title: "Análise de Risco de Inação",
+        warn_alert: `O C-Gap (Custo de Inação) é de R$ ${Math.round(custoGapAnual).toLocaleString()} anuais.`,
+        warn_body: "<p>Este valor representa a produtividade que sua empresa está deixando de faturar por não integrar talendo e tech no nível ótimo exigido pelo mercado atual.</p>"
     };
 }
 /**

@@ -95,7 +95,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
             <h1 className="font-serif text-6xl text-white mb-2">
               {isEnterprise ? 'Relatório Executivo de Produtividade' : 'Relatório de Produtividade Axioma'}
             </h1>
-            <p className="text-zinc-500 italic">Análise de convergência tecnológica e capital humano.</p>
+            <div className="flex gap-4 items-center">
+              <p className="text-zinc-500 italic">Análise de convergência tecnológica e capital humano.</p>
+              {idadeEfetiva && (
+                <span className="px-2 py-0.5 border border-zinc-800 text-[10px] text-zinc-400 bg-zinc-900/50 rounded uppercase tracking-tighter">
+                  Perfil: {idadeEfetiva} anos
+                </span>
+              )}
+            </div>
           </div>
           <div className="text-right">
              <div style={{ color: `${brandColor}CC` }} className="font-serif text-sm italic mb-1">Status: {resultado?.cenario || 'Acesso Direto'}</div>
@@ -117,6 +124,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                   className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-amber-900/50 text-[10px] text-amber-500 hover:bg-amber-950/20 transition-all uppercase tracking-widest bg-black"
                 >
                   {showAdminTool ? 'Fechar Gerador' : 'Gerar Acesso Temporário'}
+                </button>
+              )}
+              {isAdmin && !showMetrics && (
+                <button 
+                  onClick={onExit}
+                  className="mt-4 ml-0 md:ml-2 px-6 py-2 border border-blue-900 text-[10px] text-blue-400 hover:bg-blue-900/10 transition-all uppercase tracking-widest bg-black"
+                >
+                  ➕ Iniciar Nova Pesquisa (Debug)
                 </button>
               )}
               {isAdmin && (

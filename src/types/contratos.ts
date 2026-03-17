@@ -99,6 +99,7 @@ export interface ResultadoDiagnostico {
 
     // Metadados Biográficos
     idade?: number;
+    strategicInsight?: string;
 }
 
 /**
