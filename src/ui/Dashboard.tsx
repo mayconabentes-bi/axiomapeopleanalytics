@@ -1,6 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ResultadoDiagnostico, Cenario2030 } from '../types/contratos';
+import { LoadingAxioma } from './LoadingAxioma';
+import { AdminMetrics } from './components/AdminMetrics';
+import { DevelopmentMap } from './components/DevelopmentMap';
+import {
+  ResultadoDiagnostico,
+  Cenario2030,
+ } from '../types/contratos';
 import { getCoordenadasQuadrante, verificarAcessoROI, verificarAcessoHidden, getPlanoPorId } from '../domain/motorGating';
 import { BotaoAxioma } from './AxiomaKit';
 import { BioArc, UltradianWaves, TalebGauge } from './components/LuxuryVisuals';
@@ -10,7 +16,6 @@ import { ShadowVisuals } from './components/ShadowVisuals';
 import { ArquivoVivoVisuals } from './components/ArquivoVivoVisuals';
 import { calcularDadosBioArc, calcularDadosOndas, calcularDadosTaleb } from '../domain/motorVisualizacao';
 import { TokenGenerator } from './components/TokenGenerator';
-import { AdminMetrics } from './components/AdminMetrics';
 import { trackEvent } from '../utils/analytics';
 
 interface DashboardProps {
@@ -264,6 +269,55 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                     </section>
                   </motion.div>
                 </div>
+
+                {/* NOVO: PLANO DE AÇÃO ESTRATÉGICO */}
+                <motion.div variants={itemVariants} className="grid lg:grid-cols-2 gap-8 mb-8">
+                  <div className="bg-zinc-900/20 border border-zinc-800/50 p-8">
+                    <h2 className="font-serif text-3xl mb-8 border-l pl-4 uppercase tracking-widest text-white" style={{ borderColor: brandColor }}>Mapa de Desenvolvimento</h2>
+                    <DevelopmentMap skills={resultado.developmentMap || []} brandColor={brandColor} />
+                  </div>
+                  <div className="bg-zinc-900/40 border border-[#D4AF37]/20 p-8 relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 p-4 opacity-10">
+                      <span className="text-6xl">🎯</span>
+                    </div>
+                    <h2 className="font-serif text-3xl mb-8 border-l pl-4 uppercase tracking-widest text-[#D4AF37]">Plano de Ação Prime</h2>
+                    <div className="space-y-6 text-sm text-zinc-300">
+                      {resultado.roadmap.map((item, idx) => (
+                        <div key={idx} className="border-b border-zinc-800/50 pb-4">
+                          <div className="flex items-center gap-2 mb-1">
+                            <span className="text-[10px] text-zinc-500 uppercase tracking-tighter">{item.horizon}</span>
+                            {item.key && <span className="bg-[#D4AF37]/20 text-[#D4AF37] text-[8px] px-1.5 py-0.5 rounded">CRÍTICO</span>}
+                          </div>
+                          <h4 className="font-bold text-white mb-2">{item.title}</h4>
+                          <p className="text-xs text-zinc-400 leading-relaxed mb-3">{item.body}</p>
+                          <div className="flex items-center gap-2 text-[10px] text-zinc-500 bg-black/30 w-fit px-2 py-1 rounded">
+                            <span>KPI:</span>
+                            <span className="text-white">{item.kpi}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* NOVO: ÁREAS DE ESTUDO RECOMENDADAS */}
+                {resultado.studyAreas && (
+                  <motion.div variants={itemVariants} className="mb-8 p-10 bg-zinc-950 border border-zinc-900">
+                    <span style={{ color: brandColor }} className="text-[10px] uppercase tracking-[0.6em] mb-4 block">Trilha de Aprendizado Axioma</span>
+                    <h2 className="text-3xl font-serif text-white mb-8">Domínios de Estudo Recomendados</h2>
+                    <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                      {resultado.studyAreas.map((area, idx) => (
+                        <div key={idx} className="p-4 border border-zinc-800 bg-black/40 hover:border-[#D4AF37]/50 transition-all group">
+                          <span className="text-zinc-600 text-[10px] mb-2 block group-hover:text-[#D4AF37]">MÓDULO 0{idx+1}</span>
+                          <p className="text-sm text-white font-medium">{area}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-8 p-4 bg-[#D4AF37]/5 border border-[#D4AF37]/10 text-xs text-zinc-400 italic">
+                      "O WEF 2025 estima que 60% da produtividade individual será derivada da capacidade de navegar nesses domínios de forma integrada."
+                    </div>
+                  </motion.div>
+                )}
 
                 {hasHidden && (
                   <motion.div 

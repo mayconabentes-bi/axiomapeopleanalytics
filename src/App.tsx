@@ -82,7 +82,7 @@ function App() {
         const prefixo = planId.split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
         setSelectedPlan(planId);
-        setView('diagnostico');
+        setView('leadForm');
         return;
       } else {
         console.error("Axioma - Token Invalid or Expired. Valid:", valid, "Expired:", expired);
@@ -97,7 +97,7 @@ function App() {
         const prefixo = planoLiberado.toLowerCase().split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
         setSelectedPlan(planoLiberado.toLowerCase());
-        setView('diagnostico');
+        setView('leadForm');
         return;
       }
     }

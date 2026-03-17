@@ -108,7 +108,17 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
         
         warn_title: "Análise de Risco de Inação",
         warn_alert: `O C-Gap (Custo de Inação) é de R$ ${Math.round(custoGapAnual).toLocaleString()} anuais.`,
-        warn_body: "<p>Este valor representa a produtividade que sua empresa está deixando de faturar por não integrar talendo e tech no nível ótimo exigido pelo mercado atual.</p>"
+        warn_body: "<p>Este valor representa a produtividade que sua empresa está deixando de faturar por não integrar talendo e tech no nível ótimo exigido pelo mercado atual.</p>",
+        
+        studyAreas: cenario === Cenario2030.SALTO_PRODUTIVIDADE ? 
+            ["IA Generativa Avançada", "Liderança Ambidestra", "Sistemas Complexos"] : 
+            ["Alfabetização em Dados", "Gestão de Mudança Crítica", "IA para Não-Técnicos", "Resiliência Psicológica"],
+            
+        developmentMap: [
+            { skill: "Visão Tecnológica", current: scoreTecnologia, target: 95 },
+            { skill: "Inteligência Humana", current: scoreCapitalHumano, target: 90 },
+            { skill: "Agilidade Sistêmica", current: Math.round((scoreTecnologia + scoreCapitalHumano) / 2.2), target: 85 }
+        ]
     };
 }
 /**

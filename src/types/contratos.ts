@@ -101,6 +101,8 @@ export interface ResultadoDiagnostico {
     idade?: number;
     strategicInsight?: string;
     leadData?: LeadData;
+    studyAreas?: string[]; 
+    developmentMap?: { skill: string, current: number, target: number }[];
 }
 
 /**
