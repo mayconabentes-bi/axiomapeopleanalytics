@@ -87,7 +87,7 @@ export const PainelCenario: React.FC<{ cenario: Cenario2030, metricas: MetricasA
                                     <div className="p-4 bg-zinc-900/20 rounded-xl border border-zinc-900">
                                         <div className="text-[9px] uppercase tracking-widest text-[#D4AF37] mb-2">Ventos Favoráveis (Tailwinds)</div>
                                         <ul className="text-[11px] text-zinc-400 space-y-1">
-                                            {exposicao.propulsoresAtivos.map((f, i) => (
+                                            {exposicao.propulsoresAtivos.map((f: string, i: number) => (
                                                 <li key={i}>• {f}</li>
                                             ))}
                                         </ul>
@@ -95,7 +95,7 @@ export const PainelCenario: React.FC<{ cenario: Cenario2030, metricas: MetricasA
                                     <div className="p-4 bg-zinc-900/20 rounded-xl border border-zinc-900">
                                         <div className="text-[9px] uppercase tracking-widest text-zinc-600 mb-2">Ventos Contrários (Headwinds)</div>
                                         <ul className="text-[11px] text-zinc-500 space-y-1">
-                                            {exposicao.detratoresAtivos.map((f, i) => (
+                                            {exposicao.detratoresAtivos.map((f: string, i: number) => (
                                                 <li key={i}>• {f}</li>
                                             ))}
                                         </ul>

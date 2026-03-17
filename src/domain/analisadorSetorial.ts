@@ -28,20 +28,20 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
     let color = "#D4AF37";
 
     if (scoreTecnologia > 50 && scoreCapitalHumano > 50) {
-        cenario = 'Productivity Leap';
+        cenario = Cenario2030.SALTO_PRODUTIVIDADE;
         multiplicadorProdutividade = 1.11;
         descricao = "Alta tecnologia + Alto capital humano. Círculo virtuoso com ganhos amplos de produtividade.";
         color = "#00FFCC";
     } else if (scoreTecnologia > 50 && scoreCapitalHumano <= 50) {
-        cenario = 'Automation Overload';
+        cenario = Cenario2030.SOBRECARGA_AUTOMACAO;
         descricao = "Tecnologia supera humanos. Dinâmica winner-takes-all com alto risco de obsolescência de talentos.";
         color = "#FF3366";
     } else if (scoreTecnologia <= 50 && scoreCapitalHumano > 50) {
-        cenario = 'Human Advantage';
+        cenario = Cenario2030.VANTAGEM_HUMANA;
         descricao = "Capital humano como ativo central, mas com adoção tecnológica lenta. Risco de perda de competitividade em escala.";
         color = "#3399FF";
     } else {
-        cenario = 'Productivity Drought';
+        cenario = Cenario2030.SECA_PRODUTIVIDADE;
         descricao = "Estagnação simultânea em inovação tecnológica e desenvolvimento de talentos.";
         color = "#666666";
     }
@@ -71,10 +71,10 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
 
         wef_title: "Análise de Convergência WEF 2025",
         wef_scenarios: [
-            { name: 'Productivity Leap', pct: 0, primary: cenario === 'Productivity Leap', cls: 'wq-c1' },
-            { name: 'Automation Overload', pct: 0, primary: cenario === 'Automation Overload', cls: 'wq-c2' },
-            { name: 'Human Advantage', pct: 0, primary: cenario === 'Human Advantage', cls: 'wq-c3' },
-            { name: 'Productivity Drought', pct: 0, primary: cenario === 'Productivity Drought', cls: 'wq-c4' }
+            { name: Cenario2030.SALTO_PRODUTIVIDADE, pct: 0, primary: cenario === Cenario2030.SALTO_PRODUTIVIDADE, cls: 'wq-c1' },
+            { name: Cenario2030.SOBRECARGA_AUTOMACAO, pct: 0, primary: cenario === Cenario2030.SOBRECARGA_AUTOMACAO, cls: 'wq-c2' },
+            { name: Cenario2030.VANTAGEM_HUMANA, pct: 0, primary: cenario === Cenario2030.VANTAGEM_HUMANA, cls: 'wq-c3' },
+            { name: Cenario2030.SECA_PRODUTIVIDADE, pct: 0, primary: cenario === Cenario2030.SECA_PRODUTIVIDADE, cls: 'wq-c4' }
         ],
         wef_body: `<p>${descricao}</p>`,
         
@@ -105,5 +105,14 @@ export function calcularDiagnosticoCompleto(dados: DadosEntrada): ResultadoDiagn
         warn_body: "<p>Este custo reflete a produtividade não capturada por falhas na integração tech-human.</p>"
     };
 }
-
-
+/**
+ * Analisa a exposição setorial com base no cenário e matriz do WEF.
+ */
+export function analisarExposicao(cenario: Cenario2030, matriz: any) {
+    const nivelExposicao = cenario === Cenario2030.SALTO_PRODUTIVIDADE ? 0.85 : 0.45;
+    return {
+        nivelExposicao,
+        propulsoresAtivos: matriz.ventosFavoraveis || [],
+        detratoresAtivos: matriz.ventosContrarios || []
+    };
+}

@@ -1,11 +1,12 @@
 /**
  * Definem os cenários projetados pelo World Economic Forum para a produtividade em 2030.
  */
-export type Cenario2030 =
-    | 'Productivity Leap'
-    | 'Automation Overload'
-    | 'Human Advantage'
-    | 'Productivity Drought';
+export enum Cenario2030 {
+    SALTO_PRODUTIVIDADE = 'Productivity Leap',
+    SOBRECARGA_AUTOMACAO = 'Automation Overload',
+    VANTAGEM_HUMANA = 'Human Advantage',
+    SECA_PRODUTIVIDADE = 'Productivity Drought'
+}
 
 /**
  * Principais métricas utilizadas para o diagnóstico Axioma.

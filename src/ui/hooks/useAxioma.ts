@@ -65,6 +65,9 @@ export const useAxioma = () => {
         simulacao,
         atualizarSimulacao,
         resultadoSimulacao,
-        salvarDiagnostico: () => storage.salvarResultado(metricas, setor)
+        salvarDiagnostico: () => {
+            const mockResultado = { cenario: resultadoSimulacao.cenario } as any;
+            storage.salvarResultado(mockResultado, metricas, setor);
+        }
     };
 };
