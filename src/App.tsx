@@ -40,17 +40,25 @@ function App() {
   useEffect(() => {
     // Detectar Rota de Engenharia
     const params = new URLSearchParams(window.location.search);
+    const path = window.location.pathname.replace(/\/$/, ""); // Remover barra final
+    
+    console.log("Axioma Debug - Path:", path);
+    console.log("Axioma Debug - Params:", Object.fromEntries(params.entries()));
+
     if (params.get('mode') === 'engineer') {
       setIsEngineerMode(true);
       return; 
     }
 
-    if (window.location.pathname === '/axioma-dev-master' || params.get('admin') === 'true') {
+    if (path === '/axioma-dev-master' || params.get('admin') === 'true') {
+      console.log("Axioma - Admin Mode Triggered");
       const key = window.prompt("ACESSO RESTRITO - CHAVE DE ENGENHARIA:");
       if (key === DEV_KEY) {
         setView('dashboard');
         setSelectedPlan('pf_elite'); 
-      } else {
+        return;
+      } else if (key !== null) {
+        alert("Chave incorreta.");
         window.location.href = '/';
       }
     }
@@ -60,31 +68,35 @@ function App() {
     const tokenAcesso = params.get('token');
 
     if (tokenAcesso) {
+      console.log("Axioma - Token Detected:", tokenAcesso);
       const { planId, valid, expired } = validateToken(tokenAcesso);
       if (valid && !expired) {
+        console.log("Axioma - Token Valid for:", planId);
         const prefixo = planId.split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
         setSelectedPlan(planId);
         setView('diagnostico');
         return;
-      } else if (expired) {
-        alert("Este link de acesso temporário expirou. Por favor, solicite um novo acesso.");
+      } else {
+        console.error("Axioma - Token Invalid or Expired. Valid:", valid, "Expired:", expired);
+        if (expired) alert("Este link de acesso temporário expirou.");
       }
     }
 
     if (planoLiberado) {
+      console.log("Axioma - Plan Release Requested:", planoLiberado);
       const planosPagosPermitidos = ['pf_traj', 'pf_elite', 'pj_str', 'pj_cmd', 'pj_sup'];
-      if (planosPagosPermitidos.includes(planoLiberado)) {
-        const prefixo = planoLiberado.split('_')[0]; 
+      if (planosPagosPermitidos.includes(planoLiberado.toLowerCase())) {
+        const prefixo = planoLiberado.toLowerCase().split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
-        setSelectedPlan(planoLiberado);
+        setSelectedPlan(planoLiberado.toLowerCase());
         setView('diagnostico');
         return;
       }
     }
 
     const salvo = loadDiagnostic();
-    if (salvo && window.location.pathname !== '/axioma-dev-master') {
+    if (salvo && path !== '/axioma-dev-master' && params.get('admin') !== 'true') {
       setResultado(salvo);
       setView('dashboard');
       setSelectedPlan('pf_free'); 
