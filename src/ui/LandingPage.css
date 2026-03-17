@@ -1056,6 +1056,170 @@
 }
 
 /* ── ANIMATIONS ── */
+/* ── MOBILE RESPONSIVENESS ── */
+@media (max-width: 768px) {
+  .axioma-nav {
+    padding: 0 20px;
+  }
+  
+  .nav-links {
+    display: none; /* Simplificação para mobile: esconder links laterais */
+  }
+  
+  .axioma-section, 
+  .hero-section,
+  .trust-bar,
+  .stats-section,
+  .problem-left-elite,
+  .problem-right-elite,
+  .product-left-elite,
+  .product-right-elite,
+  .icp-section,
+  .quote-section-elite,
+  .positioning-section,
+  .method-section,
+  .final-cta-section,
+  .axioma-footer {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero-section {
+    padding-bottom: 60px;
+    justify-content: center;
+  }
+
+  .hero-headline-elite {
+    font-size: 38px;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-sub-elite {
+    font-size: 14px;
+    margin-bottom: 2rem;
+  }
+
+  .hero-actions-elite {
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  .btn-hero-primary-elite,
+  .btn-hero-ghost-elite {
+    width: 100%;
+  }
+
+  .trust-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .trust-label-elite {
+    border-right: none;
+    padding-right: 0;
+    margin-right: 0;
+  }
+
+  .trust-logos-elite {
+    gap: 24px;
+  }
+
+  .stats-grid-elite {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-item-elite {
+    padding: 24px;
+  }
+
+  .stat-num-elite {
+    font-size: 40px;
+  }
+
+  .problem-section {
+    grid-template-columns: 1fr;
+  }
+
+  .problem-left-elite {
+    border-right: none;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .scenarios-grid-elite {
+    grid-template-columns: 1fr;
+  }
+
+  .scenario-item-elite {
+    border-right: none;
+    border-bottom: 0.5px solid rgba(255,255,255,0.08);
+  }
+
+  .product-section {
+    grid-template-columns: 1fr;
+  }
+
+  .product-left-elite {
+    border-right: none;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .product-right-elite {
+    padding-top: 40px;
+  }
+
+  .product-visual-elite {
+    padding: 20px;
+  }
+
+  .icp-grid-elite {
+    grid-template-columns: 1fr;
+  }
+
+  .blockquote-elite {
+    font-size: 24px;
+  }
+
+  .positioning-grid-elite {
+    grid-template-columns: 1fr;
+  }
+
+  .pos-col-elite {
+    border-right: none;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .method-steps-elite {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .method-steps-elite::before {
+    display: none;
+  }
+
+  .method-step-elite {
+    padding: 0;
+  }
+
+  .final-cta-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .axioma-footer {
+    flex-direction: column;
+    gap: 24px;
+    text-align: center;
+  }
+
+  .footer-links-elite {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 .reveal {
   opacity: 0;
   transform: translateY(24px);

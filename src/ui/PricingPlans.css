@@ -390,3 +390,38 @@ input[type=range]::-webkit-slider-thumb {
   .plan-card-v2 { border-right: none; border-bottom: 0.5px solid var(--axioma-pricing-border-s); }
   .roi-grid-v2 { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .pricing-hero-v2 {
+    padding: 100px 20px 48px;
+  }
+  
+  .ph-title-v2 {
+    font-size: 32px;
+  }
+  
+  .plans-section-v2 {
+    padding: 0 20px 64px;
+  }
+  
+  .plan-card-v2 {
+    padding: 32px 20px;
+  }
+  
+  .amount-v2 {
+    font-size: 40px;
+  }
+  
+  .roi-section-v2 {
+    margin: 0 20px 64px;
+    padding: 32px 20px;
+  }
+  
+  .roi-res-val-v2 {
+    font-size: 32px;
+  }
+  
+  .roi-card-v2 {
+    padding: 24px;
+  }
+}
