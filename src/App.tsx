@@ -14,6 +14,7 @@ import { Dashboard } from './ui/Dashboard';
 import { EngineerRoute } from './pages/EngineerRoute';
 
 import { ResultadoDiagnostico } from './types/contratos';
+import { trackEvent } from './utils/analytics';
 
 /**
  * App Principal: Orquestra o ciclo de vida do Axioma People Analytics.
@@ -45,6 +46,9 @@ function App() {
     console.log("Axioma Debug - Path:", path);
     console.log("Axioma Debug - Params:", Object.fromEntries(params.entries()));
 
+    // Telemetria: Início de Sessão
+    trackEvent('session_start', { path, params: Object.fromEntries(params.entries()) });
+
     if (params.get('mode') === 'engineer') {
       setIsEngineerMode(true);
       return; 
@@ -72,6 +76,7 @@ function App() {
       const { planId, valid, expired } = validateToken(tokenAcesso);
       if (valid && !expired) {
         console.log("Axioma - Token Valid for:", planId);
+        trackEvent('survey_start', { method: 'token', planId, token: tokenAcesso });
         const prefixo = planId.split('_')[0]; 
         setSetorInicial(prefixo === 'pf' ? 'pessoa_fisica' : 'pessoa_juridica');
         setSelectedPlan(planId);

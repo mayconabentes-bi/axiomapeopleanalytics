@@ -8,6 +8,7 @@ import { processarLenteXI } from '../domain/motorRessonancia';
 import { processarLenteXII } from '../domain/motorNarrativa';
 import { processarLenteXIII } from '../domain/motorSombra';
 import { processarLenteXIV } from '../domain/motorArquivo';
+import { trackEvent } from '../utils/analytics';
 
 /**
  * FluxoAvaliacao: Gerenciador dinâmico das 10 Lentes Axioma.
@@ -68,6 +69,8 @@ export const FluxoAvaliacao: React.FC<{ onFinalize?: (resultado: ResultadoDiagno
       arquivo: processarLenteXIV(respostas['email'] || 'anon', { ...resultadoBase, scoresLentes }),
       idade: respostas['bio0'] || 35
     };
+
+    trackEvent('survey_complete', { planId: resultado.id, cenario: resultado.cenario });
 
     if (onFinalize) onFinalize(resultado);
   };

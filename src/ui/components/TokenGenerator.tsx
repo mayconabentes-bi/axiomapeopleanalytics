@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { generateToken } from '../../utils/accessUtils';
 import { BotaoAxioma } from '../AxiomaKit';
+import { trackEvent } from '../../utils/analytics';
 
 /**
  * Ferramenta administrativa para geração de tokens de acesso temporário.
@@ -22,6 +23,7 @@ export const TokenGenerator: React.FC = () => {
     const token = generateToken(planId, days);
     const baseUrl = window.location.origin;
     setGeneratedLink(`${baseUrl}/?token=${token}`);
+    trackEvent('link_generated', { planId, days });
   };
 
   const copyToClipboard = () => {
