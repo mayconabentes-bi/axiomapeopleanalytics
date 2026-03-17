@@ -46,28 +46,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
   const isEnterprise = plano?.tier === 'enterprise';
   const [showAdminTool, setShowAdminTool] = React.useState(false);
   
-  // O usuário solicitou uma forma de cancelar/suspender. 
-  // O administrador pode gerar tokens temporários aqui.
   const isAdmin = selectedPlan === 'pf_elite' && window.location.pathname === '/axioma-dev-master';
-  
-  if (!resultado) return null;
 
-  // Cálculos de Visualização (Domínio baseados em scores reais ou defaults)
-  const coords = getCoordenadasQuadrante(resultado.cenario);
-  const idadeEfetiva = resultado.idade || idade;
+  // Se não houver resultado E não for admin, não renderiza nada
+  if (!resultado && !isAdmin) return null;
+
+  // Cálculos de Visualização (Safe checks para quando não há resultado)
+  const coords = resultado ? getCoordenadasQuadrante(resultado.cenario) : { x: '50%', y: '50%' };
+  const idadeEfetiva = resultado?.idade || idade;
   const dadosBio = calcularDadosBioArc(idadeEfetiva);
 
-  // Mapeamento de Status Antifragilidade (Lente IV)
-  const scoreAnti = resultado.scoresLentes?.['anti'] || 50;
+  const scoreAnti = resultado?.scoresLentes?.['anti'] || 50;
   const statusIdx = scoreAnti > 80 ? 2 : (scoreAnti > 40 ? 1 : 0);
   const dadosTaleb = calcularDadosTaleb(statusIdx);
 
-  // Mapeamento de Ritmos Ultradianos (Lente IX)
-  const scoreEnergy = resultado.scoresLentes?.['energy'] || 70;
+  const scoreEnergy = resultado?.scoresLentes?.['energy'] || 70;
   const windowIdx = scoreEnergy > 80 ? 2 : (scoreEnergy > 60 ? 1 : 4); 
   const dadosOndas = calcularDadosOndas(windowIdx);
 
-  // Tema: Dourado para Elite, Prata/Titanium para Enterprise
   const brandColor = isEnterprise ? '#E5E4E2' : '#D4AF37';
 
   return (
@@ -91,10 +87,10 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
             <p className="text-zinc-500 italic">Análise de convergência tecnológica e capital humano.</p>
           </div>
           <div className="text-right">
-             <div style={{ color: `${brandColor}CC` }} className="font-serif text-sm italic mb-1">Status: {resultado.cenario}</div>
-             <p className="text-[10px] text-zinc-400 max-w-[300px] ml-auto mb-2 leading-tight uppercase tracking-widest">{resultado.descricao}</p>
+             <div style={{ color: `${brandColor}CC` }} className="font-serif text-sm italic mb-1">Status: {resultado?.cenario || 'Acesso Direto'}</div>
+             <p className="text-[10px] text-zinc-400 max-w-[300px] ml-auto mb-2 leading-tight uppercase tracking-widest">{resultado?.descricao || 'Painel de Controle de Inteligência'}</p>
              <div className="text-zinc-600 text-[9px] uppercase tracking-widest">
-               {isEnterprise ? `Ref: ENT-${resultado.id}` : `Hash: AX-${Math.random().toString(36).substr(2, 9).toUpperCase()}`}
+               {isEnterprise ? `Ref: ENT-${resultado?.id || 'ADM'}` : `Hash: AX-${Math.random().toString(36).substr(2, 9).toUpperCase()}`}
              </div>
               {onExit && (
                 <button 
