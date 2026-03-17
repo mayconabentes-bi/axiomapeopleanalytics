@@ -54,6 +54,15 @@ function App() {
       console.log("Axioma - Admin Mode Triggered");
       const key = window.prompt("ACESSO RESTRITO - CHAVE DE ENGENHARIA:");
       if (key === DEV_KEY) {
+        // Garantir um resultado padrão para evitar tela preta no Dashboard
+        setResultado({
+          id: "ADMIN-DEMO",
+          cenario: "SALTO_PRODUTIVIDADE" as any, // Fallback
+          descricao: "Modo Administrador Ativo",
+          multiplicadorProdutividade: 1.11,
+          custoGapAnual: 0,
+          scoresLentes: { energy: 85, anti: 90 }
+        });
         setView('dashboard');
         setSelectedPlan('pf_elite'); 
         return;
