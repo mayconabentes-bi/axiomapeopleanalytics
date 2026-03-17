@@ -254,6 +254,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
             </div>
             <ArquivoVivoVisuals data={resultado.arquivo} />
             </motion.div>
+        )}
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
