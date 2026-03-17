@@ -45,7 +45,7 @@ function App() {
       return; 
     }
 
-    if (window.location.pathname === '/axioma-dev-master') {
+    if (window.location.pathname === '/axioma-dev-master' || params.get('admin') === 'true') {
       const key = window.prompt("ACESSO RESTRITO - CHAVE DE ENGENHARIA:");
       if (key === DEV_KEY) {
         setView('dashboard');
