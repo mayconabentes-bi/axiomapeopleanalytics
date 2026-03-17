@@ -11,19 +11,21 @@ import { PricingPlans } from './ui/PricingPlans';
 
 import { LoadingAxioma } from './ui/LoadingAxioma';
 import { Dashboard } from './ui/Dashboard';
+import { LeadForm } from './ui/components/LeadForm';
 import { EngineerRoute } from './pages/EngineerRoute';
 
-import { ResultadoDiagnostico } from './types/contratos';
+import { ResultadoDiagnostico, LeadData } from './types/contratos';
 import { trackEvent } from './utils/analytics';
 
 /**
  * App Principal: Orquestra o ciclo de vida do Axioma People Analytics.
  */
 function App() {
-  type ViewState = 'landing' | 'planos' | 'diagnostico' | 'loading' | 'dashboard';
+  type ViewState = 'landing' | 'planos' | 'leadForm' | 'diagnostico' | 'loading' | 'dashboard';
   const [view, setView] = useState<ViewState>('landing');
   const [setorInicial, setSetorInicial] = useState("");
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
+  const [leadData, setLeadData] = useState<LeadData | null>(null);
   const [resultado, setResultado] = useState<ResultadoDiagnostico | null>(null);
   const [isEngineerMode, setIsEngineerMode] = useState(false);
   
@@ -137,15 +139,23 @@ function App() {
       return;
     }
 
-    // Se for free ('pf_free' ou 'pj_rec'), prossegue normalmente
+    // Se for free ('pf_free' ou 'pj_rec'), prossegue para captura de leads
     setSelectedPlan(planId);
+    setView('leadForm');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleLeadSubmit = (data: LeadData) => {
+    setLeadData(data);
+    trackEvent('lead_captured', { ...data, planId: selectedPlan });
     setView('diagnostico');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const finalizarDiagnostico = (res: ResultadoDiagnostico) => {
-    setResultado(res);
-    storage.storage.salvarResultado(res, { scoreTecnologico: 0, scoreCapitalHumano: 0, indiceVisaoLideranca: 0 }, setorInicial);
+    const resCompleto = { ...res, leadData: leadData || undefined };
+    setResultado(resCompleto);
+    storage.storage.salvarResultado(resCompleto, { scoreTecnologico: 0, scoreCapitalHumano: 0, indiceVisaoLideranca: 0 }, setorInicial);
     setView('loading');
   };
 
@@ -179,6 +189,13 @@ function App() {
           />
         )}
         
+        {view === 'leadForm' && (
+          <LeadForm 
+            onSubmit={handleLeadSubmit} 
+            brandColor={selectedPlan?.startsWith('pj') ? '#E5E4E2' : '#D4AF37'}
+          />
+        )}
+
         {view === 'diagnostico' && (
           <FluxoAvaliacao 
             onFinalize={finalizarDiagnostico} 

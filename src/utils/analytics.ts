@@ -9,7 +9,8 @@ export type AxiomaEventType =
   | 'survey_start' 
   | 'survey_complete' 
   | 'pdf_download' 
-  | 'component_click';
+  | 'component_click'
+  | 'lead_captured';
 
 export interface AxiomaEvent {
   id: string;

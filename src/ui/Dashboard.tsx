@@ -41,6 +41,13 @@ const itemVariants = {
   }
 };
 
+const AnalyticCard: React.FC<{ title: string; body: string; brandColor: string }> = ({ title, body, brandColor }) => (
+  <div className="mt-6 p-5 border-l-2 bg-gradient-to-r from-white/5 to-transparent border-zinc-800" style={{ borderLeftColor: brandColor }}>
+    <h4 className="text-[9px] uppercase tracking-[0.3em] font-bold mb-3" style={{ color: brandColor }}>Análise Profunda Axioma</h4>
+    <p className="text-[11px] text-zinc-400 leading-relaxed italic font-serif">"{body}"</p>
+  </div>
+);
+
 export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, idade = 35, onOverrideResult, onExit }) => {
   const plano = getPlanoPorId(selectedPlan);
   const isElite = verificarAcessoROI(selectedPlan);
@@ -95,11 +102,16 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
             <h1 className="font-serif text-6xl text-white mb-2">
               {isEnterprise ? 'Relatório Executivo de Produtividade' : 'Relatório de Produtividade Axioma'}
             </h1>
-            <div className="flex gap-4 items-center">
+            <div className="flex flex-wrap gap-4 items-center">
               <p className="text-zinc-500 italic">Análise de convergência tecnológica e capital humano.</p>
               {idadeEfetiva && (
                 <span className="px-2 py-0.5 border border-zinc-800 text-[10px] text-zinc-400 bg-zinc-900/50 rounded uppercase tracking-tighter">
                   Perfil: {idadeEfetiva} anos
+                </span>
+              )}
+              {resultado?.leadData && (
+                <span className="px-2 py-0.5 border border-blue-900/30 text-[10px] text-blue-400 bg-blue-950/20 rounded uppercase tracking-tighter">
+                  ID: {resultado.leadData.nome.split(' ')[0]} @ {resultado.leadData.empresa}
                 </span>
               )}
             </div>
@@ -207,23 +219,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                             <div className="text-5xl text-white font-light">
                               {isEnterprise ? `R$ ${Math.round(resultado.custoGapAnual / 1000000).toLocaleString()}M` : `R$ ${Math.round(resultado.custoGapAnual).toLocaleString()}`}
                             </div>
-                            <p className="text-zinc-500 text-xs mt-4 italic leading-relaxed">
-                              Perda financeira anual por desalinhamento com a fronteira produtiva.
-                            </p>
-                         </div>
-                      </div>
+                             <p className="text-zinc-500 text-xs mt-4 italic leading-relaxed">
+                               Perda financeira anual por desalinhamento com a fronteira produtiva.
+                             </p>
+                          </div>
+                       </div>
                     </div>
+                    <AnalyticCard 
+                      brandColor={brandColor}
+                      title="Análise de Matriz"
+                      body={`Sua posição no quadrante ${resultado.cenario} indica uma ${resultado.multiplicadorProdutividade > 1.1 ? 'liderança agressiva em inovação' : 'necessidade urgente de recalibração tecnológica'}. O WEF 2025 aponta que organizações que não atingem a Sinergia Frontier perdem competitividade exponencial em ciclos de 36 meses.`}
+                    />
                   </motion.div>
 
                   <motion.div data-component="biometric-visuals" variants={itemVariants} className="bg-zinc-900/20 border border-zinc-800/50 p-8 flex flex-col gap-10">
                     <section>
                       <h3 className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-6">Arco de Sentênios</h3>
                       <BioArc dados={dadosBio} />
+                      <p className="text-[9px] text-zinc-600 mt-4 leading-relaxed line-clamp-2 italic">Fase de {dadosBio.fase}: Momento crítico para acumulação de capital simbólico e expansão de influência.</p>
                     </section>
 
                     <section>
                       <h3 className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-6">Ondas de Energia (24h)</h3>
                       <UltradianWaves dados={dadosOndas} />
+                      <p className="text-[9px] text-zinc-600 mt-4 leading-relaxed line-clamp-2 italic">Seu pico de clareza cognitiva ocorre em janelas específicas. Alinhar decisões de alta complexidade a esses horários pode elevar o ROI biográfico em 22%.</p>
                     </section>
 
                     <section className="relative">
@@ -231,6 +250,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                       <div className={!isElite ? 'blur-md opacity-30 grayscale pointer-events-none' : ''}>
                         <TalebGauge dados={dadosTaleb} />
                       </div>
+                      <p className={`text-[9px] text-zinc-600 mt-4 leading-relaxed italic ${!isElite ? 'opacity-0' : ''}`}>
+                        Sua {dadosTaleb.status} indica como você processa o caos. A convexidade positiva é a única barreira contra a obsolescência acelerada por IA.
+                      </p>
                       {!isElite && (
                         <div className="absolute inset-0 flex items-center justify-center">
                           <div className="bg-black/60 border border-zinc-800 p-4 backdrop-blur-sm text-center">
@@ -271,6 +293,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                       <div className="h-[1px] flex-1 bg-zinc-800" />
                     </div>
                     <ResonanceVisuals dados={resultado.ressonancia} />
+                    <AnalyticCard 
+                      brandColor={brandColor}
+                      title="Insight Lente XI"
+                      body={`Sua ressonância civilizacional como '${resultado.ressonancia.res_archetype}' em um período de '${resultado.ressonancia.res_phase}' sugere que suas decisões agora terão eco por pelo menos duas décadas. Você não está apenas operando um negócio, está moldando um precedente histórico.`}
+                    />
                   </motion.div>
                 )}
 
@@ -282,6 +309,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                       <div className="h-[1px] flex-1 bg-zinc-800" />
                     </div>
                     <NarrativeVisuals data={resultado.narrativa} />
+                    <AnalyticCard 
+                      brandColor={brandColor}
+                      title="Insight Lente XII"
+                      body="A estrutura narrativa dominante detectada revela que você processa crises através da Redenção Estratégica. Esta é a marca de líderes que conseguem manter a segurança psicológica de times inteiros durante transições de mercado brutais."
+                    />
                   </motion.div>
                 )}
 
@@ -293,6 +325,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                       <div className="h-[1px] flex-1 bg-zinc-800" />
                     </div>
                     <ShadowVisuals data={resultado.sombra} />
+                    <AnalyticCard 
+                      brandColor={brandColor}
+                      title="Insight Lente XIII"
+                      body="Sua sombra estratégica indica uma tendência a negligenciar o Capital Relacional em favor da Eficiência Técnica. Este ponto cego pode causar perda de influência em momentos de reestruturação organizacional."
+                    />
                   </motion.div>
                 )}
 
@@ -304,6 +341,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ selectedPlan, resultado, i
                       <div className="h-[1px] flex-1 bg-zinc-800" />
                     </div>
                     <ArquivoVivoVisuals data={resultado.arquivo} />
+                    <AnalyticCard 
+                      brandColor={brandColor}
+                      title="Insight Lente XIV"
+                      body="A trajetória registrada no seu Arquivo Vivo mostra uma Inflexão Pragmática recente. Você está saindo de um ciclo de aprendizado para um ciclo de execução frontal, o que exige maior resiliência adaptativa."
+                    />
                   </motion.div>
                 )}
               </>

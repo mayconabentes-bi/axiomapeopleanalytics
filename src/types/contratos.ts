@@ -100,6 +100,18 @@ export interface ResultadoDiagnostico {
     // Metadados Biográficos
     idade?: number;
     strategicInsight?: string;
+    leadData?: LeadData;
+}
+
+/**
+ * Dados de captura para inteligência de mercado e estatística.
+ */
+export interface LeadData {
+    nome: string;
+    email: string;
+    cargo: string;
+    empresa: string;
+    equipe: string;
 }
 
 /**
